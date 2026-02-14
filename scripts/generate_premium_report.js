@@ -337,6 +337,10 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 .chart-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
 .chart-subtitle { font-size: 12px; color: var(--dim); margin-bottom: 16px; }
 
+/* Back to top */
+.back-to-top { display: block; text-align: center; margin: 40px auto 0; padding: 10px 20px; color: var(--dim); font-size: 13px; font-family: 'Space Grotesk', sans-serif; text-decoration: none; letter-spacing: 1px; transition: color 0.3s; }
+.back-to-top:hover { color: var(--accent); }
+
 /* Callouts */
 .callout { border-left: 3px solid var(--accent); background: rgba(108,140,255,0.06); padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 32px 0; }
 .callout p { font-size: 15px; color: var(--muted); line-height: 1.7; }
@@ -435,7 +439,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 <body>
 
 <!-- ═══ HERO ═══ -->
-<div class="hero">
+<div class="hero" id="top">
   <div class="hero-content">
     <div class="hero-label">Milano-Cortina 2026 · Men's Snowboard Halfpipe Final</div>
     <h1>What 144 Scores Reveal About <span>Olympic Judging</span></h1>
@@ -474,12 +478,13 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
       <div class="finding-detail">Do judges score higher after watching a string of crashes? When we compare the <strong>same rider</strong> in different crash contexts, there's no effect.</div>
     </a>
   </div>
+  <p style="text-align:center; margin-top: 24px;"><a href="story.html" style="color: var(--accent); text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px;">🏂 Read the Scotty James Story — crash, comeback, and a gamble for gold →</a></p>
 </div>
 
 <div class="section-divider"></div>
 
 <!-- ═══ SECTION 1: THE EVENT ═══ -->
-<div class="section reveal">
+<div class="section reveal" id="event">
   <div class="section-tag">The Event</div>
   <h2>Three Rounds of Chaos and Precision</h2>
   <p class="prose">The worst qualifier goes first. The best goes last. Same order, every round. Round 1 was carnage — <strong>six consecutive wipeouts</strong> before a single clean landing. By Round 3, four riders had crashed out entirely, and the gold medalist didn't even bother to drop in.</p>
@@ -495,6 +500,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
       <div class="grid-legend-item"><div class="grid-legend-swatch" style="background:rgba(122,122,144,0.15); border:1px solid rgba(122,122,144,0.25)"></div> Skipped / No improvement</div>
     </div>
   </div>
+  <a href="#top" class="back-to-top">↑ BACK TO TOP</a>
 </div>
 
 <div class="section-divider"></div>
@@ -516,11 +522,12 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
     <p>Perfect consensus either means the performance was so unambiguous that all judges independently converged — or it suggests <strong>anchoring</strong>, where early scores influence later ones. We can't distinguish which from this data, but we can say it's statistically remarkable.</p>
   </div>
 </div>
+  <a href="#top" class="back-to-top">↑ BACK TO TOP</a>
 </div>
 
 <div class="section-divider"></div>
 
-<!-- ═══ SECTION 3: THE DISAGREEMENT (merged wipeout + severity) ═══ -->
+<!-- ═══ SECTION 3: THE DISAGREEMENT(merged wipeout + severity) ═══ -->
 <div class="section reveal" id="disagreement">
   <div class="section-tag">The Disagreement</div>
   <h2>When Do Judges Diverge?</h2>
@@ -550,6 +557,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
     <div class="verdict-text">But the safety net works.</div>
     <div class="verdict-sub">The trimmed mean (drop the highest and lowest score) shifts the final result by just <strong>0.17 points on average</strong>. Medal rankings would be identical with or without it.</div>
   </div>
+  <a href="#top" class="back-to-top">↑ BACK TO TOP</a>
 </div>
 
 <div class="section-divider"></div>
@@ -570,6 +578,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
     <div class="verdict-sub">The group average is +1.96 pts higher after crash streaks — but within-rider comparisons tell a different story. Ruka scored <strong>highest after zero crashes</strong> (91 vs 90). Yamada scored identically (92) regardless. The one positive case came with a trick upgrade, not a bias effect.</div>
   </div>
 </div>
+  <a href="#top" class="back-to-top">↑ BACK TO TOP</a>
 </div>
 
 <div class="section-divider"></div>

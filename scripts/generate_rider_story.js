@@ -266,17 +266,21 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   <p class="prose">James completed all five tricks in his routine but couldn't hold the landing. The judges scored what they saw:</p>
 
   <div class="judge-row">
-    ${r1.judges.map(j => {
+    ${(() => {
       const scores = r1.judges.map(s => s.score);
-      const isHigh = j.score === Math.max(...scores) && scores.filter(s => s === j.score).length === 1;
-      const isLow = j.score === Math.min(...scores) && scores.filter(s => s === j.score).length === 1;
-      const excluded = isHigh || isLow;
-      return `<div class="judge-chip${excluded ? ' excluded' : ''}">
-        <div class="j-label">J${j.j}</div>
-        <div class="j-score" style="color:var(--red)">${j.score}</div>
-        <div class="j-country">${j.country}</div>
-      </div>`;
-    }).join('\n    ')}
+      const hi = Math.max(...scores), lo = Math.min(...scores);
+      let hiDone = false, loDone = false;
+      return r1.judges.map(j => {
+        let excluded = false;
+        if (!hiDone && j.score === hi) { excluded = true; hiDone = true; }
+        else if (!loDone && j.score === lo) { excluded = true; loDone = true; }
+        return `<div class="judge-chip${excluded ? ' excluded' : ''}">
+          <div class="j-label">J${j.j}</div>
+          <div class="j-score" style="color:var(--red)">${j.score}</div>
+          <div class="j-country">${j.country}</div>
+        </div>`;
+      }).join('\n    ');
+    })()}
   </div>
 
   <div class="score-reveal">
@@ -300,17 +304,21 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   <p class="prose">The judges responded:</p>
 
   <div class="judge-row">
-    ${r2.judges.map(j => {
+    ${(() => {
       const scores = r2.judges.map(s => s.score);
-      const isHigh = j.score === Math.max(...scores) && scores.filter(s => s === j.score).length === 1;
-      const isLow = j.score === Math.min(...scores) && scores.filter(s => s === j.score).length === 1;
-      const excluded = isHigh || isLow;
-      return `<div class="judge-chip${excluded ? ' excluded' : ''}">
-        <div class="j-label">J${j.j}</div>
-        <div class="j-score" style="color:var(--green)">${j.score}</div>
-        <div class="j-country">${j.country}</div>
-      </div>`;
-    }).join('\n    ')}
+      const hi = Math.max(...scores), lo = Math.min(...scores);
+      let hiDone = false, loDone = false;
+      return r2.judges.map(j => {
+        let excluded = false;
+        if (!hiDone && j.score === hi) { excluded = true; hiDone = true; }
+        else if (!loDone && j.score === lo) { excluded = true; loDone = true; }
+        return `<div class="judge-chip${excluded ? ' excluded' : ''}">
+          <div class="j-label">J${j.j}</div>
+          <div class="j-score" style="color:var(--green)">${j.score}</div>
+          <div class="j-country">${j.country}</div>
+        </div>`;
+      }).join('\n    ');
+    })()}
   </div>
 
   <div class="score-reveal">
