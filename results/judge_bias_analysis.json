@@ -1,98 +1,1405 @@
 {
-  "timestamp": "2026-02-14T18:21:22.980Z",
-  "description": "Comprehensive judge bias analysis using enriched master dataset",
-  "datasetSummary": {
-    "clean": 15,
-    "strategic_skip": 1,
-    "wipeout": 9,
-    "crash": 10,
-    "did_not_improve": 1
+  "q3_judge_severity": [
+    {
+      "judge": 1,
+      "name": "SUMATIC Iztok",
+      "country": "SLO",
+      "avgDeviation": 0.31,
+      "deviationSD": 0.93,
+      "excludedHigh": 1,
+      "excludedLow": 2,
+      "excludedHighPct": 4,
+      "excludedLowPct": 8,
+      "totalRuns": 24,
+      "tendency": "generous"
+    },
+    {
+      "judge": 2,
+      "name": "WESSMAN VOGAN Gaz",
+      "country": "GBR",
+      "avgDeviation": -0.44,
+      "deviationSD": 1.21,
+      "excludedHigh": 2,
+      "excludedLow": 4,
+      "excludedHighPct": 8,
+      "excludedLowPct": 17,
+      "totalRuns": 24,
+      "tendency": "strict"
+    },
+    {
+      "judge": 3,
+      "name": "WESTMAN Fredrik",
+      "country": "SWE",
+      "avgDeviation": 0.18,
+      "deviationSD": 1.16,
+      "excludedHigh": 1,
+      "excludedLow": 1,
+      "excludedHighPct": 4,
+      "excludedLowPct": 4,
+      "totalRuns": 24,
+      "tendency": "neutral"
+    },
+    {
+      "judge": 4,
+      "name": "REGLI Andrin",
+      "country": "SUI",
+      "avgDeviation": -0.53,
+      "deviationSD": 0.85,
+      "excludedHigh": 0,
+      "excludedLow": 4,
+      "excludedHighPct": 0,
+      "excludedLowPct": 17,
+      "totalRuns": 24,
+      "tendency": "strict"
+    },
+    {
+      "judge": 5,
+      "name": "HARICOT Julien",
+      "country": "FRA",
+      "avgDeviation": 0.51,
+      "deviationSD": 0.99,
+      "excludedHigh": 6,
+      "excludedLow": 0,
+      "excludedHighPct": 25,
+      "excludedLowPct": 0,
+      "totalRuns": 24,
+      "tendency": "generous"
+    },
+    {
+      "judge": 6,
+      "name": "HASHIMOTO Ryo",
+      "country": "JPN",
+      "avgDeviation": -0.03,
+      "deviationSD": 0.97,
+      "excludedHigh": 1,
+      "excludedLow": 2,
+      "excludedHighPct": 4,
+      "excludedLowPct": 8,
+      "totalRuns": 24,
+      "tendency": "neutral"
+    }
+  ],
+  "q4_trimmed_mean": {
+    "comparisons": [
+      {
+        "competitor": "Yuto TOTSUKA",
+        "run": 1,
+        "officialScore": 91,
+        "rawMean": 90.83,
+        "trimmedMean": 91,
+        "shift": 0.17,
+        "dropped": "89 (low), 92 (high)",
+        "spread": 3
+      },
+      {
+        "competitor": "Yuto TOTSUKA",
+        "run": 2,
+        "officialScore": 95,
+        "rawMean": 95.17,
+        "trimmedMean": 95,
+        "shift": -0.17,
+        "dropped": "95 (low), 96 (high)",
+        "spread": 1
+      },
+      {
+        "competitor": "Scotty JAMES",
+        "run": 1,
+        "officialScore": 48.75,
+        "rawMean": 48.33,
+        "trimmedMean": 48.75,
+        "shift": 0.42,
+        "dropped": "45 (low), 50 (high)",
+        "spread": 5
+      },
+      {
+        "competitor": "Scotty JAMES",
+        "run": 2,
+        "officialScore": 93.5,
+        "rawMean": 93.5,
+        "trimmedMean": 93.5,
+        "shift": 0,
+        "dropped": "93 (low), 94 (high)",
+        "spread": 1
+      },
+      {
+        "competitor": "Ryusei YAMADA",
+        "run": 1,
+        "officialScore": 92,
+        "rawMean": 91.33,
+        "trimmedMean": 92,
+        "shift": 0.67,
+        "dropped": "88 (low), 92 (high)",
+        "spread": 4
+      },
+      {
+        "competitor": "Ryusei YAMADA",
+        "run": 3,
+        "officialScore": 92,
+        "rawMean": 91.83,
+        "trimmedMean": 92,
+        "shift": 0.17,
+        "dropped": "90 (low), 93 (high)",
+        "spread": 3
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "run": 1,
+        "officialScore": 90,
+        "rawMean": 90,
+        "trimmedMean": 90,
+        "shift": 0,
+        "dropped": "90 (low), 90 (high)",
+        "spread": 0
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "run": 2,
+        "officialScore": 90,
+        "rawMean": 90,
+        "trimmedMean": 90,
+        "shift": 0,
+        "dropped": "90 (low), 90 (high)",
+        "spread": 0
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "run": 3,
+        "officialScore": 91,
+        "rawMean": 90.67,
+        "trimmedMean": 91,
+        "shift": 0.33,
+        "dropped": "89 (low), 91 (high)",
+        "spread": 2
+      },
+      {
+        "competitor": "Valentino GUSELI",
+        "run": 1,
+        "officialScore": 35,
+        "rawMean": 34.83,
+        "trimmedMean": 35,
+        "shift": 0.17,
+        "dropped": "34 (low), 35 (high)",
+        "spread": 1
+      },
+      {
+        "competitor": "Valentino GUSELI",
+        "run": 3,
+        "officialScore": 88,
+        "rawMean": 87.67,
+        "trimmedMean": 88,
+        "shift": 0.33,
+        "dropped": "85 (low), 89 (high)",
+        "spread": 4
+      },
+      {
+        "competitor": "Chaeun LEE",
+        "run": 1,
+        "officialScore": 24.75,
+        "rawMean": 24.5,
+        "trimmedMean": 24.75,
+        "shift": 0.25,
+        "dropped": "23 (low), 25 (high)",
+        "spread": 2
+      },
+      {
+        "competitor": "Chaeun LEE",
+        "run": 2,
+        "officialScore": 24.75,
+        "rawMean": 24.33,
+        "trimmedMean": 24.75,
+        "shift": 0.42,
+        "dropped": "20 (low), 27 (high)",
+        "spread": 7
+      },
+      {
+        "competitor": "Chaeun LEE",
+        "run": 3,
+        "officialScore": 87.5,
+        "rawMean": 87.5,
+        "trimmedMean": 87.5,
+        "shift": 0,
+        "dropped": "86 (low), 89 (high)",
+        "spread": 3
+      },
+      {
+        "competitor": "Ayumu HIRANO",
+        "run": 1,
+        "officialScore": 27.5,
+        "rawMean": 27.5,
+        "trimmedMean": 27.5,
+        "shift": 0,
+        "dropped": "26 (low), 29 (high)",
+        "spread": 3
+      },
+      {
+        "competitor": "Ayumu HIRANO",
+        "run": 2,
+        "officialScore": 86.5,
+        "rawMean": 86.5,
+        "trimmedMean": 86.5,
+        "shift": 0,
+        "dropped": "85 (low), 88 (high)",
+        "spread": 3
+      },
+      {
+        "competitor": "Jake PATES",
+        "run": 1,
+        "officialScore": 77.5,
+        "rawMean": 77.67,
+        "trimmedMean": 77.5,
+        "shift": -0.17,
+        "dropped": "77 (low), 79 (high)",
+        "spread": 2
+      },
+      {
+        "competitor": "Ziyang WANG",
+        "run": 1,
+        "officialScore": 17.75,
+        "rawMean": 17.83,
+        "trimmedMean": 17.75,
+        "shift": -0.08,
+        "dropped": "17 (low), 19 (high)",
+        "spread": 2
+      },
+      {
+        "competitor": "Ziyang WANG",
+        "run": 2,
+        "officialScore": 17.25,
+        "rawMean": 17.33,
+        "trimmedMean": 17.25,
+        "shift": -0.08,
+        "dropped": "17 (low), 18 (high)",
+        "spread": 1
+      },
+      {
+        "competitor": "Ziyang WANG",
+        "run": 3,
+        "officialScore": 76,
+        "rawMean": 76.17,
+        "trimmedMean": 76,
+        "shift": -0.17,
+        "dropped": "76 (low), 77 (high)",
+        "spread": 1
+      },
+      {
+        "competitor": "Alessandro BARBIERI",
+        "run": 1,
+        "officialScore": 75,
+        "rawMean": 75,
+        "trimmedMean": 75,
+        "shift": 0,
+        "dropped": "74 (low), 76 (high)",
+        "spread": 2
+      },
+      {
+        "competitor": "Chase JOSEY",
+        "run": 1,
+        "officialScore": 11.75,
+        "rawMean": 12,
+        "trimmedMean": 11.75,
+        "shift": -0.25,
+        "dropped": "10 (low), 15 (high)",
+        "spread": 5
+      },
+      {
+        "competitor": "Chase JOSEY",
+        "run": 2,
+        "officialScore": 70.25,
+        "rawMean": 70.33,
+        "trimmedMean": 70.25,
+        "shift": -0.08,
+        "dropped": "70 (low), 71 (high)",
+        "spread": 1
+      },
+      {
+        "competitor": "Campbell MELVILLE IVES",
+        "run": 1,
+        "officialScore": 43,
+        "rawMean": 42.83,
+        "trimmedMean": 43,
+        "shift": 0.17,
+        "dropped": "40 (low), 45 (high)",
+        "spread": 5
+      }
+    ],
+    "medalChanges": false
   },
-  "reliefBias": {
-    "baseline": 86.35,
-    "afterCrash": {
-      "count": 14,
-      "mean": 86.98214285714286
+  "q5_wipeout_mechanics": [
+    {
+      "competitor": "Chase JOSEY",
+      "run": 1,
+      "score": 11.75,
+      "trickCount": 2,
+      "spread": 5,
+      "judgeSD": 1.7320508075688772
     },
-    "noCrashContext": {
-      "count": 1,
-      "mean": 77.5
+    {
+      "competitor": "Ziyang WANG",
+      "run": 1,
+      "score": 17.75,
+      "trickCount": 3,
+      "spread": 2,
+      "judgeSD": 0.6871842709362768
     },
-    "byCrashCount": {
-      "1": [
-        87.5,
-        76,
-        70.25
-      ],
-      "3": [
-        91,
-        88
-      ],
-      "4": [
-        92,
-        86.5
-      ],
-      "5": [
+    {
+      "competitor": "Chaeun LEE",
+      "run": 1,
+      "score": 24.75,
+      "trickCount": 3,
+      "spread": 2,
+      "judgeSD": 0.7637626158259734
+    },
+    {
+      "competitor": "Chaeun LEE",
+      "run": 2,
+      "score": 24.75,
+      "trickCount": 3,
+      "spread": 7,
+      "judgeSD": 2.211083193570267
+    },
+    {
+      "competitor": "Ayumu HIRANO",
+      "run": 1,
+      "score": 27.5,
+      "trickCount": 3,
+      "spread": 3,
+      "judgeSD": 0.9574271077563381
+    },
+    {
+      "competitor": "Ziyang WANG",
+      "run": 2,
+      "score": 17.25,
+      "trickCount": 4,
+      "spread": 1,
+      "judgeSD": 0.4714045207910317
+    },
+    {
+      "competitor": "Valentino GUSELI",
+      "run": 1,
+      "score": 35,
+      "trickCount": 5,
+      "spread": 1,
+      "judgeSD": 0.37267799624996495
+    },
+    {
+      "competitor": "Campbell MELVILLE IVES",
+      "run": 1,
+      "score": 43,
+      "trickCount": 5,
+      "spread": 5,
+      "judgeSD": 1.7716909687891083
+    },
+    {
+      "competitor": "Scotty JAMES",
+      "run": 1,
+      "score": 48.75,
+      "trickCount": 5,
+      "spread": 5,
+      "judgeSD": 2.0548046676563256
+    }
+  ],
+  "q6_consensus": [
+    {
+      "competitor": "Ruka HIRANO",
+      "run": 1,
+      "score": 90,
+      "spread": 0,
+      "sd": 0,
+      "allIdentical": true,
+      "scores": [
+        90,
+        90,
+        90,
+        90,
+        90,
         90
       ],
-      "6": [
-        91,
-        92,
+      "type": "clean"
+    },
+    {
+      "competitor": "Ruka HIRANO",
+      "run": 2,
+      "score": 90,
+      "spread": 0,
+      "sd": 0,
+      "allIdentical": true,
+      "scores": [
         90,
+        90,
+        90,
+        90,
+        90,
+        90
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Yuto TOTSUKA",
+      "run": 2,
+      "score": 95,
+      "spread": 1,
+      "sd": 0.37,
+      "allIdentical": false,
+      "scores": [
+        95,
+        95,
+        96,
+        95,
+        95,
+        95
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Scotty JAMES",
+      "run": 2,
+      "score": 93.5,
+      "spread": 1,
+      "sd": 0.5,
+      "allIdentical": false,
+      "scores": [
+        94,
+        93,
+        94,
+        93,
+        94,
+        93
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Valentino GUSELI",
+      "run": 1,
+      "score": 35,
+      "spread": 1,
+      "sd": 0.37,
+      "allIdentical": false,
+      "scores": [
+        35,
+        35,
+        35,
+        35,
+        35,
+        34
+      ],
+      "type": "wipeout"
+    },
+    {
+      "competitor": "Ziyang WANG",
+      "run": 2,
+      "score": 17.25,
+      "spread": 1,
+      "sd": 0.47,
+      "allIdentical": false,
+      "scores": [
+        18,
+        17,
+        17,
+        17,
+        18,
+        17
+      ],
+      "type": "wipeout"
+    },
+    {
+      "competitor": "Ziyang WANG",
+      "run": 3,
+      "score": 76,
+      "spread": 1,
+      "sd": 0.37,
+      "allIdentical": false,
+      "scores": [
+        76,
+        76,
+        76,
+        76,
+        77,
+        76
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Chase JOSEY",
+      "run": 2,
+      "score": 70.25,
+      "spread": 1,
+      "sd": 0.47,
+      "allIdentical": false,
+      "scores": [
+        70,
+        70,
+        70,
+        70,
+        71,
+        71
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Ruka HIRANO",
+      "run": 3,
+      "score": 91,
+      "spread": 2,
+      "sd": 0.75,
+      "allIdentical": false,
+      "scores": [
+        91,
+        91,
+        91,
+        89,
+        91,
+        91
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Chaeun LEE",
+      "run": 1,
+      "score": 24.75,
+      "spread": 2,
+      "sd": 0.76,
+      "allIdentical": false,
+      "scores": [
+        25,
+        24,
+        25,
+        23,
+        25,
+        25
+      ],
+      "type": "wipeout"
+    },
+    {
+      "competitor": "Jake PATES",
+      "run": 1,
+      "score": 77.5,
+      "spread": 2,
+      "sd": 0.75,
+      "allIdentical": false,
+      "scores": [
+        78,
+        77,
+        78,
+        77,
+        79,
+        77
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Ziyang WANG",
+      "run": 1,
+      "score": 17.75,
+      "spread": 2,
+      "sd": 0.69,
+      "allIdentical": false,
+      "scores": [
+        18,
+        17,
+        17,
+        18,
+        19,
+        18
+      ],
+      "type": "wipeout"
+    },
+    {
+      "competitor": "Alessandro BARBIERI",
+      "run": 1,
+      "score": 75,
+      "spread": 2,
+      "sd": 0.58,
+      "allIdentical": false,
+      "scores": [
+        75,
+        74,
+        75,
+        75,
+        76,
         75
       ],
-      "7": [
-        95,
-        93.5
-      ]
+      "type": "clean"
+    },
+    {
+      "competitor": "Yuto TOTSUKA",
+      "run": 1,
+      "score": 91,
+      "spread": 3,
+      "sd": 0.9,
+      "allIdentical": false,
+      "scores": [
+        89,
+        92,
+        91,
+        91,
+        91,
+        91
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Ryusei YAMADA",
+      "run": 3,
+      "score": 92,
+      "spread": 3,
+      "sd": 1.21,
+      "allIdentical": false,
+      "scores": [
+        93,
+        90,
+        93,
+        91,
+        93,
+        91
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Chaeun LEE",
+      "run": 3,
+      "score": 87.5,
+      "spread": 3,
+      "sd": 1.12,
+      "allIdentical": false,
+      "scores": [
+        88,
+        89,
+        88,
+        88,
+        86,
+        86
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Ayumu HIRANO",
+      "run": 1,
+      "score": 27.5,
+      "spread": 3,
+      "sd": 0.96,
+      "allIdentical": false,
+      "scores": [
+        28,
+        28,
+        27,
+        26,
+        29,
+        27
+      ],
+      "type": "wipeout"
+    },
+    {
+      "competitor": "Ayumu HIRANO",
+      "run": 2,
+      "score": 86.5,
+      "spread": 3,
+      "sd": 0.96,
+      "allIdentical": false,
+      "scores": [
+        85,
+        86,
+        87,
+        86,
+        87,
+        88
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Ryusei YAMADA",
+      "run": 1,
+      "score": 92,
+      "spread": 4,
+      "sd": 1.49,
+      "allIdentical": false,
+      "scores": [
+        92,
+        88,
+        92,
+        92,
+        92,
+        92
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Valentino GUSELI",
+      "run": 3,
+      "score": 88,
+      "spread": 4,
+      "sd": 1.49,
+      "allIdentical": false,
+      "scores": [
+        89,
+        89,
+        89,
+        87,
+        87,
+        85
+      ],
+      "type": "clean"
+    },
+    {
+      "competitor": "Scotty JAMES",
+      "run": 1,
+      "score": 48.75,
+      "spread": 5,
+      "sd": 2.05,
+      "allIdentical": false,
+      "scores": [
+        50,
+        45,
+        50,
+        46,
+        49,
+        50
+      ],
+      "type": "wipeout"
+    },
+    {
+      "competitor": "Chase JOSEY",
+      "run": 1,
+      "score": 11.75,
+      "spread": 5,
+      "sd": 1.73,
+      "allIdentical": false,
+      "scores": [
+        15,
+        10,
+        12,
+        12,
+        10,
+        13
+      ],
+      "type": "wipeout"
+    },
+    {
+      "competitor": "Campbell MELVILLE IVES",
+      "run": 1,
+      "score": 43,
+      "spread": 5,
+      "sd": 1.77,
+      "allIdentical": false,
+      "scores": [
+        43,
+        42,
+        45,
+        40,
+        45,
+        42
+      ],
+      "type": "wipeout"
+    },
+    {
+      "competitor": "Chaeun LEE",
+      "run": 2,
+      "score": 24.75,
+      "spread": 7,
+      "sd": 2.21,
+      "allIdentical": false,
+      "scores": [
+        24,
+        25,
+        20,
+        24,
+        27,
+        26
+      ],
+      "type": "wipeout"
     }
+  ],
+  "q7_correlations": [
+    {
+      "judge1": 1,
+      "judge2": 3,
+      "r": 0.999
+    },
+    {
+      "judge1": 1,
+      "judge2": 4,
+      "r": 0.999
+    },
+    {
+      "judge1": 1,
+      "judge2": 5,
+      "r": 0.999
+    },
+    {
+      "judge1": 1,
+      "judge2": 6,
+      "r": 0.999
+    },
+    {
+      "judge1": 2,
+      "judge2": 4,
+      "r": 0.999
+    },
+    {
+      "judge1": 2,
+      "judge2": 5,
+      "r": 0.999
+    },
+    {
+      "judge1": 3,
+      "judge2": 5,
+      "r": 0.999
+    },
+    {
+      "judge1": 4,
+      "judge2": 5,
+      "r": 0.999
+    },
+    {
+      "judge1": 4,
+      "judge2": 6,
+      "r": 0.999
+    },
+    {
+      "judge1": 5,
+      "judge2": 6,
+      "r": 0.999
+    },
+    {
+      "judge1": 1,
+      "judge2": 2,
+      "r": 0.998
+    },
+    {
+      "judge1": 2,
+      "judge2": 3,
+      "r": 0.998
+    },
+    {
+      "judge1": 2,
+      "judge2": 6,
+      "r": 0.998
+    },
+    {
+      "judge1": 3,
+      "judge2": 4,
+      "r": 0.998
+    },
+    {
+      "judge1": 3,
+      "judge2": 6,
+      "r": 0.998
+    }
+  ],
+  "q1q2_relief_bias": {
+    "byStreak": {
+      "0": {
+        "n": 8,
+        "avgScore": 85.44,
+        "avgPosition": 7.3
+      },
+      "1": {
+        "n": 3,
+        "avgScore": 84.08,
+        "avgPosition": 6.7
+      },
+      "2": {
+        "n": 2,
+        "avgScore": 91.5,
+        "avgPosition": 9
+      },
+      "3": {
+        "n": 1,
+        "avgScore": 86.5,
+        "avgPosition": 6
+      },
+      "6": {
+        "n": 1,
+        "avgScore": 90,
+        "avgPosition": 8
+      }
+    },
+    "binaryDiff": 1.96,
+    "withinRider": [
+      {
+        "competitor": "Ruka HIRANO",
+        "runs": [
+          {
+            "round": 1,
+            "consecCrashes": 6,
+            "score": 90
+          },
+          {
+            "round": 2,
+            "consecCrashes": 1,
+            "score": 90
+          },
+          {
+            "round": 3,
+            "consecCrashes": 0,
+            "score": 91
+          }
+        ]
+      },
+      {
+        "competitor": "Ryusei YAMADA",
+        "runs": [
+          {
+            "round": 1,
+            "consecCrashes": 0,
+            "score": 92
+          },
+          {
+            "round": 3,
+            "consecCrashes": 1,
+            "score": 92
+          }
+        ]
+      },
+      {
+        "competitor": "Yuto TOTSUKA",
+        "runs": [
+          {
+            "round": 1,
+            "consecCrashes": 0,
+            "score": 91
+          },
+          {
+            "round": 2,
+            "consecCrashes": 2,
+            "score": 95
+          }
+        ]
+      }
+    ]
   },
-  "perJudgeRelief": {
+  "q8_nationality": {
+    "j6OwnCountry": [
+      {
+        "competitor": "Yuto TOTSUKA",
+        "run": 1,
+        "j6Score": 91,
+        "panelMean": 90.83,
+        "deviation": 0.17,
+        "score": 91
+      },
+      {
+        "competitor": "Yuto TOTSUKA",
+        "run": 2,
+        "j6Score": 95,
+        "panelMean": 95.17,
+        "deviation": -0.17,
+        "score": 95
+      },
+      {
+        "competitor": "Ryusei YAMADA",
+        "run": 1,
+        "j6Score": 92,
+        "panelMean": 91.33,
+        "deviation": 0.67,
+        "score": 92
+      },
+      {
+        "competitor": "Ryusei YAMADA",
+        "run": 3,
+        "j6Score": 91,
+        "panelMean": 91.83,
+        "deviation": -0.83,
+        "score": 92
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "run": 1,
+        "j6Score": 90,
+        "panelMean": 90,
+        "deviation": 0,
+        "score": 90
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "run": 2,
+        "j6Score": 90,
+        "panelMean": 90,
+        "deviation": 0,
+        "score": 90
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "run": 3,
+        "j6Score": 91,
+        "panelMean": 90.67,
+        "deviation": 0.33,
+        "score": 91
+      },
+      {
+        "competitor": "Ayumu HIRANO",
+        "run": 1,
+        "j6Score": 27,
+        "panelMean": 27.5,
+        "deviation": -0.5,
+        "score": 27.5
+      },
+      {
+        "competitor": "Ayumu HIRANO",
+        "run": 2,
+        "j6Score": 88,
+        "panelMean": 86.5,
+        "deviation": 1.5,
+        "score": 86.5
+      }
+    ],
+    "j6OtherCountry": [
+      {
+        "competitor": "Scotty JAMES",
+        "run": 1,
+        "j6Score": 50,
+        "panelMean": 48.33,
+        "deviation": 1.67,
+        "score": 48.75
+      },
+      {
+        "competitor": "Scotty JAMES",
+        "run": 2,
+        "j6Score": 93,
+        "panelMean": 93.5,
+        "deviation": -0.5,
+        "score": 93.5
+      },
+      {
+        "competitor": "Valentino GUSELI",
+        "run": 1,
+        "j6Score": 34,
+        "panelMean": 34.83,
+        "deviation": -0.83,
+        "score": 35
+      },
+      {
+        "competitor": "Valentino GUSELI",
+        "run": 3,
+        "j6Score": 85,
+        "panelMean": 87.67,
+        "deviation": -2.67,
+        "score": 88
+      },
+      {
+        "competitor": "Chaeun LEE",
+        "run": 1,
+        "j6Score": 25,
+        "panelMean": 24.5,
+        "deviation": 0.5,
+        "score": 24.75
+      },
+      {
+        "competitor": "Chaeun LEE",
+        "run": 2,
+        "j6Score": 26,
+        "panelMean": 24.33,
+        "deviation": 1.67,
+        "score": 24.75
+      },
+      {
+        "competitor": "Chaeun LEE",
+        "run": 3,
+        "j6Score": 86,
+        "panelMean": 87.5,
+        "deviation": -1.5,
+        "score": 87.5
+      },
+      {
+        "competitor": "Jake PATES",
+        "run": 1,
+        "j6Score": 77,
+        "panelMean": 77.67,
+        "deviation": -0.67,
+        "score": 77.5
+      },
+      {
+        "competitor": "Ziyang WANG",
+        "run": 1,
+        "j6Score": 18,
+        "panelMean": 17.83,
+        "deviation": 0.17,
+        "score": 17.75
+      },
+      {
+        "competitor": "Ziyang WANG",
+        "run": 2,
+        "j6Score": 17,
+        "panelMean": 17.33,
+        "deviation": -0.33,
+        "score": 17.25
+      },
+      {
+        "competitor": "Ziyang WANG",
+        "run": 3,
+        "j6Score": 76,
+        "panelMean": 76.17,
+        "deviation": -0.17,
+        "score": 76
+      },
+      {
+        "competitor": "Alessandro BARBIERI",
+        "run": 1,
+        "j6Score": 75,
+        "panelMean": 75,
+        "deviation": 0,
+        "score": 75
+      },
+      {
+        "competitor": "Chase JOSEY",
+        "run": 1,
+        "j6Score": 13,
+        "panelMean": 12,
+        "deviation": 1,
+        "score": 11.75
+      },
+      {
+        "competitor": "Chase JOSEY",
+        "run": 2,
+        "j6Score": 71,
+        "panelMean": 70.33,
+        "deviation": 0.67,
+        "score": 70.25
+      },
+      {
+        "competitor": "Campbell MELVILLE IVES",
+        "run": 1,
+        "j6Score": 42,
+        "panelMean": 42.83,
+        "deviation": -0.83,
+        "score": 43
+      }
+    ],
+    "bias": 0.25
+  },
+  "q9_difficulty": {
+    "correlation": 0.195,
+    "n": 15,
+    "data": [
+      {
+        "competitor": "Yuto TOTSUKA",
+        "score": 95,
+        "totalDifficulty": 46.5,
+        "avgDifficulty": 9.3
+      },
+      {
+        "competitor": "Scotty JAMES",
+        "score": 93.5,
+        "totalDifficulty": 47,
+        "avgDifficulty": 9.4
+      },
+      {
+        "competitor": "Ryusei YAMADA",
+        "score": 92,
+        "totalDifficulty": 33.5,
+        "avgDifficulty": 6.7
+      },
+      {
+        "competitor": "Ryusei YAMADA",
+        "score": 92,
+        "totalDifficulty": 32.5,
+        "avgDifficulty": 6.5
+      },
+      {
+        "competitor": "Yuto TOTSUKA",
+        "score": 91,
+        "totalDifficulty": 43.5,
+        "avgDifficulty": 8.7
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "score": 91,
+        "totalDifficulty": 48.5,
+        "avgDifficulty": 9.7
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "score": 90,
+        "totalDifficulty": 48.5,
+        "avgDifficulty": 9.7
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "score": 90,
+        "totalDifficulty": 51.5,
+        "avgDifficulty": 10.3
+      },
+      {
+        "competitor": "Valentino GUSELI",
+        "score": 88,
+        "totalDifficulty": 36.5,
+        "avgDifficulty": 7.3
+      },
+      {
+        "competitor": "Chaeun LEE",
+        "score": 87.5,
+        "totalDifficulty": 50.5,
+        "avgDifficulty": 10.1
+      },
+      {
+        "competitor": "Ayumu HIRANO",
+        "score": 86.5,
+        "totalDifficulty": 50,
+        "avgDifficulty": 10
+      },
+      {
+        "competitor": "Jake PATES",
+        "score": 77.5,
+        "totalDifficulty": 43,
+        "avgDifficulty": 8.6
+      },
+      {
+        "competitor": "Ziyang WANG",
+        "score": 76,
+        "totalDifficulty": 51.5,
+        "avgDifficulty": 10.3
+      },
+      {
+        "competitor": "Alessandro BARBIERI",
+        "score": 75,
+        "totalDifficulty": 44,
+        "avgDifficulty": 8.8
+      },
+      {
+        "competitor": "Chase JOSEY",
+        "score": 70.25,
+        "totalDifficulty": 28.5,
+        "avgDifficulty": 5.7
+      }
+    ]
+  },
+  "q10_round_drift": {
     "1": {
-      "afterMean": 86.92857142857143,
-      "noCtxMean": 78,
-      "relief": 8.92857142857143,
-      "afterN": 14,
-      "noCtxN": 1
+      "1": [
+        -1.8333333333333286,
+        0.6666666666666714,
+        0,
+        0.3333333333333286,
+        0
+      ],
+      "2": [
+        -0.1666666666666714,
+        0.5,
+        0,
+        -1.5,
+        -0.3333333333333286
+      ],
+      "3": [
+        1.1666666666666714,
+        0.3333333333333286,
+        1.3333333333333286,
+        0.5,
+        -0.1666666666666714
+      ]
     },
     "2": {
-      "afterMean": 86.64285714285714,
-      "noCtxMean": 77,
-      "relief": 9.642857142857139,
-      "afterN": 14,
-      "noCtxN": 1
+      "1": [
+        1.1666666666666714,
+        -3.3333333333333286,
+        0,
+        -0.6666666666666714,
+        -1
+      ],
+      "2": [
+        -0.1666666666666714,
+        -0.5,
+        0,
+        -0.5,
+        -0.3333333333333286
+      ],
+      "3": [
+        -1.8333333333333286,
+        0.3333333333333286,
+        1.3333333333333286,
+        1.5,
+        -0.1666666666666714
+      ]
     },
     "3": {
-      "afterMean": 87.28571428571429,
-      "noCtxMean": 78,
-      "relief": 9.285714285714292,
-      "afterN": 14,
-      "noCtxN": 1
+      "1": [
+        0.1666666666666714,
+        0.6666666666666714,
+        0,
+        0.3333333333333286,
+        0
+      ],
+      "2": [
+        0.8333333333333286,
+        0.5,
+        0,
+        0.5,
+        -0.3333333333333286
+      ],
+      "3": [
+        1.1666666666666714,
+        0.3333333333333286,
+        1.3333333333333286,
+        0.5,
+        -0.1666666666666714
+      ]
     },
     "4": {
-      "afterMean": 86.64285714285714,
-      "noCtxMean": 77,
-      "relief": 9.642857142857139,
-      "afterN": 14,
-      "noCtxN": 1
+      "1": [
+        0.1666666666666714,
+        0.6666666666666714,
+        0,
+        -0.6666666666666714,
+        0
+      ],
+      "2": [
+        -0.1666666666666714,
+        -0.5,
+        0,
+        -0.5,
+        -0.3333333333333286
+      ],
+      "3": [
+        -0.8333333333333286,
+        -1.6666666666666714,
+        -0.6666666666666714,
+        0.5,
+        -0.1666666666666714
+      ]
     },
     "5": {
-      "afterMean": 87.14285714285714,
-      "noCtxMean": 79,
-      "relief": 8.142857142857139,
-      "afterN": 14,
-      "noCtxN": 1
+      "1": [
+        0.1666666666666714,
+        0.6666666666666714,
+        0,
+        1.3333333333333286,
+        1
+      ],
+      "2": [
+        -0.1666666666666714,
+        0.5,
+        0,
+        0.5,
+        0.6666666666666714
+      ],
+      "3": [
+        1.1666666666666714,
+        0.3333333333333286,
+        -0.6666666666666714,
+        -1.5,
+        0.8333333333333286
+      ]
     },
     "6": {
-      "afterMean": 86.71428571428571,
-      "noCtxMean": 77,
-      "relief": 9.714285714285708,
-      "afterN": 14,
-      "noCtxN": 1
+      "1": [
+        0.1666666666666714,
+        0.6666666666666714,
+        0,
+        -0.6666666666666714,
+        0
+      ],
+      "2": [
+        -0.1666666666666714,
+        -0.5,
+        0,
+        1.5,
+        0.6666666666666714
+      ],
+      "3": [
+        -0.8333333333333286,
+        0.3333333333333286,
+        -2.6666666666666714,
+        -1.5,
+        -0.1666666666666714
+      ]
     }
-  },
-  "consensusAnalysis": {
-    "afterCrashAvgSpread": 2,
-    "noContextAvgSpread": 2
   }
 }
