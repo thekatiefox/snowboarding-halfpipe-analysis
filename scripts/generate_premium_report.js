@@ -576,6 +576,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   <p>Olympic halfpipe judging is <strong>more consistent than you'd expect</strong>. Six independent judges land within 2 points of each other on clean runs, and the trimmed mean effectively neutralizes individual tendencies.</p>
   <p>The biggest source of disagreement isn't bias — it's <strong>ambiguity</strong>. Wipeouts force judges to estimate what could have been, and that's where scores diverge. As for contrast bias from watching crashes? The data from this competition says <strong>no</strong>.</p>
   <p style="color: var(--dim); margin-top: 32px; font-size: 14px;">Based on individual judge scores from 24 scored performances across 3 rounds.<br>All data from the official Olympics.com results.</p>
+  <p style="margin-top: 24px;"><a href="story.html" style="color: var(--accent); text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px;">Read the Scotty James Story →</a></p>
 </div>
 
 <div class="footer">

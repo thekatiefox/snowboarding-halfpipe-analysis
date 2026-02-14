@@ -1,0 +1,498 @@
+/**
+ * Generate Rider Story Page
+ * 
+ * A narrative feature on Scotty James's three-run arc at Milano-Cortina 2026,
+ * told through the data. Same design system as the main report.
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+class RiderStory {
+  constructor() {
+    this.rawScores = this.loadCSV(path.join(__dirname, '../data/raw/milano-cortina-2026-individual-judge-scores.csv'));
+    this.judges = this.loadJudgesMetadata();
+  }
+
+  loadCSV(filePath) {
+    const content = fs.readFileSync(filePath, 'utf8');
+    const lines = content.trim().split('\n');
+    const headers = lines[0].split(',');
+    return lines.slice(1).map(line => {
+      const values = line.split(',');
+      const row = {};
+      headers.forEach((h, i) => { row[h.trim()] = values[i]?.trim(); });
+      return row;
+    });
+  }
+
+  loadJudgesMetadata() {
+    const csvPath = path.join(__dirname, '../data/raw/judges-metadata.csv');
+    const content = fs.readFileSync(csvPath, 'utf8');
+    return Object.fromEntries(
+      content.trim().split('\n').slice(1).map(line => {
+        const v = line.split(',');
+        return [v[0].trim(), { name: v[1]?.trim(), country: v[2]?.trim() }];
+      })
+    );
+  }
+
+  generate() {
+    const scotty = this.rawScores.filter(r => r.competitor.includes('JAMES'));
+
+    // Build per-run data
+    const runs = scotty.map(r => {
+      const judges = [];
+      for (let j = 1; j <= 6; j++) {
+        const val = parseFloat(r[`judge${j}_score`]);
+        if (!isNaN(val)) judges.push({ j, score: val, country: this.judges[j]?.country });
+      }
+      const tricks = [r.trick1, r.trick2, r.trick3, r.trick4, r.trick5].filter(Boolean);
+      return {
+        run: parseInt(r.run),
+        score: r.final_score === 'DNI' ? null : parseFloat(r.final_score),
+        isDNI: r.final_score === 'DNI',
+        judges,
+        tricks,
+        spread: judges.length >= 2 ? Math.max(...judges.map(s => s.score)) - Math.min(...judges.map(s => s.score)) : 0,
+      };
+    });
+
+    // Get all competition scores for context
+    const allCleanScores = this.rawScores
+      .filter(r => r.final_score && r.final_score !== 'DNI' && parseFloat(r.final_score) >= 50)
+      .map(r => parseFloat(r.final_score))
+      .sort((a, b) => b - a);
+
+    const html = this.buildHTML(runs, allCleanScores);
+    const outPath = path.join(__dirname, '../story.html');
+    fs.writeFileSync(outPath, html);
+    console.log('✓ Rider story: story.html');
+  }
+
+  buildHTML(runs, allCleanScores) {
+    const r1 = runs[0], r2 = runs[1], r3 = runs[2];
+    const r2Rank = allCleanScores.indexOf(r2.score) + 1;
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Silver Medal Run — Scotty James at Milano-Cortina 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a26;
+  --border: #2a2a3a;
+  --text: #e8e8f0;
+  --muted: #9898ac;
+  --dim: #84849c;
+  --accent: #6c8cff;
+  --green: #4ade80;
+  --red: #f87171;
+  --gold: #fbbf24;
+  --purple: #a78bfa;
+  --silver: #c0c0d0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+/* Nav */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 40px;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.nav a { color: var(--muted); text-decoration: none; font-size: 13px; font-family: 'Space Grotesk', sans-serif; transition: color 0.2s; }
+.nav a:hover { color: var(--text); }
+.nav-title { color: var(--text); font-weight: 600; }
+
+/* Story Hero */
+.story-hero {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 40px 60px;
+  position: relative;
+  overflow: hidden;
+  background: url('https://images.unsplash.com/photo-1478700485868-5e0fbc561e18?w=1920&auto=format&fit=crop&q=80') center 30%/cover no-repeat;
+}
+.story-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,15,0.98) 0%, rgba(10,10,15,0.7) 40%, rgba(10,10,30,0.4) 100%);
+}
+.story-hero-content { position: relative; z-index: 1; max-width: 700px; }
+.story-label { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--text); margin-bottom: 16px; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
+.story-hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(36px, 6vw, 60px); font-weight: 700; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 20px; }
+.story-hero h1 span { color: var(--silver); }
+.story-intro { font-size: 18px; color: var(--muted); line-height: 1.7; max-width: 550px; }
+.story-intro strong { color: var(--text); font-weight: 500; }
+
+/* Bio card */
+.bio-card {
+  display: flex; gap: 32px; align-items: center;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+  padding: 32px; margin: 48px 0; max-width: 700px;
+}
+.bio-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+.bio-stat { text-align: center; }
+.bio-stat .val { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; }
+.bio-stat .lbl { font-size: 11px; color: var(--dim); margin-top: 2px; }
+
+/* Sections */
+.story-section { padding: 80px 40px; max-width: 800px; margin: 0 auto; }
+.story-alt { background: var(--surface); }
+.section-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600;
+  margin-bottom: 16px; letter-spacing: 0.5px;
+}
+.section-tag::before {
+  content: ''; display: inline-block; width: 3px; height: 18px; border-radius: 2px;
+}
+.tag-red { color: var(--red); }
+.tag-red::before { background: var(--red); }
+.tag-green { color: var(--green); }
+.tag-green::before { background: var(--green); }
+.tag-dim { color: var(--dim); }
+.tag-dim::before { background: var(--dim); }
+.story-section h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(24px, 3.5vw, 34px); font-weight: 700; letter-spacing: -0.5px; margin-bottom: 20px; line-height: 1.2; }
+.prose { color: var(--muted); font-size: 16px; max-width: 600px; line-height: 1.8; margin-bottom: 24px; }
+.prose strong { color: var(--text); font-weight: 500; }
+.prose em { color: var(--accent); font-style: normal; font-weight: 500; }
+
+/* Judge score display */
+.judge-row {
+  display: flex; gap: 8px; margin: 24px 0; flex-wrap: wrap;
+}
+.judge-chip {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 12px 16px; border-radius: 12px;
+  background: var(--surface2); border: 1px solid var(--border);
+  min-width: 60px;
+}
+.judge-chip .j-label { font-size: 10px; color: var(--dim); margin-bottom: 4px; }
+.judge-chip .j-score { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; }
+.judge-chip .j-country { font-size: 9px; color: var(--dim); margin-top: 2px; }
+.judge-chip.excluded { opacity: 0.4; text-decoration: line-through; }
+
+/* Score reveal */
+.score-reveal {
+  text-align: center; padding: 40px; margin: 32px 0;
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 20px;
+}
+.score-reveal .big-score { font-family: 'Space Grotesk', sans-serif; font-size: 72px; font-weight: 700; line-height: 1; }
+.score-reveal .score-label { font-size: 14px; color: var(--dim); margin-top: 8px; }
+
+/* Chart */
+.chart-wrap { background: var(--surface2); border: 1px solid var(--border); border-radius: 16px; padding: 32px; margin: 32px 0; overflow-x: auto; }
+
+/* Callout */
+.callout { border-left: 3px solid var(--accent); background: rgba(108,140,255,0.06); padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 32px 0; }
+.callout p { font-size: 15px; color: var(--muted); line-height: 1.7; }
+.callout strong { color: var(--text); }
+
+/* Divider */
+.section-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); max-width: 200px; margin: 0 auto; }
+
+/* Fade in */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Footer */
+.footer { text-align: center; padding: 60px 40px; color: var(--dim); font-size: 12px; border-top: 1px solid var(--border); }
+.footer a { color: var(--accent); text-decoration: none; }
+
+@media (max-width: 700px) {
+  .story-hero { padding: 60px 20px 40px; }
+  .story-section { padding: 60px 20px; }
+  .bio-card { flex-direction: column; gap: 16px; }
+  .judge-row { justify-content: center; }
+  .nav { padding: 12px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <a href="index.html">← Back to Full Report</a>
+  <span class="nav-title">Rider Story</span>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<div class="story-hero">
+  <div class="story-hero-content">
+    <div class="story-label">Rider Profile</div>
+    <h1>Scotty James and the <span>Silver</span> Medal Run</h1>
+    <p class="story-intro">Five-time Olympian. Four-time world champion. Australia's most decorated Winter Olympian. His three runs at Milano-Cortina 2026 tell the story of this entire competition — <strong>a crash, a comeback, and a gamble that didn't pay off</strong>.</p>
+  </div>
+</div>
+
+<!-- ═══ BIO ═══ -->
+<div class="story-section">
+  <div class="bio-card">
+    <div class="bio-stats">
+      <div class="bio-stat"><div class="val" style="color:var(--silver)">🥈</div><div class="lbl">Milano-Cortina</div></div>
+      <div class="bio-stat"><div class="val">5th</div><div class="lbl">Olympics</div></div>
+      <div class="bio-stat"><div class="val">4×</div><div class="lbl">World Champion</div></div>
+      <div class="bio-stat"><div class="val">#1</div><div class="lbl">Qualifier</div></div>
+      <div class="bio-stat"><div class="val">31</div><div class="lbl">Years old</div></div>
+    </div>
+  </div>
+
+  <p class="prose">Scotty James entered the Milano-Cortina halfpipe final as the <strong>top qualifier</strong> — position 12, last to drop in every round. At 31, this was almost certainly his final Olympics. He'd won silver in Beijing, bronze in PyeongChang. The gold was the one missing piece.</p>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ═══ RUN 1: THE CRASH ═══ -->
+<div class="story-alt">
+<div class="story-section reveal">
+  <div class="section-tag tag-red">Round 1</div>
+  <h2>The Crash</h2>
+  <p class="prose">The top qualifier. The crowd favorite. The five-time Olympian. And on his first run — <strong>he fell</strong>.</p>
+  <p class="prose">James completed all five tricks in his routine but couldn't hold the landing. The judges scored what they saw:</p>
+
+  <div class="judge-row">
+    ${r1.judges.map(j => {
+      const scores = r1.judges.map(s => s.score);
+      const isHigh = j.score === Math.max(...scores) && scores.filter(s => s === j.score).length === 1;
+      const isLow = j.score === Math.min(...scores) && scores.filter(s => s === j.score).length === 1;
+      const excluded = isHigh || isLow;
+      return `<div class="judge-chip${excluded ? ' excluded' : ''}">
+        <div class="j-label">J${j.j}</div>
+        <div class="j-score" style="color:var(--red)">${j.score}</div>
+        <div class="j-country">${j.country}</div>
+      </div>`;
+    }).join('\n    ')}
+  </div>
+
+  <div class="score-reveal">
+    <div class="big-score" style="color:var(--red)">${r1.score.toFixed(2)}</div>
+    <div class="score-label">Final score · ${r1.spread}-point judge spread</div>
+  </div>
+
+  <div class="callout">
+    <p>Notice the judge spread: <strong>${r1.spread} points</strong> between the highest and lowest score. This is exactly what our analysis found — when a rider crashes, judges disagree more because they're estimating how much credit to give for what they showed before falling.</p>
+  </div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ═══ RUN 2: THE COMEBACK ═══ -->
+<div class="story-section reveal">
+  <div class="section-tag tag-green">Round 2</div>
+  <h2>The Comeback</h2>
+  <p class="prose">Down to his last two chances. James dropped in for Round 2 and <strong>nailed it</strong> — a clean run with five fully landed tricks, the kind of routine that reminded everyone why he was the top qualifier.</p>
+  <p class="prose">The judges responded:</p>
+
+  <div class="judge-row">
+    ${r2.judges.map(j => {
+      const scores = r2.judges.map(s => s.score);
+      const isHigh = j.score === Math.max(...scores) && scores.filter(s => s === j.score).length === 1;
+      const isLow = j.score === Math.min(...scores) && scores.filter(s => s === j.score).length === 1;
+      const excluded = isHigh || isLow;
+      return `<div class="judge-chip${excluded ? ' excluded' : ''}">
+        <div class="j-label">J${j.j}</div>
+        <div class="j-score" style="color:var(--green)">${j.score}</div>
+        <div class="j-country">${j.country}</div>
+      </div>`;
+    }).join('\n    ')}
+  </div>
+
+  <div class="score-reveal">
+    <div class="big-score" style="color:var(--green)">${r2.score.toFixed(2)}</div>
+    <div class="score-label">Final score · ${r2.spread}-point judge spread · #${r2Rank} in the entire competition</div>
+  </div>
+
+  <div class="callout">
+    <p>The judge spread dropped to just <strong>${r2.spread} point</strong>. All six judges clustered between ${Math.min(...r2.judges.map(j=>j.score))} and ${Math.max(...r2.judges.map(j=>j.score))}. This is our "consensus on clean runs" finding in action — when the execution is clear, judges agree.</p>
+  </div>
+
+  <p class="prose">That 93.50 put James in <strong>silver position</strong> — second only to Totsuka's 95.00. One run left. One shot at gold.</p>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ═══ RUN 3: THE GAMBLE ═══ -->
+<div class="story-alt">
+<div class="story-section reveal">
+  <div class="section-tag tag-dim">Round 3</div>
+  <h2>The Gamble</h2>
+  <p class="prose">Here's the math: James had <strong>93.50</strong>. Totsuka had <strong>95.00</strong>. To win gold, James needed to beat 95.00 — a score only one person had ever posted in this competition.</p>
+  <p class="prose">He upgraded his routine, adding a <em>frontside 1620</em> on his final hit — one of the most difficult tricks in halfpipe snowboarding. Four and a half rotations in the air.</p>
+  <p class="prose"><strong>He didn't land it.</strong></p>
+
+  <div class="score-reveal" style="border-color: var(--border);">
+    <div class="big-score" style="color:var(--dim)">DNI</div>
+    <div class="score-label">Did Not Improve · crashed attempting frontside 1620</div>
+  </div>
+
+  <div class="callout">
+    <p>Reports describe James as <strong>"visibly shattered"</strong> after the crash. He'd gambled on the hardest trick of his career at the biggest moment — and the physics didn't cooperate. The silver medal was secured, but the gold slipped away.</p>
+  </div>
+</div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ═══ THE ARC ═══ -->
+<div class="story-section reveal">
+  <div class="section-tag" style="color:var(--accent);">The Arc</div>
+  <h2>Three Runs Through the Data</h2>
+  <p class="prose">Scotty James's three runs at Milano-Cortina perfectly illustrate every finding in our analysis:</p>
+
+  <div class="chart-wrap">
+    <div id="chart-arc"></div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0;">
+    <div style="text-align:center; padding: 20px; background:var(--surface2); border:1px solid var(--border); border-radius:16px;">
+      <div style="font-size:14px; color:var(--red); font-weight:600; font-family:'Space Grotesk',sans-serif;">Round 1</div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700; color:var(--red);">${r1.score.toFixed(0)}</div>
+      <div style="font-size:12px; color:var(--dim);">${r1.spread}-pt spread<br>Crash</div>
+    </div>
+    <div style="text-align:center; padding: 20px; background:var(--surface2); border:1px solid var(--border); border-radius:16px;">
+      <div style="font-size:14px; color:var(--green); font-weight:600; font-family:'Space Grotesk',sans-serif;">Round 2</div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700; color:var(--green);">${r2.score.toFixed(1)}</div>
+      <div style="font-size:12px; color:var(--dim);">${r2.spread}-pt spread<br>Silver 🥈</div>
+    </div>
+    <div style="text-align:center; padding: 20px; background:var(--surface2); border:1px solid var(--border); border-radius:16px;">
+      <div style="font-size:14px; color:var(--dim); font-weight:600; font-family:'Space Grotesk',sans-serif;">Round 3</div>
+      <div style="font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700; color:var(--dim);">DNI</div>
+      <div style="font-size:12px; color:var(--dim);">1620 attempt<br>Crashed</div>
+    </div>
+  </div>
+
+  <p class="prose"><strong>The wipeout scoring formula</strong> — his R1 crash score was driven by how many tricks he completed, not what he attempted. <strong>The consensus effect</strong> — his clean R2 had all judges within 1 point. <strong>The risk calculation</strong> — he could have sat on silver, but he went for gold and paid the price.</p>
+
+  <p class="prose">At 31, this was likely Scotty James's final Olympic halfpipe run. He leaves the sport as a three-time Olympic medalist — bronze, silver, silver — and the greatest halfpipe rider Australia has ever produced. Just never gold.</p>
+</div>
+
+<div class="footer">
+  <a href="index.html">← Full Data Report</a><br><br>
+  Data from <a href="https://www.olympics.com/en/milano-cortina-2026/results/sbd/je/m/hp----------------/fnl-/--------/result">Olympics.com Official Results</a><br>
+  Milano-Cortina 2026 Men's Snowboard Halfpipe Final · February 13, 2026<br>
+  <span style="margin-top: 8px; display: inline-block; opacity: 0.6;">Photo by <a href="https://unsplash.com">Unsplash</a></span>
+</div>
+
+<script>
+const C = {
+  bg: '#1a1a26', text: '#e8e8f0', muted: '#9898ac', dim: '#84849c', border: '#2a2a3a',
+  accent: '#6c8cff', green: '#4ade80', red: '#f87171', gold: '#fbbf24', purple: '#a78bfa',
+};
+
+// Reveal on scroll
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Arc chart — all judge scores across 3 runs
+(function() {
+  const runs = [
+    { round: 1, judges: ${JSON.stringify(r1.judges.map(j => j.score))}, final: ${r1.score}, color: C.red, label: 'R1 Crash' },
+    { round: 2, judges: ${JSON.stringify(r2.judges.map(j => j.score))}, final: ${r2.score}, color: C.green, label: 'R2 Silver' },
+  ];
+
+  const margin = { top: 30, right: 40, bottom: 50, left: 60 };
+  const width = 700, height = 300;
+
+  const svg = d3.select('#chart-arc')
+    .append('svg')
+    .attr('viewBox', \`0 0 \${width} \${height}\`)
+    .style('width', '100%');
+
+  const x = d3.scaleBand()
+    .domain(['Round 1', 'Round 2', 'Round 3'])
+    .range([margin.left, width - margin.right])
+    .padding(0.4);
+
+  const y = d3.scaleLinear().domain([30, 100]).range([height - margin.bottom, margin.top]);
+
+  // Grid
+  [40, 50, 60, 70, 80, 90].forEach(v => {
+    svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right)
+      .attr('y1', y(v)).attr('y2', y(v)).attr('stroke', C.border).attr('stroke-width', 0.5);
+    svg.append('text').attr('x', margin.left - 10).attr('y', y(v) + 4)
+      .attr('text-anchor', 'end').attr('font-size', 11).attr('fill', C.dim).text(v);
+  });
+
+  // Round labels
+  ['Round 1', 'Round 2', 'Round 3'].forEach(label => {
+    svg.append('text')
+      .attr('x', x(label) + x.bandwidth() / 2)
+      .attr('y', height - margin.bottom + 20)
+      .attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted)
+      .attr('font-family', 'Space Grotesk').attr('font-weight', 600)
+      .text(label);
+  });
+
+  // R1 and R2 judge dots
+  runs.forEach(run => {
+    const cx = x('Round ' + run.round) + x.bandwidth() / 2;
+    
+    run.judges.forEach((score, i) => {
+      svg.append('circle')
+        .attr('cx', cx + (i - 2.5) * 8)
+        .attr('cy', y(score))
+        .attr('r', 5)
+        .attr('fill', run.color).attr('opacity', 0.7);
+    });
+
+    // Final score line
+    svg.append('line')
+      .attr('x1', cx - 25).attr('x2', cx + 25)
+      .attr('y1', y(run.final)).attr('y2', y(run.final))
+      .attr('stroke', run.color).attr('stroke-width', 2);
+
+    svg.append('text')
+      .attr('x', cx + 30).attr('y', y(run.final) + 4)
+      .attr('font-size', 12).attr('fill', run.color)
+      .attr('font-family', 'Space Grotesk').attr('font-weight', 700)
+      .text(run.final.toFixed(1));
+  });
+
+  // R3 — DNI
+  const r3cx = x('Round 3') + x.bandwidth() / 2;
+  svg.append('text')
+    .attr('x', r3cx).attr('y', y(65))
+    .attr('text-anchor', 'middle').attr('font-size', 18).attr('fill', C.dim)
+    .attr('font-family', 'Space Grotesk').attr('font-weight', 700)
+    .text('DNI');
+  svg.append('text')
+    .attr('x', r3cx).attr('y', y(65) + 18)
+    .attr('text-anchor', 'middle').attr('font-size', 10).attr('fill', C.dim)
+    .text('Crashed on 1620');
+
+  // Gold line
+  svg.append('line')
+    .attr('x1', margin.left).attr('x2', width - margin.right)
+    .attr('y1', y(95)).attr('y2', y(95))
+    .attr('stroke', C.gold).attr('stroke-width', 1).attr('stroke-dasharray', '6,4').attr('opacity', 0.5);
+  svg.append('text')
+    .attr('x', width - margin.right + 4).attr('y', y(95) + 4)
+    .attr('font-size', 10).attr('fill', C.gold).attr('opacity', 0.7)
+    .text('Totsuka 95.00 (Gold)');
+})();
+</script>
+</body>
+</html>`;
+  }
+}
+
+const gen = new RiderStory();
+gen.generate();
