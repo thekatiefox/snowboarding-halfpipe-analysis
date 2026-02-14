@@ -6,7 +6,8 @@
   "scripts": {
     "scrape": "node scripts/scrape_results.js",
     "analyze": "node scripts/analyze.js",
-    "start": "npm run scrape && npm run analyze"
+    "visualize": "node scripts/visualize.js",
+    "start": "npm run scrape && npm run analyze && npm run visualize"
   },
   "keywords": [
     "snowboarding",
