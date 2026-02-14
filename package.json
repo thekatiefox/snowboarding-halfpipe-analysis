@@ -1,0 +1,27 @@
+{
+  "name": "snowboarding-halfpipe-analysis",
+  "version": "1.0.0",
+  "description": "Statistical analysis of scoring patterns in men's halfpipe snowboarding competitions",
+  "main": "scripts/analyze.js",
+  "scripts": {
+    "scrape": "node scripts/scrape_results.js",
+    "analyze": "node scripts/analyze.js",
+    "start": "npm run scrape && npm run analyze"
+  },
+  "keywords": [
+    "snowboarding",
+    "halfpipe",
+    "statistics",
+    "analysis",
+    "olympics",
+    "data-science"
+  ],
+  "author": "Katie Fox",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "csv-parser": "^3.0.0",
+    "simple-statistics": "^7.8.0"
+  }
+}
