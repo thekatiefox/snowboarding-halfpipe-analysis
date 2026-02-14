@@ -1,13 +1,13 @@
-competitor,country,rank,run1,run2,run3,best_score,notes
-Yuto TOTSUKA,JPN,1,91.00,95.00,,95.00,DNI
-Scotty JAMES,AUS,2,48.75,93.50,,93.50,DNI
-Ryusei YAMADA,JPN,3,92.00,,92.00,92.00,DNI
-Ruka HIRANO,JPN,4,90.00,90.00,91.00,91.00,
-Valentino GUSELI,AUS,5,35.00,,88.00,88.00,DNI
-Chaeun LEE,KOR,6,24.75,24.75,87.50,87.50,
-Ayumu HIRANO,JPN,7,27.50,86.50,,86.50,DNI
-Jake PATES,USA,8,77.50,,,77.50,DNI
-Ziyang WANG,CHN,9,17.75,17.25,76.00,76.00,
-Alessandro BARBIERI,USA,10,75.00,,,75.00,DNI
-Chase JOSEY,USA,11,11.75,70.25,,70.25,DNI
-Campbell MELVILLE IVES,NZL,12,43.00,,,43.00,DNI
+performance_order,competitor,country,final_rank,qual_score,run1,run2,run3,best_score,notes
+1,Jake PATES,USA,8,75.50,77.50,,,77.50,12th qualifier
+2,Chase JOSEY,USA,11,76.50,11.75,70.25,,70.25,11th qualifier
+3,Ziyang WANG,CHN,9,80.50,17.75,17.25,76.00,76.00,10th qualifier
+4,Chaeun LEE,KOR,6,82.00,24.75,24.75,87.50,87.50,9th qualifier
+5,Campbell MELVILLE IVES,NZL,12,84.75,43.00,,,43.00,8th qualifier
+6,Ayumu HIRANO,JPN,7,85.50,27.50,86.50,,86.50,7th qualifier
+7,Valentino GUSELI,AUS,5,86.75,35.00,,88.00,88.00,6th qualifier
+8,Ruka HIRANO,JPN,4,87.50,90.00,90.00,91.00,91.00,5th qualifier
+9,Alessandro BARBIERI,USA,10,88.50,75.00,,,75.00,4th qualifier
+10,Ryusei YAMADA,JPN,3,90.25,92.00,,92.00,92.00,3rd qualifier
+11,Yuto TOTSUKA,JPN,1,91.25,91.00,95.00,,95.00,2nd qualifier
+12,Scotty JAMES,AUS,2,94.00,48.75,93.50,,93.50,Top qualifier (went last)

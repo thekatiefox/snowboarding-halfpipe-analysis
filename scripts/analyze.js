@@ -29,7 +29,12 @@ class HalfpipeAnalyzer {
       this.competitionData.push(row);
     }
 
-    console.log(`Loaded ${this.competitionData.length} competitors`);
+    // Sort by performance_order to ensure chronological sequence
+    this.competitionData.sort((a, b) => 
+      parseInt(a.performance_order) - parseInt(b.performance_order)
+    );
+
+    console.log(`Loaded ${this.competitionData.length} competitors in performance order`);
   }
 
   /**

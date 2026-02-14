@@ -6,7 +6,6 @@ dist/
 build/
 .env
 .env.local
-data/raw/*.csv
 data/processed/*.csv
 results/*.json
 results/visualizations/*
@@ -14,3 +13,5 @@ results/visualizations/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !results/visualizations/.gitkeep
+!data/raw/*.csv
+
