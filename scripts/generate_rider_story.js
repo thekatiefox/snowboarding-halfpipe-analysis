@@ -48,12 +48,35 @@ class RiderStory {
         if (!isNaN(val)) judges.push({ j, score: val, country: this.judges[j]?.country });
       }
       const tricks = [r.trick1, r.trick2, r.trick3, r.trick4, r.trick5].filter(Boolean);
+      // Parse excluded judges from notes (e.g. "Judge 2 excluded" or "Judge 1 and 6 excluded")
+      const notes = r.notes || '';
+      const excludedJudges = new Set();
+      const m = notes.match(/Judge\s+(\d+)(?:\s+and\s+(\d+))?\s+excluded/i);
+      if (m) {
+        excludedJudges.add(parseInt(m[1]));
+        if (m[2]) excludedJudges.add(parseInt(m[2]));
+      }
+      // If notes only mention one excluded judge, compute the second (high or low)
+      if (excludedJudges.size === 1 && judges.length === 6) {
+        const scores = judges.map(s => s.score);
+        const hi = Math.max(...scores), lo = Math.min(...scores);
+        const noted = [...excludedJudges][0];
+        const notedScore = judges.find(j => j.j === noted)?.score;
+        if (notedScore === lo) {
+          // Notes identified the low; find a high to exclude
+          for (const j of judges) { if (j.score === hi && !excludedJudges.has(j.j)) { excludedJudges.add(j.j); break; } }
+        } else {
+          // Notes identified the high; find a low to exclude
+          for (const j of judges) { if (j.score === lo && !excludedJudges.has(j.j)) { excludedJudges.add(j.j); break; } }
+        }
+      }
       return {
         run: parseInt(r.run),
         score: r.final_score === 'DNI' ? null : parseFloat(r.final_score),
         isDNI: r.final_score === 'DNI',
         judges,
         tricks,
+        excludedJudges,
         spread: judges.length >= 2 ? Math.max(...judges.map(s => s.score)) - Math.min(...judges.map(s => s.score)) : 0,
       };
     });
@@ -266,21 +289,14 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   <p class="prose">James completed all five tricks in his routine but couldn't hold the landing. The judges scored what they saw:</p>
 
   <div class="judge-row">
-    ${(() => {
-      const scores = r1.judges.map(s => s.score);
-      const hi = Math.max(...scores), lo = Math.min(...scores);
-      let hiDone = false, loDone = false;
-      return r1.judges.map(j => {
-        let excluded = false;
-        if (!hiDone && j.score === hi) { excluded = true; hiDone = true; }
-        else if (!loDone && j.score === lo) { excluded = true; loDone = true; }
-        return `<div class="judge-chip${excluded ? ' excluded' : ''}">
+    ${r1.judges.map(j => {
+      const excluded = r1.excludedJudges.has(j.j);
+      return `<div class="judge-chip${excluded ? ' excluded' : ''}">
           <div class="j-label">J${j.j}</div>
           <div class="j-score" style="color:var(--red)">${j.score}</div>
           <div class="j-country">${j.country}</div>
         </div>`;
-      }).join('\n    ');
-    })()}
+    }).join('\n    ')}
   </div>
 
   <div class="score-reveal">
@@ -304,21 +320,14 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   <p class="prose">The judges responded:</p>
 
   <div class="judge-row">
-    ${(() => {
-      const scores = r2.judges.map(s => s.score);
-      const hi = Math.max(...scores), lo = Math.min(...scores);
-      let hiDone = false, loDone = false;
-      return r2.judges.map(j => {
-        let excluded = false;
-        if (!hiDone && j.score === hi) { excluded = true; hiDone = true; }
-        else if (!loDone && j.score === lo) { excluded = true; loDone = true; }
-        return `<div class="judge-chip${excluded ? ' excluded' : ''}">
+    ${r2.judges.map(j => {
+      const excluded = r2.excludedJudges.has(j.j);
+      return `<div class="judge-chip${excluded ? ' excluded' : ''}">
           <div class="j-label">J${j.j}</div>
           <div class="j-score" style="color:var(--green)">${j.score}</div>
           <div class="j-country">${j.country}</div>
         </div>`;
-      }).join('\n    ');
-    })()}
+    }).join('\n    ')}
   </div>
 
   <div class="score-reveal">
@@ -340,7 +349,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 <div class="story-section reveal">
   <div class="section-tag tag-dim">Round 3</div>
   <h2>The Gamble</h2>
-  <p class="prose">Here's the math: James had <strong>93.50</strong>. Totsuka had <strong>95.00</strong>. To win gold, James needed to beat 95.00 — a score only one person had ever posted in this competition.</p>
+  <p class="prose">Here's the math: James had <strong>93.50</strong>. Totsuka had <strong>95.00</strong>. To win gold, James needed to beat 95.00 — the highest score anyone had put up all day.</p>
   <p class="prose">He upgraded his routine, adding a <em>frontside 1620</em> on his final hit — one of the most difficult tricks in halfpipe snowboarding. Four and a half rotations in the air.</p>
   <p class="prose"><strong>He didn't land it.</strong></p>
 
