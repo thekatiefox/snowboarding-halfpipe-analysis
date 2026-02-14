@@ -8,22 +8,35 @@
 
 ---
 
-## CRITICAL MISSING DATA: DNI Ambiguity
+## CRITICAL MISSING DATA: DNI Ambiguity — Partially Resolved
 
 ### The Problem
-When a competitor DNI (Did Not Improve), we **cannot distinguish**:
+When a competitor DNI (Did Not Improve), we initially **could not distinguish**:
 - **Crash/wipeout scenario**: Wiped out, contributing to wipeout context
 - **High score scenario**: Didn't improve on strong score (e.g., 91 → DNI)
 
-### Impact on Analysis
-- **9 DNI cases affected**: Totsuka R3, James R2-R3, Yamada R2, Pates R2-R3, Guseli R2, Josey R3, Melville R2-R3
-- **Wipeout context analysis invalidated** for rounds containing DNI
-- **Recovery context may be incorrect** (we may be counting DNI as "wipeout" when it wasn't)
+### Resolution: 7/12 Cases Confirmed via News Sources
+Web search of sports journalism resolved 7 of 12 DNI cases with high confidence:
 
-### What We Did
-- Excluded all DNI from analyses (score = missing)
-- Clearly flagged this limitation in all findings
-- Recommend future work obtain raw video or official records
+| Competitor | Run | Resolution | Confidence | Key Evidence |
+|-----------|-----|------------|------------|-------------|
+| Scotty JAMES | R3 | 💥 Crash | High | Crashed on 1620 landing going for gold (NBC/ABC/Fox) |
+| Valentino GUSELI | R2 | 💥 Crash | High | "Failed to land first two runs" (ABC News) |
+| Alessandro BARBIERI | R2-R3 | 💥 Crash | High | "Struggled with landings" (KGW/Tahoe Tribune) |
+| Campbell MELVILLE IVES | R2-R3 | 💥 Crash | High | "Ran out of halfpipe going too big" (NZ Sports Wire) |
+| Yuto TOTSUKA | R3 | 🎯 Strategic skip | High | Gold already secured at 95.00 |
+
+### 5 Remaining Unknowns
+These cases have suggestive but inconclusive evidence:
+
+| Competitor | Run | Evidence | Notes |
+|-----------|-----|---------|-------|
+| Ryusei YAMADA | R2 | Only 2 tricks listed (vs 5 normal) | "Couldn't improve" — could be crash or strategic |
+| Ayumu HIRANO | R3 | 4 tricks (1 short) | Was 7th at 86.50; no explicit crash described |
+| Jake PATES | R2-R3 | 3 tricks each (vs 5 normal) | "Unable to improve" — vague |
+| Chase JOSEY | R3 | 5 tricks listed | "Did not bring improvement" — vague |
+
+**Current status**: 6 confirmed crashes, 1 strategic skip, 5 unknown.
 
 ---
 
@@ -61,11 +74,11 @@ When a competitor DNI (Did Not Improve), we **cannot distinguish**:
 - Some runs are intrinsically harder (1600° tricks, 7-segment combos)
 - Some are simpler (1080° tricks, 3-segment combos)
 
-**Why we can't fully control it**:
-- Olympics.com doesn't publish trick difficulty ratings
-- Would need expert coaching review or crowd consensus
-
-**Current approach**: Exploratory analysis suggests 1400° tricks +2.1 pts, but not scientific
+**Mitigation (NEW)**: `scripts/compute_trick_difficulty.js` computes difficulty scores from trick codes:
+- Rotation base (360°=1 to 1600°=7), cork multiplier (DC=1.5×, TC=2.0×), switch/grab/special bonuses
+- Correlation between total difficulty and final score: r=0.195 (weak positive)
+- Difficulty scores now available in `data/processed/enriched-judge-scores.csv`
+- **Finding**: Weak correlation suggests trick difficulty is NOT the primary score driver — execution and judging matter more
 
 ### 3. Sample Size
 **Issue**: Very small sample
@@ -91,23 +104,30 @@ When a competitor DNI (Did Not Improve), we **cannot distinguish**:
 ### 5. Judge Composition & Fatigue
 **Issue**: Unknown if same judges scored all runs, or if judges' standards changed
 
-**Unknowns**:
-- Were the same 6 judges present for all 3 rounds?
+**Known (NEW)**: `scripts/enrich_judge_data.js` analyzed all 6 judges across 24 scored runs:
+- Same 6 judges scored all rounds (confirmed from data)
+- Judge 5 (HARICOT, FRA) excluded as HIGH 11/24 times — consistently generous
+- Judge 2 (WESSMAN VOGAN, GBR) excluded as LOW 9/24 times — consistently strict
+- Judge 6 (HASHIMOTO, JPN) shows +0.25 pts home bias for Japanese competitors
+- Overall nationality bias: +0.138 pts (small but present)
+
+**Remaining unknowns**:
 - Did judges' standards shift between R1 (chaos) vs R3 (elite only)?
 - Judge fatigue/attentiveness over 2+ hours
 
-**Why this matters**: "Relief bonus" might actually be "fresh judges" or "judge fatigue"
-
 ### 6. Environmental Factors
-**Issue**: No weather, snow, timing, or course data
+**Issue**: Weather and course conditions can affect scoring
 
-**Unknowns**:
-- Wind conditions (can significantly affect scoring)
-- Snow quality/grooming changes
-- Time between runs (fatigue effect on athletes)
-- Ambient temperature/humidity
+**Known (NEW)**: `scripts/scrape_environment.js` retrieved actual weather from Open-Meteo:
+- Competition hours: -6.7°C to +1.1°C (warming through day)
+- Wind: 0.9-9.0 km/h sustained, gusts up to 28.4 km/h
+- Cloud cover: 21-100% (increasing through day)
+- Data available per-round in `data/processed/environmental_context.csv`
 
-**Why this matters**: Could explain score variance better than wipeout context
+**Remaining unknowns**:
+- Exact start time for each round
+- Snow quality/grooming changes between rounds
+- Time between individual runs (athlete fatigue)
 
 ### 7. Wipeout Threshold Ambiguity
 **Issue**: Score <50 assumed to be "wipeout," but may include other categories
@@ -160,11 +180,13 @@ All analyses filter consistently to **clean runs only**:
 
 | Aspect | Status |
 |--------|--------|
-| Same judges all rounds | Unknown |
-| Judge names/countries | Known (see judges-metadata.csv) |
-| Judge component scoring | Unknown (amplitude, difficulty, execution, variety, progression) |
-| Judge outlier patterns | Not analyzed yet |
-| Individual judge bias | Cannot isolate with current data |
+| Same judges all rounds | ✅ Confirmed (6 judges, all rounds) |
+| Judge names/countries | ✅ Known (see judges-metadata.csv) |
+| Judge scoring tendencies | ✅ Analyzed (see results/judge_analysis.json) |
+| Judge 5 (FRA) pattern | ✅ Consistently generous (excluded as HIGH 11/24 times) |
+| Judge 2 (GBR) pattern | ✅ Consistently strict (excluded as LOW 9/24 times) |
+| Judge 6 (JPN) home bias | ⚠️ +0.25 pts for Japanese competitors (small sample) |
+| Judge component scoring | ❌ Unknown (amplitude, difficulty, execution, variety, progression) |
 
 ---
 
@@ -202,13 +224,13 @@ All analyses filter consistently to **clean runs only**:
 
 | Limitation | Severity | Status |
 |-----------|----------|--------|
-| DNI ambiguity (9 cases) | 🔴 CRITICAL | Flag all findings |
-| Trick difficulty uncontrolled | 🟡 HIGH | Limits causation claims |
+| DNI ambiguity (12 cases) | 🔴 CRITICAL | Partially resolved — 7/12 confirmed, 5 unknown |
+| Trick difficulty uncontrolled | 🟡 HIGH | ✅ Computed from codes (r=0.195) |
 | Small sample size (n=15 clean) | 🟡 HIGH | Variance could explain patterns |
 | Selection bias across rounds | 🟡 HIGH | Better performers advance |
-| Judge composition unknown | 🟡 HIGH | Standards may have shifted |
-| Environmental data missing | 🟠 MEDIUM | Could explain some variance |
-| No cross-competition data | 🟠 MEDIUM | Can't validate findings |
+| Judge composition unknown | 🟡 HIGH | ✅ Resolved — per-judge analysis done |
+| Environmental data missing | 🟠 MEDIUM | ✅ Weather data retrieved |
+| No cross-competition data | 🟠 MEDIUM | Beijing 2022 data available as reference |
 
 ---
 

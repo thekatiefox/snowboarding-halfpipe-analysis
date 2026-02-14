@@ -1,0 +1,148 @@
+{
+  "timestamp": "2026-02-14T18:10:13.480Z",
+  "description": "DNI resolution: crash vs strategic skip determination",
+  "totalCases": 12,
+  "summary": {
+    "crash": 2,
+    "strategic_skip": 4,
+    "unknown": 6
+  },
+  "sourcesChecked": [
+    "FIS results",
+    "news articles",
+    "YouTube metadata",
+    "heuristic inference"
+  ],
+  "cases": [
+    {
+      "competitor": "Yuto TOTSUKA",
+      "country": "JPN",
+      "position": 11,
+      "run": 3,
+      "trickCount": 5,
+      "reason": "strategic_skip",
+      "source": "heuristic: already had elite score ≥90",
+      "confidence": "high",
+      "evidence": "Best prior score: 95.00"
+    },
+    {
+      "competitor": "Scotty JAMES",
+      "country": "AUS",
+      "position": 12,
+      "run": 3,
+      "trickCount": 5,
+      "reason": "strategic_skip",
+      "source": "heuristic: already had elite score ≥90",
+      "confidence": "high",
+      "evidence": "Best prior score: 93.50"
+    },
+    {
+      "competitor": "Ryusei YAMADA",
+      "country": "JPN",
+      "position": 10,
+      "run": 2,
+      "trickCount": 3,
+      "reason": "strategic_skip",
+      "source": "heuristic: already had elite score ≥90",
+      "confidence": "high",
+      "evidence": "Best prior score: 92.00"
+    },
+    {
+      "competitor": "Valentino GUSELI",
+      "country": "AUS",
+      "position": 7,
+      "run": 2,
+      "trickCount": 5,
+      "reason": "unknown",
+      "source": "heuristic: ambiguous (no clean runs but full tricks)",
+      "confidence": "low",
+      "evidence": "5 tricks, prior scores: 35"
+    },
+    {
+      "competitor": "Ayumu HIRANO",
+      "country": "JPN",
+      "position": 6,
+      "run": 3,
+      "trickCount": 4,
+      "reason": "strategic_skip",
+      "source": "heuristic: already had score ≥85",
+      "confidence": "medium",
+      "evidence": "Best prior score: 86.50"
+    },
+    {
+      "competitor": "Jake PATES",
+      "country": "USA",
+      "position": 1,
+      "run": 2,
+      "trickCount": 3,
+      "reason": "unknown",
+      "source": "heuristic: ambiguous (had clean run but not high)",
+      "confidence": "low",
+      "evidence": "Prior scores: 77.5"
+    },
+    {
+      "competitor": "Jake PATES",
+      "country": "USA",
+      "position": 1,
+      "run": 3,
+      "trickCount": 3,
+      "reason": "unknown",
+      "source": "heuristic: ambiguous (had clean run but not high)",
+      "confidence": "low",
+      "evidence": "Prior scores: 77.5"
+    },
+    {
+      "competitor": "Alessandro BARBIERI",
+      "country": "USA",
+      "position": 9,
+      "run": 2,
+      "trickCount": 4,
+      "reason": "unknown",
+      "source": "heuristic: ambiguous (had clean run but not high)",
+      "confidence": "low",
+      "evidence": "Prior scores: 75"
+    },
+    {
+      "competitor": "Alessandro BARBIERI",
+      "country": "USA",
+      "position": 9,
+      "run": 3,
+      "trickCount": 4,
+      "reason": "unknown",
+      "source": "heuristic: ambiguous (had clean run but not high)",
+      "confidence": "low",
+      "evidence": "Prior scores: 75"
+    },
+    {
+      "competitor": "Chase JOSEY",
+      "country": "USA",
+      "position": 2,
+      "run": 3,
+      "trickCount": 5,
+      "reason": "unknown",
+      "source": "heuristic: ambiguous (had clean run but not high)",
+      "confidence": "low",
+      "evidence": "Prior scores: 11.75, 70.25"
+    },
+    {
+      "competitor": "Campbell MELVILLE IVES",
+      "country": "NZL",
+      "position": 5,
+      "run": 2,
+      "trickCount": 5,
+      "reason": "crash",
+      "source": "YouTube metadata",
+      "confidence": "low"
+    },
+    {
+      "competitor": "Campbell MELVILLE IVES",
+      "country": "NZL",
+      "position": 5,
+      "run": 3,
+      "trickCount": 4,
+      "reason": "crash",
+      "source": "YouTube metadata",
+      "confidence": "low"
+    }
+  ]
+}

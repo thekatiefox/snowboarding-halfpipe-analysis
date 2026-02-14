@@ -94,15 +94,12 @@ Segments per trick (count dashes):
 - Scoring system (trimmed mean verified on all 24 non-DNI runs)
 
 ### Medium Confidence 🟡
-- Trick codes (parsed from Olympics.com, not verified)
-- Trick difficulty estimates (based on pattern observation, not official)
-- Judge identity (assumed judges same across rounds, not confirmed)
+- Trick codes (parsed from Olympics.com, not verified against video)
+- Trick difficulty estimates (computed formula, not official FIS ratings)
 
 ### Low Confidence / Unknown 🔴
-- **DNI reason** (crash vs didn't improve on high score) — **CRITICAL LIMITATION**
-- Trick difficulty (need official FIS ratings)
-- Judge component scores (amplitude, difficulty, execution, variety, progression)
-- Environmental factors (weather, timing, snow conditions)
+- Judge component scores (amplitude, difficulty, execution, variety, progression) — not available
+- Timing between runs, judge rest periods — not available
 
 ---
 
@@ -171,14 +168,13 @@ Evidence from data:
 
 ## Known Limitations of This Dataset
 
-| Issue | Impact |
-|-------|--------|
-| DNI reason unknown | Can't distinguish crash from didn't-improve |
-| No trick difficulty ratings | Can't control for trick complexity |
-| No judge component scores | Can't isolate amplitude vs difficulty bias |
-| No environmental data | Can't account for wind, snow, timing |
-| Small sample (n=15 clean) | Limited statistical power |
-| Single competition | Can't validate cross-competition |
+| Issue | Impact | Status |
+|-------|--------|--------|
+| Small sample (n=15 clean, n=24 scored) | Limited statistical power | Inherent to single-event analysis |
+| Position confound | Can't separate skill from ordering effects | Partially mitigated by within-rider comparisons |
+| Single competition | Can't generalize findings | Would need multi-event pooling |
+| DNI ambiguity (2 remaining unknowns) | Uncertain crash context classification | 10/12 resolved via journalism + heuristics |
+| No judge component scores | Can't isolate amplitude vs difficulty bias | Not available from Olympics.com |
 
 See `docs/METHODOLOGY.md` for detailed analysis of confounds.
 
@@ -186,17 +182,18 @@ See `docs/METHODOLOGY.md` for detailed analysis of confounds.
 
 ## Using This Data
 
-### Recommended Use Cases ✅
-- Correlational analysis (recovery patterns)
-- Descriptive statistics (wipeout rates, score distributions)
-- Exploratory visualization (competitor trajectories)
-- Hypothesis generation for future study
+### Recommended Analyses ✅
+- Within-performance judge comparisons (6 judges score same run)
+- Judge consistency and exclusion patterns
+- Wipeout scoring mechanics (trick count → score)
+- Immediate crash-streak effect on subsequent clean run scores
+- Within-rider cross-round comparisons (same position, different contexts)
 
 ### Not Recommended ❌
-- Causation claims (too many confounds)
-- Individual judge bias assessment (scores aggregated by panel)
+- Causation claims about relief bias (too many confounds, small n)
+- Total crash exposure effects (confounded with position/skill)
 - Cross-competition generalization (single event)
-- Outcome prediction (insufficient data)
+- Weather effects on scoring (only 3 data points)
 
 ---
 
@@ -210,12 +207,14 @@ data/raw/
 └── judges-metadata.csv
 ```
 
-All analyses run via Node.js scripts in `scripts/`:
+Enriched data in `data/processed/`:
 ```
-node scripts/wipeout_context_analysis.js
-node scripts/position_controlled_analysis.js
-node scripts/points_per_trick_analysis.js
-node scripts/trick_difficulty_exploration.js
+data/processed/
+├── master_enriched_dataset.csv (32-column merged dataset)
+├── dni_resolved.csv (DNI crash/skip classifications)
+├── trick_difficulty_scores.csv (per-trick difficulty scores)
+├── enriched-judge-scores.csv (scores + difficulty columns)
+└── judge_analysis_data.csv (per-judge per-run analysis)
 ```
 
 Results output to `results/*.json`

@@ -1,0 +1,723 @@
+{
+  "timestamp": "2026-02-14T18:07:52.801Z",
+  "description": "Trick difficulty scoring based on rotation, cork type, switch, grabs, and special moves",
+  "uniqueTricks": 54,
+  "cleanRuns": 15,
+  "scoringSystem": {
+    "rotationBase": "360°=1, 720°=2, 900°=3, 1080°=4, 1260°=5, 1440°=6, 1600°=7",
+    "corkMultiplier": "none=1.0, SC=1.2, DC=1.5, TC=2.0",
+    "switchBonus": "+0.5 for Cab or x- prefix",
+    "grabBonus": "+0.5 per grab, +0.5 for combo grabs",
+    "specialsBonus": "AO=+1.0, Rd=+1.0, CF=+1.0, Mc=+1.5"
+  },
+  "trickScores": [
+    {
+      "code": "f-TC-16-Tdr",
+      "difficulty": 14.5,
+      "rotation": 1600,
+      "cork": "TC",
+      "complexity": 4
+    },
+    {
+      "code": "Cab-TC-14-Ddr",
+      "difficulty": 13,
+      "rotation": 1440,
+      "cork": "TC",
+      "complexity": 4
+    },
+    {
+      "code": "Cab-TC-14-Mu",
+      "difficulty": 13,
+      "rotation": 1440,
+      "cork": "TC",
+      "complexity": 4
+    },
+    {
+      "code": "f-TC-14-Tdr",
+      "difficulty": 12.5,
+      "rotation": 1440,
+      "cork": "TC",
+      "complexity": 4
+    },
+    {
+      "code": "f-TC-14-I",
+      "difficulty": 12.5,
+      "rotation": 1440,
+      "cork": "TC",
+      "complexity": 4
+    },
+    {
+      "code": "b-DC-16-Jp",
+      "difficulty": 11,
+      "rotation": 1600,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "f-DC-16-Tg",
+      "difficulty": 11,
+      "rotation": 1600,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "f-DC-16-Tg-D-Tg",
+      "difficulty": 11,
+      "rotation": 1600,
+      "cork": "DC",
+      "complexity": 6
+    },
+    {
+      "code": "b-DC-16-Ng",
+      "difficulty": 11,
+      "rotation": 1600,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "Cab-DC-14-Mu",
+      "difficulty": 10,
+      "rotation": 1440,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "x-b-DC-14-Jp",
+      "difficulty": 10,
+      "rotation": 1440,
+      "cork": "DC",
+      "complexity": 5
+    },
+    {
+      "code": "Cab-DC-14-Ng",
+      "difficulty": 10,
+      "rotation": 1440,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "x-b-DC-14-Ng",
+      "difficulty": 10,
+      "rotation": 1440,
+      "cork": "DC",
+      "complexity": 5
+    },
+    {
+      "code": "b-DC-14-Jp",
+      "difficulty": 9.5,
+      "rotation": 1440,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "f-DC-14-I",
+      "difficulty": 9.5,
+      "rotation": 1440,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "f-DC-14-I-Tdr",
+      "difficulty": 9.5,
+      "rotation": 1440,
+      "cork": "DC",
+      "complexity": 5
+    },
+    {
+      "code": "f-DC-14-Tg",
+      "difficulty": 9.5,
+      "rotation": 1440,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "Cab-DC-12-I-to-Me",
+      "difficulty": 9,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 6
+    },
+    {
+      "code": "Cab-DC-12-Mu-to-St",
+      "difficulty": 9,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 6
+    },
+    {
+      "code": "Cab-DC-12-I",
+      "difficulty": 8.5,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "x-b-DC-12-Mu",
+      "difficulty": 8.5,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 5
+    },
+    {
+      "code": "x-b-DC-12-Ng",
+      "difficulty": 8.5,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 5
+    },
+    {
+      "code": "b-DC-12-Mu-to-Tg",
+      "difficulty": 8.5,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 6
+    },
+    {
+      "code": "b-DC-12-Mu",
+      "difficulty": 8,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "f-DC-12-St",
+      "difficulty": 8,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "f-DC-12-Mu",
+      "difficulty": 8,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "f-DC-12-I",
+      "difficulty": 8,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "b-DC-12-Me",
+      "difficulty": 8,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "b-DC-12-Jp",
+      "difficulty": 8,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "b-DC-12-Ng",
+      "difficulty": 8,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "f-DC-12-Ste",
+      "difficulty": 8,
+      "rotation": 1260,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "x-b-DC-AO-Rd-9-St",
+      "difficulty": 7.5,
+      "rotation": 900,
+      "cork": "DC",
+      "complexity": 7
+    },
+    {
+      "code": "x-b-DC-10-Ng",
+      "difficulty": 7,
+      "rotation": 1080,
+      "cork": "DC",
+      "complexity": 5
+    },
+    {
+      "code": "x-AO-D-Rd-10-I",
+      "difficulty": 7,
+      "rotation": 1080,
+      "cork": "none",
+      "complexity": 6
+    },
+    {
+      "code": "x-f-AO-D-Rd-10-I",
+      "difficulty": 7,
+      "rotation": 1080,
+      "cork": "none",
+      "complexity": 7
+    },
+    {
+      "code": "Cab-DC-10-Mu",
+      "difficulty": 7,
+      "rotation": 1080,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "x-b-DC-10-Mu",
+      "difficulty": 7,
+      "rotation": 1080,
+      "cork": "DC",
+      "complexity": 5
+    },
+    {
+      "code": "b-DC-10-St",
+      "difficulty": 6.5,
+      "rotation": 1080,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "b-DC-10-Jp",
+      "difficulty": 6.5,
+      "rotation": 1080,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "b-DC-10-I",
+      "difficulty": 6.5,
+      "rotation": 1080,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "f-DC-10-Tdr",
+      "difficulty": 6.5,
+      "rotation": 1080,
+      "cork": "DC",
+      "complexity": 4
+    },
+    {
+      "code": "x-b-D-AO-Rd-9-St",
+      "difficulty": 6,
+      "rotation": 900,
+      "cork": "none",
+      "complexity": 7
+    },
+    {
+      "code": "f-12-Tg-to-Me",
+      "difficulty": 6,
+      "rotation": 1260,
+      "cork": "none",
+      "complexity": 5
+    },
+    {
+      "code": "x-b-12-Mu",
+      "difficulty": 6,
+      "rotation": 1260,
+      "cork": "none",
+      "complexity": 4
+    },
+    {
+      "code": "x-b-D-AO-Rd-9-Me",
+      "difficulty": 6,
+      "rotation": 900,
+      "cork": "none",
+      "complexity": 7
+    },
+    {
+      "code": "b-D-AO-Rd-9-Me",
+      "difficulty": 5.5,
+      "rotation": 900,
+      "cork": "none",
+      "complexity": 6
+    },
+    {
+      "code": "x-Mc-Jp",
+      "difficulty": 3,
+      "rotation": 0,
+      "cork": "none",
+      "complexity": 3
+    },
+    {
+      "code": "9TH",
+      "difficulty": 3,
+      "rotation": 900,
+      "cork": "none",
+      "complexity": 1
+    },
+    {
+      "code": "b-AO-3-Ng",
+      "difficulty": 2.5,
+      "rotation": 360,
+      "cork": "none",
+      "complexity": 4
+    },
+    {
+      "code": "f-7-I",
+      "difficulty": 2.5,
+      "rotation": 720,
+      "cork": "none",
+      "complexity": 3
+    },
+    {
+      "code": "x-D-CF-Me",
+      "difficulty": 2.5,
+      "rotation": 0,
+      "cork": "none",
+      "complexity": 4
+    },
+    {
+      "code": "D-CF-Ng",
+      "difficulty": 2,
+      "rotation": 0,
+      "cork": "none",
+      "complexity": 3
+    },
+    {
+      "code": "BRONZE",
+      "difficulty": 0.5,
+      "rotation": 0,
+      "cork": "none",
+      "complexity": 1
+    },
+    {
+      "code": "bs-A",
+      "difficulty": 0.5,
+      "rotation": 0,
+      "cork": "none",
+      "complexity": 2
+    }
+  ],
+  "runScores": [
+    {
+      "competitor": "Yuto TOTSUKA",
+      "run": 1,
+      "finalScore": "91.00",
+      "isClean": true,
+      "totalDifficulty": 43.5,
+      "avgDifficulty": 8.7,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Yuto TOTSUKA",
+      "run": 2,
+      "finalScore": "95.00",
+      "isClean": true,
+      "totalDifficulty": 46.5,
+      "avgDifficulty": 9.3,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Yuto TOTSUKA",
+      "run": 3,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 49.5,
+      "avgDifficulty": 9.9,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Scotty JAMES",
+      "run": 1,
+      "finalScore": "48.75",
+      "isClean": false,
+      "totalDifficulty": 47,
+      "avgDifficulty": 9.4,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Scotty JAMES",
+      "run": 2,
+      "finalScore": "93.50",
+      "isClean": true,
+      "totalDifficulty": 47,
+      "avgDifficulty": 9.4,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Scotty JAMES",
+      "run": 3,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 48.5,
+      "avgDifficulty": 9.7,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Ryusei YAMADA",
+      "run": 1,
+      "finalScore": "92.00",
+      "isClean": true,
+      "totalDifficulty": 33.5,
+      "avgDifficulty": 6.7,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Ryusei YAMADA",
+      "run": 2,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 16,
+      "avgDifficulty": 5.333333333333333,
+      "trickCount": 3
+    },
+    {
+      "competitor": "Ryusei YAMADA",
+      "run": 3,
+      "finalScore": "92.00",
+      "isClean": true,
+      "totalDifficulty": 32.5,
+      "avgDifficulty": 6.5,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Ruka HIRANO",
+      "run": 1,
+      "finalScore": "90.00",
+      "isClean": true,
+      "totalDifficulty": 48.5,
+      "avgDifficulty": 9.7,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Ruka HIRANO",
+      "run": 2,
+      "finalScore": "90.00",
+      "isClean": true,
+      "totalDifficulty": 51.5,
+      "avgDifficulty": 10.3,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Ruka HIRANO",
+      "run": 3,
+      "finalScore": "91.00",
+      "isClean": true,
+      "totalDifficulty": 48.5,
+      "avgDifficulty": 9.7,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Valentino GUSELI",
+      "run": 1,
+      "finalScore": "35.00",
+      "isClean": false,
+      "totalDifficulty": 28,
+      "avgDifficulty": 5.6,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Valentino GUSELI",
+      "run": 2,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 34,
+      "avgDifficulty": 6.8,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Valentino GUSELI",
+      "run": 3,
+      "finalScore": "88.00",
+      "isClean": true,
+      "totalDifficulty": 36.5,
+      "avgDifficulty": 7.3,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Chaeun LEE",
+      "run": 1,
+      "finalScore": "24.75",
+      "isClean": false,
+      "totalDifficulty": 33,
+      "avgDifficulty": 11,
+      "trickCount": 3
+    },
+    {
+      "competitor": "Chaeun LEE",
+      "run": 2,
+      "finalScore": "24.75",
+      "isClean": false,
+      "totalDifficulty": 24.5,
+      "avgDifficulty": 8.166666666666666,
+      "trickCount": 3
+    },
+    {
+      "competitor": "Chaeun LEE",
+      "run": 3,
+      "finalScore": "87.50",
+      "isClean": true,
+      "totalDifficulty": 50.5,
+      "avgDifficulty": 10.1,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Ayumu HIRANO",
+      "run": 1,
+      "finalScore": "27.50",
+      "isClean": false,
+      "totalDifficulty": 29.5,
+      "avgDifficulty": 9.833333333333334,
+      "trickCount": 3
+    },
+    {
+      "competitor": "Ayumu HIRANO",
+      "run": 2,
+      "finalScore": "86.50",
+      "isClean": true,
+      "totalDifficulty": 50,
+      "avgDifficulty": 10,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Ayumu HIRANO",
+      "run": 3,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 37.5,
+      "avgDifficulty": 9.375,
+      "trickCount": 4
+    },
+    {
+      "competitor": "Jake PATES",
+      "run": 1,
+      "finalScore": "77.50",
+      "isClean": true,
+      "totalDifficulty": 43,
+      "avgDifficulty": 8.6,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Jake PATES",
+      "run": 2,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 28,
+      "avgDifficulty": 9.333333333333334,
+      "trickCount": 3
+    },
+    {
+      "competitor": "Jake PATES",
+      "run": 3,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 28,
+      "avgDifficulty": 9.333333333333334,
+      "trickCount": 3
+    },
+    {
+      "competitor": "Ziyang WANG",
+      "run": 1,
+      "finalScore": "17.75",
+      "isClean": false,
+      "totalDifficulty": 27,
+      "avgDifficulty": 9,
+      "trickCount": 3
+    },
+    {
+      "competitor": "Ziyang WANG",
+      "run": 2,
+      "finalScore": "17.25",
+      "isClean": false,
+      "totalDifficulty": 29.5,
+      "avgDifficulty": 7.375,
+      "trickCount": 4
+    },
+    {
+      "competitor": "Ziyang WANG",
+      "run": 3,
+      "finalScore": "76.00",
+      "isClean": true,
+      "totalDifficulty": 51.5,
+      "avgDifficulty": 10.3,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Alessandro BARBIERI",
+      "run": 1,
+      "finalScore": "75.00",
+      "isClean": true,
+      "totalDifficulty": 44,
+      "avgDifficulty": 8.8,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Alessandro BARBIERI",
+      "run": 2,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 37.5,
+      "avgDifficulty": 9.375,
+      "trickCount": 4
+    },
+    {
+      "competitor": "Alessandro BARBIERI",
+      "run": 3,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 40.5,
+      "avgDifficulty": 10.125,
+      "trickCount": 4
+    },
+    {
+      "competitor": "Chase JOSEY",
+      "run": 1,
+      "finalScore": "11.75",
+      "isClean": false,
+      "totalDifficulty": 11.5,
+      "avgDifficulty": 5.75,
+      "trickCount": 2
+    },
+    {
+      "competitor": "Chase JOSEY",
+      "run": 2,
+      "finalScore": "70.25",
+      "isClean": true,
+      "totalDifficulty": 28.5,
+      "avgDifficulty": 5.7,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Chase JOSEY",
+      "run": 3,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 27,
+      "avgDifficulty": 5.4,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Campbell MELVILLE IVES",
+      "run": 1,
+      "finalScore": "43.00",
+      "isClean": false,
+      "totalDifficulty": 45,
+      "avgDifficulty": 9,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Campbell MELVILLE IVES",
+      "run": 2,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 45,
+      "avgDifficulty": 9,
+      "trickCount": 5
+    },
+    {
+      "competitor": "Campbell MELVILLE IVES",
+      "run": 3,
+      "finalScore": "DNI",
+      "isClean": false,
+      "totalDifficulty": 39,
+      "avgDifficulty": 9.75,
+      "trickCount": 4
+    }
+  ],
+  "correlation": {
+    "pearsonR": 0.1947839137228441,
+    "note": "Correlation between total trick difficulty and final score for clean runs"
+  }
+}

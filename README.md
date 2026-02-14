@@ -1,228 +1,102 @@
-# Snowboarding Halfpipe Judge Bias Analysis
+# Snowboarding Halfpipe Judging Analysis
 
-Analysis of judge scoring patterns in the Milano-Cortina 2026 Men's Snowboard Halfpipe Final, testing for evidence of contrast/relief bias when judges evaluate performances following wipeouts.
+Statistical analysis of judge scoring patterns in the Milano-Cortina 2026 Men's Snowboard Halfpipe Final — testing for bias, consistency, and structural effects in subjective Olympic judging.
 
 **Data source**: [Olympics.com Official Results](https://www.olympics.com/en/milano-cortina-2026/results/sbd/je/m/hp----------------/fnl-/--------/result)
 
 ---
 
-## Quick Summary
+## What This Project Does
 
-| Aspect | Finding |
-|--------|---------|
-| **Research Question** | Do judges award higher scores for impressive performances after wipeouts? (Contrast bias) |
-| **Phase 1 Result** | Recovery runs average +2.78 pts higher than baseline |
-| **Phase 2 Result** | Effect is largely selection bias, not judge bias (disappears when controlling for skill level) |
-| **Phase 2 Confound** | Bottom-tier competitors go first each round → cannot show recovery context |
-| **Conclusion** | Pattern is real but more complex than simple relief bonus |
-| **Data Quality** | 15 clean runs analyzed (out of 36 performances); 9 DNI cases ambiguous |
-| **Critical Limitation** | Cannot distinguish DNI=crash from DNI=didn't improve; see [METHODOLOGY.md](docs/METHODOLOGY.md) |
+We have individual scores from all 6 judges for every scored performance in the final, plus trick sequences, competitor metadata, and judge nationalities. This lets us ask which questions about judging bias are actually answerable — and which aren't.
+
+See **[RESEARCH_QUESTIONS.md](docs/RESEARCH_QUESTIONS.md)** for a critical assessment of 15 research questions ranked by answerability.
 
 ---
 
-## Documentation
+## Key Findings So Far
 
-**Start here**: Read in this order for best understanding
+### Answerable Questions (Strong Evidence)
 
-1. **[RESEARCH_QUESTIONS.md](docs/RESEARCH_QUESTIONS.md)** (3 min read)
-   - What we're testing and why it matters
-   - Core hypotheses
-   - Future analysis directions
+| Finding | Detail |
+|---------|--------|
+| **Judge severity** | Judge 5 (FRA) excluded as highest scorer 46% of runs; Judge 2 (GBR) excluded as lowest 38% |
+| **Scoring system works** | Trimmed mean (drop high/low) verified on all 24 scored runs — dampens individual judge bias |
+| **Wipeout scoring** | Clear pattern: more tricks completed before crash → higher wipeout score (11.75 for 2 tricks → 48.75 for 5) |
+| **Groupthink** | Ruka Hirano received identical scores from all 6 judges (90) in two consecutive rounds |
 
-2. **[ANALYSIS_PHASES.md](docs/ANALYSIS_PHASES.md)** (10 min read)
-   - Phase 1: Recovery score findings (+2.78 pts)
-   - Phase 2: Skill control discovery (effect disappears)
-   - Detailed patterns and competing explanations
+### Partially Answerable (Descriptive, Not Conclusive)
 
-3. **[METHODOLOGY.md](docs/METHODOLOGY.md)** (15 min read)
-   - ⚠️ **Critical: DNI ambiguity** (9 cases, reason unknown)
-   - All assumptions and confounds
-   - Data filtering rules
-   - What we can/cannot conclude
+| Finding | Detail |
+|---------|--------|
+| **Relief bias** | +1.95 pts after immediate crash streak vs after clean (n=7 vs n=8), but within-rider comparisons show no effect in 2 of 3 cases |
+| **Nationality bias** | Judge 6 (JPN) scores Japanese athletes +0.90 pts above panel mean, but n=8 and only 1 testable pair |
+| **Round drift** | Judges 1 & 2 get more generous R1→R3; Judges 4, 5, 6 get stricter |
 
-4. **[DATA_GUIDE.md](docs/DATA_GUIDE.md)** (10 min read)
-   - Data file structure and formats
-   - Trick code explanations
-   - Data reliability and quality assessment
+### Not Answerable From This Event
 
----
-
-## Results
-
-All analysis outputs available as JSON files:
-
-- `results/wipeout_context_analysis.json` — Phase 1: Recovery scores after wipeouts
-- `results/position_controlled_analysis.json` — Phase 2: Skill-level controlled analysis
-- `results/points_per_trick_analysis.json` — Baseline points per trick estimation
-- `results/trick_difficulty_exploration.json` — Exploratory trick code analysis
+- **Total crash exposure effect** — confounded with rider quality (better riders go later, see more crashes)
+- **Weather effects** — only 3 data points (one per round)
+- **Format fairness** — can't separate going-first disadvantage from being-worst-qualifier disadvantage
 
 ---
 
-## Key Findings
+## Competition Structure
 
-### Phase 1: Recovery Patterns (+2.78 pts bonus)
+- **12 competitors**, 3 rounds each, same order every round
+- **Position 1** = worst qualifier (goes first) → **Position 12** = best qualifier (goes last)
+- **6 judges** per run — highest and lowest scores excluded, final = average of middle 4
+- **Best-of-3** — only the highest score across all rounds counts for final ranking
 
-Clean runs that followed wipeouts scored **2.78 points higher** on average (89.13) compared to the overall baseline (86.35). Strong individual cases include:
-
-- **Scotty James R2**: 48.75 (fall) → 93.50 (+44.75 recovery)
-- **Valentino Guseli R3**: 35.0 (fall) → 88.0 (+53.0 recovery)
-- **Chaeun Lee R3**: 24.75 → 24.75 → 87.5 (only competitor recovering after 2 wipeouts)
-
-### Phase 2: The Plot Twist (Effect Disappears with Skill Control)
-
-When breaking down by competitor tier (skill level), the relief effect **reverses or disappears**:
-
-| Tier | Baseline | Recovery | Difference |
-|------|----------|----------|-----------|
-| Bottom | 77.81 | N/A (goes first) | N/A |
-| Middle | 89.50 | 88.83 | **-0.67 pts** (penalty) |
-| Top | 92.00 | 89.30 | **-2.70 pts** (penalty) |
-
-**Why**: Better qualifiers naturally score higher, and better qualifiers are more likely to be in recovery situations. The Phase 1 bonus was **selection bias**, not judge bias.
-
-**Exception**: Round 2 shows modest relief bonus (+1-3 pts) for top tier when preceded by fewer wipeouts.
-
-### DNI Ambiguity: Critical Data Gap
-
-9 performances marked "DNI" (Did Not Improve), but **reason unknown**:
-- Could be: Competitor wiped out (crash)
-- Or: Competitor didn't improve on their high score
-
-**Impact**: Wipeout context analysis for these competitors is unreliable. See [METHODOLOGY.md](docs/METHODOLOGY.md) for details.
-
----
-
-## Competition Context
-
-- **Event**: Milano-Cortina 2026 Men's Snowboard Halfpipe Final
-- **Competitors**: 12
-- **Rounds**: 3 (same order each round)
-- **Judging**: 6 judges per run, high/low scores excluded, final = average of middle 4
-- **Wipeout rates**: R1=58.3%, R2=28.6%, R3=0% (only elite remain by Round 3)
-
-**Key structural fact**: Position 1 (worst qualifier) goes first each round → **has zero wipeout context before their run**. This is a major confound in recovery analysis.
-
----
-
-## Methodology Highlights
-
-### Data Filtering
-All analyses apply consistent filtering:
-- ✅ **Include**: Scores ≥50 (clean, intentional execution)
-- ❌ **Exclude**: Scores <50 (crashes/wipeouts)
-- ❌ **Exclude**: DNI (reason unknown)
-- **Result**: 15 clean runs analyzed out of 36 performances
-
-### What We Can Conclude ✅
-- Correlations in recovery patterns
-- Selection bias explains Phase 1 finding
-- Wipeout rates differ by round
-- Some competitors show W→H trajectory
-
-### What We Cannot Conclude ❌
-- Whether relief bias actually exists (too many confounds)
-- Individual judge bias (panel scores aggregated)
-- Generalization to other competitions
-- Causation (correlation only)
-
-See [METHODOLOGY.md](docs/METHODOLOGY.md) for complete list of 7 major confounds.
+This fixed ordering creates a structural confound: later positions both see more crashes AND are better riders.
 
 ---
 
 ## Running the Analysis
 
-### Prerequisites
 ```bash
 npm install
+
+# Data enrichment pipeline
+node scripts/compute_trick_difficulty.js    # Parse trick codes → difficulty scores
+node scripts/enrich_judge_data.js           # Per-judge deviations & exclusion patterns
+node scripts/scrape_dni_details.js          # Resolve DNI cases (requires internet)
+node scripts/build_master_dataset.js        # Merge everything → master CSV
+
+# Analysis
+node scripts/judge_bias_analysis.js         # Comprehensive bias analysis (7 tests)
+node scripts/points_per_trick_analysis.js   # Trick-level scoring breakdown
 ```
-
-### Run All Analyses
-```bash
-node scripts/wipeout_context_analysis.js     # Phase 1
-node scripts/position_controlled_analysis.js  # Phase 2
-node scripts/points_per_trick_analysis.js    # Baseline
-node scripts/trick_difficulty_exploration.js # Exploratory
-```
-
-### View Results
-```bash
-cat results/wipeout_context_analysis.json | jq
-cat results/position_controlled_analysis.json | jq
-cat results/points_per_trick_analysis.json | jq
-cat results/trick_difficulty_exploration.json | jq
-```
-
----
-
-## Future Analysis Directions
-
-From [RESEARCH_QUESTIONS.md](docs/RESEARCH_QUESTIONS.md):
-
-- **Judge outlier analysis**: Which judges are excluded (high/low) most frequently?
-- **Middle-4 consensus**: Do same judges bias identical tricks higher after wipeouts?
-- **Judge sensitivity**: Which judges show strongest context-dependent scoring?
-- **Round effects**: Does relief bias change between R1 (chaos) vs R3 (elite only)?
-- **Within-score variance**: When judges disagree, is it due to relief bias?
-
----
-
-## Critical Limitations
-
-| Issue | Severity |
-|-------|----------|
-| **DNI ambiguity** (9 cases, reason unknown) | 🔴 CRITICAL |
-| Trick difficulty uncontrolled | 🟡 HIGH |
-| Small sample (n=15 clean) | 🟡 HIGH |
-| Selection bias across rounds | 🟡 HIGH |
-| Judge composition unknown | 🟡 HIGH |
-| Environmental data missing | 🟠 MEDIUM |
-
-See [METHODOLOGY.md](docs/METHODOLOGY.md) for detailed confound analysis.
 
 ---
 
 ## Project Structure
 
 ```
-.
-├── README.md (this file)
-├── docs/
-│   ├── RESEARCH_QUESTIONS.md (hypotheses & future work)
-│   ├── ANALYSIS_PHASES.md (Phase 1-2 findings)
-│   ├── METHODOLOGY.md (assumptions & confounds)
-│   └── DATA_GUIDE.md (data structure & reliability)
-├── data/raw/
-│   ├── milano-cortina-2026-individual-judge-scores.csv (primary)
+├── data/raw/                              # Source data from Olympics.com
+│   ├── milano-cortina-2026-individual-judge-scores.csv
 │   ├── milano-cortina-2026-mens-halfpipe.csv
 │   └── judges-metadata.csv
-├── scripts/
-│   ├── wipeout_context_analysis.js
-│   ├── position_controlled_analysis.js
-│   ├── points_per_trick_analysis.js
-│   └── trick_difficulty_exploration.js
-├── results/
-│   ├── wipeout_context_analysis.json
-│   ├── position_controlled_analysis.json
-│   ├── points_per_trick_analysis.json
-│   └── trick_difficulty_exploration.json
-└── package.json
+├── data/processed/                        # Enriched data
+│   ├── master_enriched_dataset.csv        # 32-column merged dataset
+│   ├── dni_resolved.csv                   # DNI crash vs skip classifications
+│   ├── trick_difficulty_scores.csv        # Per-trick difficulty breakdown
+│   ├── enriched-judge-scores.csv          # Scores + difficulty columns
+│   └── judge_analysis_data.csv            # Per-judge per-run analysis
+├── scripts/                               # Analysis & enrichment scripts
+├── results/                               # JSON outputs from analyses
+└── docs/
+    ├── RESEARCH_QUESTIONS.md              # ⭐ Critical question assessment
+    ├── METHODOLOGY.md                     # Assumptions & confounds
+    └── DATA_GUIDE.md                      # Data structure reference
 ```
 
 ---
 
-## Key References
+## References
 
-- **Event data**: https://www.olympics.com/en/milano-cortina-2026/results/sbd/je/m/hp----------------/fnl-/--------/result
-- **Contrast bias research**: Wine competitions, gymnastics, figure skating all show ordering effects
-- **Trimmed mean scoring**: Used in gymnastics and diving to prevent single-judge bias
-
----
-
-## Status
-
-**Phase 2 complete**: Selection bias identified, confound documented. Pattern is real but requires more sophisticated analysis to isolate judge bias from skill/trick effects.
-
-**Data collected**: Full individual judge scores, trick sequences, competitor metadata. All verified and committed to repo.
-
-**Recommendations**: Obtain DNI clarification (crash vs didn't improve), collect trick difficulty ratings, cross-validate with other competitions.
+- **Event**: Milano-Cortina 2026 Men's Snowboard Halfpipe Final, February 13, 2026
+- **Contrast bias**: Damisch et al. (2006) — Olympic gymnastics ordering effects
+- **Nationalism bias**: Zitzewitz (2006) — figure skating judging
+- **Serial position**: Page & Page (2010) — Eurovision voting patterns
 

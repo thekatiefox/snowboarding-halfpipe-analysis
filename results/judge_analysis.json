@@ -1,0 +1,92 @@
+{
+  "timestamp": "2026-02-14T18:07:56.508Z",
+  "description": "Per-judge analysis: exclusions, deviations, nationality bias",
+  "scoredRuns": 24,
+  "totalJudgeScores": 144,
+  "judgeProfiles": [
+    {
+      "judgeNumber": 1,
+      "name": "SUMATIC Iztok",
+      "country": "SLO",
+      "totalScoredRuns": 24,
+      "avgDeviation": 0.3055555555555552,
+      "stdDeviation": 0.930037169043511,
+      "excludedAsHigh": 1,
+      "excludedAsLow": 7,
+      "sameNationalityScoringCount": 0,
+      "sameNationalityAvgDeviation": null,
+      "diffNationalityAvgDeviation": 0.3055555555555552
+    },
+    {
+      "judgeNumber": 2,
+      "name": "WESSMAN VOGAN Gaz",
+      "country": "GBR",
+      "totalScoredRuns": 24,
+      "avgDeviation": -0.4444444444444448,
+      "stdDeviation": 1.2063361528115806,
+      "excludedAsHigh": 2,
+      "excludedAsLow": 9,
+      "sameNationalityScoringCount": 0,
+      "sameNationalityAvgDeviation": null,
+      "diffNationalityAvgDeviation": -0.4444444444444448
+    },
+    {
+      "judgeNumber": 3,
+      "name": "WESTMAN Fredrik",
+      "country": "SWE",
+      "totalScoredRuns": 24,
+      "avgDeviation": 0.18055555555555522,
+      "stdDeviation": 1.158619735443007,
+      "excludedAsHigh": 2,
+      "excludedAsLow": 1,
+      "sameNationalityScoringCount": 0,
+      "sameNationalityAvgDeviation": null,
+      "diffNationalityAvgDeviation": 0.18055555555555522
+    },
+    {
+      "judgeNumber": 4,
+      "name": "REGLI Andrin",
+      "country": "SUI",
+      "totalScoredRuns": 24,
+      "avgDeviation": -0.5277777777777781,
+      "stdDeviation": 0.8493824917455929,
+      "excludedAsHigh": 0,
+      "excludedAsLow": 4,
+      "sameNationalityScoringCount": 0,
+      "sameNationalityAvgDeviation": null,
+      "diffNationalityAvgDeviation": -0.5277777777777781
+    },
+    {
+      "judgeNumber": 5,
+      "name": "HARICOT Julien",
+      "country": "FRA",
+      "totalScoredRuns": 24,
+      "avgDeviation": 0.5138888888888885,
+      "stdDeviation": 0.9859154735511838,
+      "excludedAsHigh": 11,
+      "excludedAsLow": 1,
+      "sameNationalityScoringCount": 0,
+      "sameNationalityAvgDeviation": null,
+      "diffNationalityAvgDeviation": 0.5138888888888885
+    },
+    {
+      "judgeNumber": 6,
+      "name": "HASHIMOTO Ryo",
+      "country": "JPN",
+      "totalScoredRuns": 24,
+      "avgDeviation": -0.027777777777778123,
+      "stdDeviation": 0.9714282472247627,
+      "excludedAsHigh": 8,
+      "excludedAsLow": 2,
+      "sameNationalityScoringCount": 9,
+      "sameNationalityAvgDeviation": 0.12962962962963015,
+      "diffNationalityAvgDeviation": -0.12222222222222309
+    }
+  ],
+  "nationalityBiasSummary": {
+    "sameNationalityAvgDeviation": 0.12962962962963015,
+    "diffNationalityAvgDeviation": -0.008641975308642379,
+    "sameCount": 9,
+    "diffCount": 135
+  }
+}
