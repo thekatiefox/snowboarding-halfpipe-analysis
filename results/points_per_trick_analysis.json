@@ -1,0 +1,433 @@
+{
+  "timestamp": "2026-02-14T07:51:23.106Z",
+  "cleanRunsCount": 15,
+  "runsByTrickCount": {
+    "5": [
+      {
+        "competitor": "Yuto TOTSUKA",
+        "run": 1,
+        "score": 91,
+        "tricks": "Cab-DC-14-Mu → f-TC-14-Tdr → x-b-D-AO-Rd-9-St → x-b-DC-10-Ng → b-DC-12-Mu"
+      },
+      {
+        "competitor": "Yuto TOTSUKA",
+        "run": 2,
+        "score": 95,
+        "tricks": "Cab-TC-14-Ddr → f-TC-14-Tdr → x-b-D-AO-Rd-9-St → x-b-DC-10-Ng → b-DC-12-Mu"
+      },
+      {
+        "competitor": "Scotty JAMES",
+        "run": 2,
+        "score": 93.5,
+        "tricks": "Cab-TC-14-Mu → f-DC-12-St → b-DC-10-St → x-b-DC-14-Jp → b-DC-14-Jp"
+      },
+      {
+        "competitor": "Ryusei YAMADA",
+        "run": 1,
+        "score": 92,
+        "tricks": "Cab-DC-14-Ng → f-DC-12-Mu → b-DC-10-Jp → x-Mc-Jp → x-b-D-AO-Rd-9-St"
+      },
+      {
+        "competitor": "Ryusei YAMADA",
+        "run": 3,
+        "score": 92,
+        "tricks": "Cab-DC-12-I → x-f-AO-D-Rd-10-I → b-DC-10-Jp → x-Mc-Jp → x-b-DC-AO-Rd-9-St"
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "run": 1,
+        "score": 90,
+        "tricks": "x-b-DC-14-Ng → b-DC-12-Mu → f-DC-14-I → Cab-TC-14-Ddr → f-DC-12-I"
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "run": 2,
+        "score": 90,
+        "tricks": "x-b-DC-14-Ng → b-DC-12-Mu → f-TC-14-I → Cab-TC-14-Ddr → f-DC-12-I"
+      },
+      {
+        "competitor": "Ruka HIRANO",
+        "run": 3,
+        "score": 91,
+        "tricks": "x-b-DC-14-Ng → b-DC-12-Mu → f-DC-14-I-Tdr → Cab-TC-14-Ddr → f-DC-12-I"
+      },
+      {
+        "competitor": "Valentino GUSELI",
+        "run": 3,
+        "score": 88,
+        "tricks": "b-AO-3-Ng → Cab-TC-14-Mu → f-12-Tg-to-Me → b-DC-10-I → x-b-DC-12-Mu"
+      },
+      {
+        "competitor": "Chaeun LEE",
+        "run": 3,
+        "score": 87.5,
+        "tricks": "x-b-DC-12-Mu → Cab-DC-14-Mu → f-TC-16-Tdr → b-DC-12-Me → f-DC-14-Tg"
+      },
+      {
+        "competitor": "Ayumu HIRANO",
+        "run": 2,
+        "score": 86.5,
+        "tricks": "x-b-DC-12-Ng → Cab-DC-14-Mu → f-DC-16-Tg → b-DC-12-Mu → f-TC-14-Tdr"
+      },
+      {
+        "competitor": "Jake PATES",
+        "run": 1,
+        "score": 77.5,
+        "tricks": "x-b-DC-10-Mu → b-DC-12-Mu-to-Tg → f-DC-10-Tdr → Cab-TC-14-Ddr → f-DC-12-I"
+      },
+      {
+        "competitor": "Ziyang WANG",
+        "run": 3,
+        "score": 76,
+        "tricks": "Cab-TC-14-Ddr → f-DC-16-Tg → b-DC-12-Mu → f-DC-14-I → Cab-DC-14-Mu"
+      },
+      {
+        "competitor": "Alessandro BARBIERI",
+        "run": 1,
+        "score": 75,
+        "tricks": "x-b-DC-12-Mu → Cab-TC-14-Ddr → f-DC-12-I → b-DC-12-Ng → f-DC-10-Tdr"
+      },
+      {
+        "competitor": "Chase JOSEY",
+        "run": 2,
+        "score": 70.25,
+        "tricks": "Cab-DC-12-I-to-Me → x-D-CF-Me → Cab-DC-10-Mu → f-DC-12-Ste → D-CF-Ng"
+      }
+    ]
+  },
+  "trickSequenceStats": [],
+  "individualTrickStats": [
+    {
+      "trick": "b-DC-12-Mu",
+      "count": 7,
+      "avg": 88.5,
+      "min": 76,
+      "max": 95,
+      "stdDev": 5.599744892148468
+    },
+    {
+      "trick": "Cab-TC-14-Ddr",
+      "count": 7,
+      "avg": 84.92857142857143,
+      "min": 75,
+      "max": 95,
+      "stdDev": 7.775550377527586
+    },
+    {
+      "trick": "f-DC-12-I",
+      "count": 5,
+      "avg": 84.7,
+      "min": 75,
+      "max": 91,
+      "stdDev": 6.954135460285484
+    },
+    {
+      "trick": "Cab-DC-14-Mu",
+      "count": 4,
+      "avg": 85.25,
+      "min": 76,
+      "max": 91,
+      "stdDev": 5.595757321399848
+    },
+    {
+      "trick": "f-TC-14-Tdr",
+      "count": 3,
+      "avg": 90.83333333333333,
+      "min": 86.5,
+      "max": 95,
+      "stdDev": 3.4721111093332766
+    },
+    {
+      "trick": "x-b-D-AO-Rd-9-St",
+      "count": 3,
+      "avg": 92.66666666666667,
+      "min": 91,
+      "max": 95,
+      "stdDev": 1.699673171197595
+    },
+    {
+      "trick": "x-b-DC-14-Ng",
+      "count": 3,
+      "avg": 90.33333333333333,
+      "min": 90,
+      "max": 91,
+      "stdDev": 0.4714045207910317
+    },
+    {
+      "trick": "x-b-DC-12-Mu",
+      "count": 3,
+      "avg": 83.5,
+      "min": 75,
+      "max": 88,
+      "stdDev": 6.013872850889571
+    },
+    {
+      "trick": "x-b-DC-10-Ng",
+      "count": 2,
+      "avg": 93,
+      "min": 91,
+      "max": 95,
+      "stdDev": 2
+    },
+    {
+      "trick": "Cab-TC-14-Mu",
+      "count": 2,
+      "avg": 90.75,
+      "min": 88,
+      "max": 93.5,
+      "stdDev": 2.75
+    },
+    {
+      "trick": "b-DC-10-Jp",
+      "count": 2,
+      "avg": 92,
+      "min": 92,
+      "max": 92,
+      "stdDev": 0
+    },
+    {
+      "trick": "x-Mc-Jp",
+      "count": 2,
+      "avg": 92,
+      "min": 92,
+      "max": 92,
+      "stdDev": 0
+    },
+    {
+      "trick": "f-DC-14-I",
+      "count": 2,
+      "avg": 83,
+      "min": 76,
+      "max": 90,
+      "stdDev": 7
+    },
+    {
+      "trick": "f-DC-16-Tg",
+      "count": 2,
+      "avg": 81.25,
+      "min": 76,
+      "max": 86.5,
+      "stdDev": 5.25
+    },
+    {
+      "trick": "f-DC-10-Tdr",
+      "count": 2,
+      "avg": 76.25,
+      "min": 75,
+      "max": 77.5,
+      "stdDev": 1.25
+    },
+    {
+      "trick": "f-DC-12-St",
+      "count": 1,
+      "avg": 93.5,
+      "min": 93.5,
+      "max": 93.5,
+      "stdDev": 0
+    },
+    {
+      "trick": "b-DC-10-St",
+      "count": 1,
+      "avg": 93.5,
+      "min": 93.5,
+      "max": 93.5,
+      "stdDev": 0
+    },
+    {
+      "trick": "x-b-DC-14-Jp",
+      "count": 1,
+      "avg": 93.5,
+      "min": 93.5,
+      "max": 93.5,
+      "stdDev": 0
+    },
+    {
+      "trick": "b-DC-14-Jp",
+      "count": 1,
+      "avg": 93.5,
+      "min": 93.5,
+      "max": 93.5,
+      "stdDev": 0
+    },
+    {
+      "trick": "Cab-DC-14-Ng",
+      "count": 1,
+      "avg": 92,
+      "min": 92,
+      "max": 92,
+      "stdDev": 0
+    },
+    {
+      "trick": "f-DC-12-Mu",
+      "count": 1,
+      "avg": 92,
+      "min": 92,
+      "max": 92,
+      "stdDev": 0
+    },
+    {
+      "trick": "Cab-DC-12-I",
+      "count": 1,
+      "avg": 92,
+      "min": 92,
+      "max": 92,
+      "stdDev": 0
+    },
+    {
+      "trick": "x-f-AO-D-Rd-10-I",
+      "count": 1,
+      "avg": 92,
+      "min": 92,
+      "max": 92,
+      "stdDev": 0
+    },
+    {
+      "trick": "x-b-DC-AO-Rd-9-St",
+      "count": 1,
+      "avg": 92,
+      "min": 92,
+      "max": 92,
+      "stdDev": 0
+    },
+    {
+      "trick": "f-TC-14-I",
+      "count": 1,
+      "avg": 90,
+      "min": 90,
+      "max": 90,
+      "stdDev": 0
+    },
+    {
+      "trick": "f-DC-14-I-Tdr",
+      "count": 1,
+      "avg": 91,
+      "min": 91,
+      "max": 91,
+      "stdDev": 0
+    },
+    {
+      "trick": "b-AO-3-Ng",
+      "count": 1,
+      "avg": 88,
+      "min": 88,
+      "max": 88,
+      "stdDev": 0
+    },
+    {
+      "trick": "f-12-Tg-to-Me",
+      "count": 1,
+      "avg": 88,
+      "min": 88,
+      "max": 88,
+      "stdDev": 0
+    },
+    {
+      "trick": "b-DC-10-I",
+      "count": 1,
+      "avg": 88,
+      "min": 88,
+      "max": 88,
+      "stdDev": 0
+    },
+    {
+      "trick": "f-TC-16-Tdr",
+      "count": 1,
+      "avg": 87.5,
+      "min": 87.5,
+      "max": 87.5,
+      "stdDev": 0
+    },
+    {
+      "trick": "b-DC-12-Me",
+      "count": 1,
+      "avg": 87.5,
+      "min": 87.5,
+      "max": 87.5,
+      "stdDev": 0
+    },
+    {
+      "trick": "f-DC-14-Tg",
+      "count": 1,
+      "avg": 87.5,
+      "min": 87.5,
+      "max": 87.5,
+      "stdDev": 0
+    },
+    {
+      "trick": "x-b-DC-12-Ng",
+      "count": 1,
+      "avg": 86.5,
+      "min": 86.5,
+      "max": 86.5,
+      "stdDev": 0
+    },
+    {
+      "trick": "x-b-DC-10-Mu",
+      "count": 1,
+      "avg": 77.5,
+      "min": 77.5,
+      "max": 77.5,
+      "stdDev": 0
+    },
+    {
+      "trick": "b-DC-12-Mu-to-Tg",
+      "count": 1,
+      "avg": 77.5,
+      "min": 77.5,
+      "max": 77.5,
+      "stdDev": 0
+    },
+    {
+      "trick": "b-DC-12-Ng",
+      "count": 1,
+      "avg": 75,
+      "min": 75,
+      "max": 75,
+      "stdDev": 0
+    },
+    {
+      "trick": "Cab-DC-12-I-to-Me",
+      "count": 1,
+      "avg": 70.25,
+      "min": 70.25,
+      "max": 70.25,
+      "stdDev": 0
+    },
+    {
+      "trick": "x-D-CF-Me",
+      "count": 1,
+      "avg": 70.25,
+      "min": 70.25,
+      "max": 70.25,
+      "stdDev": 0
+    },
+    {
+      "trick": "Cab-DC-10-Mu",
+      "count": 1,
+      "avg": 70.25,
+      "min": 70.25,
+      "max": 70.25,
+      "stdDev": 0
+    },
+    {
+      "trick": "f-DC-12-Ste",
+      "count": 1,
+      "avg": 70.25,
+      "min": 70.25,
+      "max": 70.25,
+      "stdDev": 0
+    },
+    {
+      "trick": "D-CF-Ng",
+      "count": 1,
+      "avg": 70.25,
+      "min": 70.25,
+      "max": 70.25,
+      "stdDev": 0
+    }
+  ],
+  "findings": {
+    "average_points_per_trick": 17.27,
+    "sequences_with_large_variance": []
+  }
+}
