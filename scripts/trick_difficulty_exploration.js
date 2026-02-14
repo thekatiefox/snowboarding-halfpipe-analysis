@@ -204,36 +204,6 @@ class TrickDifficultyEstimator {
     console.log('   - Official scoring is much more sophisticated');
     console.log('   - But it\'s fun to see the pattern!\n');
 
-    // Analysis 4: The Scotty James mystery (include wipeouts for this)
-    console.log('\nANALYSIS 4: THE SCOTTY JAMES CASE');
-    console.log('='.repeat(80));
-    
-    const allRuns = this.rows;
-    const scottyR1 = allRuns.find(r => r.competitor === 'Scotty JAMES' && r.run === 1);
-    const scottyR2 = allRuns.find(r => r.competitor === 'Scotty JAMES' && r.run === 2);
-    
-    if (scottyR1 && scottyR2) {
-      console.log('\nScotty James repeated THE EXACT SAME TRICK SEQUENCE:\n');
-      
-      for (let i = 1; i <= 5; i++) {
-        const t1 = scottyR1[`trick${i}`];
-        const t2 = scottyR2[`trick${i}`];
-        const match = t1 === t2 ? ' ✓ SAME' : ' ✗ DIFFERENT';
-        console.log(`  Trick ${i}: ${(t1 || '(none)').padEnd(25)} ${match}`);
-      }
-      
-      const score1 = parseFloat(scottyR1.final_score);
-      const score2 = parseFloat(scottyR2.final_score);
-      const diff = score2 - score1;
-      
-      console.log(`\n  Run 1 Score: ${score1.toFixed(2)} (likely crashed - <50)`);
-      console.log(`  Run 2 Score: ${score2.toFixed(2)} (clean execution)`);
-      console.log(`  Δ: +${diff.toFixed(2)} points`);
-      console.log(`\n  🤔 Same tricks → +${diff.toFixed(2)} point swing`);
-      console.log(`     This MUST be execution quality (wipeout vs clean) or judge context!`);
-      console.log(`\n  ⚠️  Note: R1 score of 48.75 with full trick list = crash during execution`);
-      console.log(`     So this IS a trick execution difference, not pure judge bias.`);
-    }
   }
 
   run() {
