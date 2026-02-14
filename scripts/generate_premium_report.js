@@ -80,9 +80,8 @@ class PremiumReport {
     const wipeouts = this.computeWipeouts(scored.filter(r => parseFloat(r.final_score) < 50));
     const severity = this.computeSeverity(scored);
     const relief = this.computeRelief();
-    const difficulty = this.computeDifficulty();
 
-    const html = this.buildHTML({ sequences, dotStrip, wipeouts, severity, relief, difficulty });
+    const html = this.buildHTML({ sequences, dotStrip, wipeouts, severity, relief });
     const outPath = path.join(__dirname, '../results/interactive-report.html');
     const indexPath = path.join(__dirname, '../index.html');
     fs.writeFileSync(outPath, html);
@@ -184,17 +183,6 @@ class PremiumReport {
     return runs;
   }
 
-  computeDifficulty() {
-    const diffPath = path.join(__dirname, '../data/processed/enriched-judge-scores.csv');
-    if (!fs.existsSync(diffPath)) return [];
-    return this.loadCSV(diffPath)
-      .filter(r => r.final_score && r.final_score !== 'DNI' && parseFloat(r.final_score) >= 50 && r.total_difficulty)
-      .map(r => ({
-        name: `${this.lastName(r.competitor)} R${r.run}`,
-        score: parseFloat(r.final_score),
-        diff: parseFloat(r.total_difficulty),
-      }));
-  }
 
   buildHTML(data) {
     return `<!DOCTYPE html>
@@ -235,17 +223,20 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   padding: 60px 40px 80px;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #0a0a2e 0%, #1a0a3e 30%, #0a1a3e 60%, #0a0a1e 100%);
+  background: url('https://images.unsplash.com/photo-1611644667054-3533bccc66c3?w=1920&auto=format&fit=crop&q=80') center/cover no-repeat;
 }
 .hero::before {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(ellipse at 30% 50%, rgba(108,140,255,0.08) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 30%, rgba(167,139,250,0.06) 0%, transparent 50%);
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,15,0.97) 0%, rgba(10,10,15,0.80) 35%, rgba(10,10,30,0.55) 65%, rgba(10,10,30,0.40) 100%);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(108,140,255,0.10) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 30%, rgba(167,139,250,0.08) 0%, transparent 50%);
   animation: drift 20s ease-in-out infinite;
 }
 @keyframes drift {
@@ -423,23 +414,13 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   </div>
 </div>
 
-<!-- ═══ SECTION 6: DIFFICULTY ═══ -->
-<div class="section-alt">
-<div class="section reveal" style="max-width:1000px; margin:0 auto;">
-  <span class="section-num">06 · The Surprise</span>
-  <h2>Harder Tricks ≠ Higher Scores</h2>
-  <p class="prose">In diving, difficulty has a fixed multiplier. In halfpipe, it doesn't — and the data shows it. Trick difficulty has a <em>weak</em> correlation of just r=0.195 with score. <strong>Execution is everything.</strong></p>
-
-  <div class="chart-wrap">
-    <div id="chart-difficulty"></div>
-  </div>
-</div>
-</div>
 
 <div class="footer">
+  <div style="margin-bottom: 12px; font-size: 14px; color: var(--muted);">✦</div>
   Data from <a href="https://www.olympics.com/en/milano-cortina-2026/results/sbd/je/m/hp----------------/fnl-/--------/result">Olympics.com Official Results</a><br>
   Milano-Cortina 2026 Men's Snowboard Halfpipe Final · February 13, 2026<br>
-  12 competitors · 3 rounds · 6 judges · Best score counts
+  12 competitors · 3 rounds · 6 judges · Best score counts<br>
+  <span style="margin-top: 8px; display: inline-block; opacity: 0.6;">Hero photo by <a href="https://unsplash.com/@yannphoto">Yann Allegre</a> on <a href="https://unsplash.com">Unsplash</a></span>
 </div>
 
 <script>
@@ -711,58 +692,6 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   [{s: 0, c: C.accent, t: 'After clean run'}, {s: 1, c: C.gold, t: 'After 1-2 crashes'}, {s: 3, c: C.red, t: 'After 3+ crashes'}].forEach((l, i) => {
     svg.append('circle').attr('cx', width - margin.right + 10).attr('cy', margin.top + 20 + i * 20).attr('r', 5).attr('fill', l.c).attr('opacity', 0.75);
     svg.append('text').attr('x', width - margin.right + 20).attr('y', margin.top + 24 + i * 20).attr('font-size', 10).attr('fill', C.muted).text(l.t);
-  });
-})();
-
-// ═══════════════════════════════════════════════════════════
-// CHART: Difficulty vs Score
-// ═══════════════════════════════════════════════════════════
-(function() {
-  const data = ${JSON.stringify(data.difficulty)};
-  if (!data.length) return;
-  const margin = { top: 40, right: 40, bottom: 50, left: 60 };
-  const width = 800, height = 400;
-
-  const svg = d3.select('#chart-difficulty')
-    .append('svg')
-    .attr('viewBox', \`0 0 \${width} \${height}\`)
-    .style('width', '100%');
-
-  const x = d3.scaleLinear().domain([25, 55]).range([margin.left, width - margin.right]);
-  const y = d3.scaleLinear().domain([65, 100]).range([height - margin.bottom, margin.top]);
-
-  // Grid
-  [30, 35, 40, 45, 50].forEach(v => {
-    svg.append('line').attr('x1', x(v)).attr('x2', x(v)).attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', C.border).attr('stroke-width', 0.5);
-    svg.append('text').attr('x', x(v)).attr('y', height - margin.bottom + 16).attr('text-anchor', 'middle').attr('font-size', 10).attr('fill', C.dim).text(v);
-  });
-  [70, 80, 90].forEach(v => {
-    svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y(v)).attr('y2', y(v)).attr('stroke', C.border).attr('stroke-width', 0.5);
-    svg.append('text').attr('x', margin.left - 10).attr('y', y(v) + 4).attr('text-anchor', 'end').attr('font-size', 11).attr('fill', C.dim).text(v);
-  });
-
-  svg.append('text').attr('x', width/2).attr('y', height - 6).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).text('Total Trick Difficulty (our computed score)');
-  svg.append('text').attr('x', 14).attr('y', height/2).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).attr('transform', \`rotate(-90, 14, \${height/2})\`).text('Final Score');
-  svg.append('text').attr('x', width/2).attr('y', 24).attr('text-anchor', 'middle').attr('font-size', 14).attr('fill', C.text).attr('font-weight', 600).attr('font-family', 'Space Grotesk').text('Execution Beats Difficulty');
-
-  // r annotation
-  svg.append('text').attr('x', x(50)).attr('y', y(95)).attr('font-size', 16).attr('fill', C.purple).attr('font-family', 'Space Grotesk').attr('font-weight', 600).attr('opacity', 0.6).text('r = 0.195');
-  svg.append('text').attr('x', x(50)).attr('y', y(95) + 16).attr('font-size', 10).attr('fill', C.dim).text('(weak correlation)');
-
-  data.forEach(d => {
-    const isOutlier = (d.diff > 49 && d.score < 80) || (d.diff < 34 && d.score > 90);
-    svg.append('circle')
-      .attr('cx', x(d.diff)).attr('cy', y(d.score))
-      .attr('r', 7)
-      .attr('fill', isOutlier ? C.gold : C.purple).attr('opacity', 0.7)
-      .attr('stroke', isOutlier ? C.gold : C.purple).attr('stroke-width', 1).attr('stroke-opacity', 0.3);
-    svg.append('text')
-      .attr('x', x(d.diff) + (d.diff > 45 ? -8 : 10))
-      .attr('y', y(d.score) + 4)
-      .attr('text-anchor', d.diff > 45 ? 'end' : 'start')
-      .attr('font-size', 9).attr('fill', isOutlier ? C.gold : C.dim)
-      .attr('font-weight', isOutlier ? 600 : 400)
-      .text(d.name);
   });
 })();
 </script>
