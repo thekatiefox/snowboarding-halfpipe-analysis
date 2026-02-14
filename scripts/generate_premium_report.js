@@ -1,4 +1,201 @@
-<!DOCTYPE html>
+/**
+ * Generate Premium Visual Report
+ * 
+ * Editorial-quality data journalism piece using D3.js for custom charts,
+ * Google Fonts for typography, and scroll-driven narrative layout.
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+class PremiumReport {
+  constructor() {
+    this.rawScores = this.loadCSV(path.join(__dirname, '../data/raw/milano-cortina-2026-individual-judge-scores.csv'));
+    this.judges = this.loadJudgesMetadata();
+    this.dniMap = this.loadDNIResolution();
+  }
+
+  loadCSV(filePath) {
+    const content = fs.readFileSync(filePath, 'utf8');
+    const lines = content.trim().split('\n');
+    const headers = lines[0].split(',');
+    return lines.slice(1).map(line => {
+      const values = line.split(',');
+      const row = {};
+      headers.forEach((h, i) => { row[h.trim()] = values[i]?.trim(); });
+      return row;
+    });
+  }
+
+  loadJudgesMetadata() {
+    const csvPath = path.join(__dirname, '../data/raw/judges-metadata.csv');
+    const content = fs.readFileSync(csvPath, 'utf8');
+    return Object.fromEntries(
+      content.trim().split('\n').slice(1).map(line => {
+        const v = line.split(',');
+        return [v[0].trim(), { name: v[1]?.trim(), country: v[2]?.trim() }];
+      })
+    );
+  }
+
+  loadDNIResolution() {
+    const csvPath = path.join(__dirname, '../data/processed/dni_resolved.csv');
+    const content = fs.readFileSync(csvPath, 'utf8');
+    const lines = content.trim().split('\n');
+    const headers = lines[0].split(',');
+    const map = {};
+    lines.slice(1).forEach(line => {
+      const values = line.split(',');
+      const row = {};
+      headers.forEach((h, i) => { row[h.trim()] = values[i]?.trim(); });
+      map[`${row.competitor}-${row.run}`] = row;
+    });
+    return map;
+  }
+
+  getRunStatus(row) {
+    if (row.final_score === 'DNI') {
+      return this.dniMap[`${row.competitor}-${row.run}`]?.dni_reason || 'dni_unknown';
+    }
+    return parseFloat(row.final_score) >= 50 ? 'clean' : 'wipeout';
+  }
+
+  getJudgeScores(row) {
+    const scores = [];
+    for (let j = 1; j <= 6; j++) {
+      const val = parseFloat(row[`judge${j}_score`]);
+      if (!isNaN(val)) scores.push({ j, score: val, country: this.judges[j]?.country });
+    }
+    return scores;
+  }
+
+  lastName(name) { return name.split(' ').pop(); }
+
+  generate() {
+    const scored = this.rawScores.filter(r => r.final_score && r.final_score !== 'DNI');
+
+    // Compute all datasets
+    const sequences = this.computeSequences();
+    const dotStrip = this.computeDotStrip(scored);
+    const wipeouts = this.computeWipeouts(scored.filter(r => parseFloat(r.final_score) < 50));
+    const severity = this.computeSeverity(scored);
+    const relief = this.computeRelief();
+    const difficulty = this.computeDifficulty();
+
+    const html = this.buildHTML({ sequences, dotStrip, wipeouts, severity, relief, difficulty });
+    const outPath = path.join(__dirname, '../results/interactive-report.html');
+    fs.writeFileSync(outPath, html);
+    console.log(`✓ Premium report: results/interactive-report.html`);
+  }
+
+  computeSequences() {
+    const rounds = [];
+    for (let r = 1; r <= 3; r++) {
+      const runs = this.rawScores
+        .filter(row => row.run === r.toString())
+        .sort((a, b) => parseInt(a.position) - parseInt(b.position));
+      rounds.push(runs.map(run => ({
+        pos: parseInt(run.position),
+        name: this.lastName(run.competitor),
+        fullName: run.competitor,
+        country: run.country,
+        score: run.final_score === 'DNI' ? null : parseFloat(run.final_score),
+        status: this.getRunStatus(run),
+        medal: run.medal || '',
+      })));
+    }
+    return rounds;
+  }
+
+  computeDotStrip(scored) {
+    return scored.map(run => {
+      const scores = this.getJudgeScores(run);
+      const final = parseFloat(run.final_score);
+      return {
+        label: `${this.lastName(run.competitor)} R${run.run}`,
+        fullName: run.competitor,
+        run: parseInt(run.run),
+        final,
+        scores: scores.map(s => ({ j: s.j, score: s.score, country: s.country })),
+        spread: scores.length >= 2 ? Math.max(...scores.map(s => s.score)) - Math.min(...scores.map(s => s.score)) : 0,
+        type: final >= 50 ? 'clean' : 'wipeout',
+        allSame: new Set(scores.map(s => s.score)).size === 1,
+      };
+    }).sort((a, b) => b.final - a.final);
+  }
+
+  computeWipeouts(wipeouts) {
+    return wipeouts.map(run => {
+      const tricks = [run.trick1, run.trick2, run.trick3, run.trick4, run.trick5].filter(t => t && t.length > 0);
+      const scores = this.getJudgeScores(run);
+      return {
+        name: `${this.lastName(run.competitor)} R${run.run}`,
+        tricks: tricks.length,
+        score: parseFloat(run.final_score),
+        spread: scores.length >= 2 ? Math.max(...scores.map(s => s.score)) - Math.min(...scores.map(s => s.score)) : 0,
+      };
+    }).sort((a, b) => a.score - b.score);
+  }
+
+  computeSeverity(scored) {
+    const stats = {};
+    for (let j = 1; j <= 6; j++) stats[j] = [];
+
+    scored.forEach(run => {
+      const scores = this.getJudgeScores(run);
+      if (scores.length < 6) return;
+      const mean = scores.reduce((s, x) => s + x.score, 0) / 6;
+      scores.forEach(s => stats[s.j].push(Math.round((s.score - mean) * 100) / 100));
+    });
+
+    return Object.entries(stats).map(([j, devs]) => ({
+      judge: `J${j}`,
+      name: this.judges[j]?.name || '',
+      country: this.judges[j]?.country || '',
+      devs,
+      avg: devs.reduce((a, b) => a + b, 0) / devs.length,
+    }));
+  }
+
+  computeRelief() {
+    const runs = [];
+    for (let round = 1; round <= 3; round++) {
+      const roundRuns = this.rawScores
+        .filter(r => r.run === round.toString())
+        .sort((a, b) => parseInt(a.position) - parseInt(b.position));
+      let streak = 0;
+      roundRuns.forEach(run => {
+        const status = this.getRunStatus(run);
+        if (status === 'clean') {
+          runs.push({
+            name: `${this.lastName(run.competitor)} R${round}`,
+            competitor: run.competitor,
+            pos: parseInt(run.position),
+            score: parseFloat(run.final_score),
+            streak, round,
+          });
+        }
+        if (status === 'wipeout' || status === 'crash') streak++;
+        else if (status === 'clean' || status === 'did_not_improve' || status === 'strategic_skip') streak = 0;
+      });
+    }
+    return runs;
+  }
+
+  computeDifficulty() {
+    const diffPath = path.join(__dirname, '../data/processed/enriched-judge-scores.csv');
+    if (!fs.existsSync(diffPath)) return [];
+    return this.loadCSV(diffPath)
+      .filter(r => r.final_score && r.final_score !== 'DNI' && parseFloat(r.final_score) >= 50 && r.total_difficulty)
+      .map(r => ({
+        name: `${this.lastName(r.competitor)} R${r.run}`,
+        score: parseFloat(r.final_score),
+        diff: parseFloat(r.total_difficulty),
+      }));
+  }
+
+  buildHTML(data) {
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -148,7 +345,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   <div class="chart-wrap full">
     <div class="chart-title">Every Performance, Color-Coded</div>
     <div class="chart-subtitle">Positions 1–12 (left to right = worst to best qualifier) · Hover for details</div>
-    <div class="comp-grid"><div class="comp-rlabel">R1</div><div class="cell-clean comp-cell" title="Jake PATES (USA) — clean"><div class="cname">PATES</div><div class="cscore">77.5</div></div><div class="cell-wipeout comp-cell" title="Chase JOSEY (USA) — wipeout"><div class="cname">JOSEY</div><div class="cscore">11.75</div></div><div class="cell-wipeout comp-cell" title="Ziyang WANG (CHN) — wipeout"><div class="cname">WANG</div><div class="cscore">17.75</div></div><div class="cell-wipeout comp-cell" title="Chaeun LEE (KOR) — wipeout"><div class="cname">LEE</div><div class="cscore">24.75</div></div><div class="cell-wipeout comp-cell" title="Campbell MELVILLE IVES (NZL) — wipeout"><div class="cname">IVES</div><div class="cscore">43</div></div><div class="cell-wipeout comp-cell" title="Ayumu HIRANO (JPN) — wipeout"><div class="cname">HIRANO</div><div class="cscore">27.5</div></div><div class="cell-wipeout comp-cell" title="Valentino GUSELI (AUS) — wipeout"><div class="cname">GUSELI</div><div class="cscore">35</div></div><div class="cell-clean comp-cell" title="Ruka HIRANO (JPN) — clean"><div class="cname">HIRANO</div><div class="cscore">90</div></div><div class="cell-clean comp-cell" title="Alessandro BARBIERI (USA) — clean"><div class="cname">BARBIERI</div><div class="cscore">75</div></div><div class="cell-clean comp-cell cell-medal" data-medal="🥉" title="Ryusei YAMADA (JPN) — clean"><div class="cname">YAMADA</div><div class="cscore">92</div></div><div class="cell-clean comp-cell cell-medal" data-medal="🥇" title="Yuto TOTSUKA (JPN) — clean"><div class="cname">TOTSUKA</div><div class="cscore">91</div></div><div class="cell-wipeout comp-cell cell-medal" data-medal="🥈" title="Scotty JAMES (AUS) — wipeout"><div class="cname">JAMES</div><div class="cscore">48.75</div></div><div class="comp-rlabel">R2</div><div class="cell-crash comp-cell" title="Jake PATES (USA) — crash"><div class="cname">PATES</div><div class="cscore">—</div></div><div class="cell-clean comp-cell" title="Chase JOSEY (USA) — clean"><div class="cname">JOSEY</div><div class="cscore">70.25</div></div><div class="cell-wipeout comp-cell" title="Ziyang WANG (CHN) — wipeout"><div class="cname">WANG</div><div class="cscore">17.25</div></div><div class="cell-wipeout comp-cell" title="Chaeun LEE (KOR) — wipeout"><div class="cname">LEE</div><div class="cscore">24.75</div></div><div class="cell-crash comp-cell" title="Campbell MELVILLE IVES (NZL) — crash"><div class="cname">IVES</div><div class="cscore">—</div></div><div class="cell-clean comp-cell" title="Ayumu HIRANO (JPN) — clean"><div class="cname">HIRANO</div><div class="cscore">86.5</div></div><div class="cell-crash comp-cell" title="Valentino GUSELI (AUS) — crash"><div class="cname">GUSELI</div><div class="cscore">—</div></div><div class="cell-clean comp-cell" title="Ruka HIRANO (JPN) — clean"><div class="cname">HIRANO</div><div class="cscore">90</div></div><div class="cell-crash comp-cell" title="Alessandro BARBIERI (USA) — crash"><div class="cname">BARBIERI</div><div class="cscore">—</div></div><div class="cell-crash comp-cell" title="Ryusei YAMADA (JPN) — crash"><div class="cname">YAMADA</div><div class="cscore">—</div></div><div class="cell-clean comp-cell cell-medal" data-medal="🥇" title="Yuto TOTSUKA (JPN) — clean"><div class="cname">TOTSUKA</div><div class="cscore">95</div></div><div class="cell-clean comp-cell cell-medal" data-medal="🥈" title="Scotty JAMES (AUS) — clean"><div class="cname">JAMES</div><div class="cscore">93.5</div></div><div class="comp-rlabel">R3</div><div class="cell-crash comp-cell" title="Jake PATES (USA) — crash"><div class="cname">PATES</div><div class="cscore">—</div></div><div class="cell-skip comp-cell" title="Chase JOSEY (USA) — did_not_improve"><div class="cname">JOSEY</div><div class="cscore">—</div></div><div class="cell-clean comp-cell" title="Ziyang WANG (CHN) — clean"><div class="cname">WANG</div><div class="cscore">76</div></div><div class="cell-clean comp-cell" title="Chaeun LEE (KOR) — clean"><div class="cname">LEE</div><div class="cscore">87.5</div></div><div class="cell-crash comp-cell" title="Campbell MELVILLE IVES (NZL) — crash"><div class="cname">IVES</div><div class="cscore">—</div></div><div class="cell-crash comp-cell" title="Ayumu HIRANO (JPN) — crash"><div class="cname">HIRANO</div><div class="cscore">—</div></div><div class="cell-clean comp-cell" title="Valentino GUSELI (AUS) — clean"><div class="cname">GUSELI</div><div class="cscore">88</div></div><div class="cell-clean comp-cell" title="Ruka HIRANO (JPN) — clean"><div class="cname">HIRANO</div><div class="cscore">91</div></div><div class="cell-crash comp-cell" title="Alessandro BARBIERI (USA) — crash"><div class="cname">BARBIERI</div><div class="cscore">—</div></div><div class="cell-clean comp-cell cell-medal" data-medal="🥉" title="Ryusei YAMADA (JPN) — clean"><div class="cname">YAMADA</div><div class="cscore">92</div></div><div class="cell-skip comp-cell cell-medal" data-medal="🥇" title="Yuto TOTSUKA (JPN) — strategic_skip"><div class="cname">TOTSUKA</div><div class="cscore">—</div></div><div class="cell-crash comp-cell cell-medal" data-medal="🥈" title="Scotty JAMES (AUS) — crash"><div class="cname">JAMES</div><div class="cscore">—</div></div></div>
+    ${this.buildGrid(data.sequences)}
   </div>
 </div>
 
@@ -260,7 +457,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 // CHART: Dot Strip (Judge scores per run)
 // ═══════════════════════════════════════════════════════════
 (function() {
-  const data = [{"label":"TOTSUKA R2","fullName":"Yuto TOTSUKA","run":2,"final":95,"scores":[{"j":1,"score":95,"country":"SLO"},{"j":2,"score":95,"country":"GBR"},{"j":3,"score":96,"country":"SWE"},{"j":4,"score":95,"country":"SUI"},{"j":5,"score":95,"country":"FRA"},{"j":6,"score":95,"country":"JPN"}],"spread":1,"type":"clean","allSame":false},{"label":"JAMES R2","fullName":"Scotty JAMES","run":2,"final":93.5,"scores":[{"j":1,"score":94,"country":"SLO"},{"j":2,"score":93,"country":"GBR"},{"j":3,"score":94,"country":"SWE"},{"j":4,"score":93,"country":"SUI"},{"j":5,"score":94,"country":"FRA"},{"j":6,"score":93,"country":"JPN"}],"spread":1,"type":"clean","allSame":false},{"label":"YAMADA R1","fullName":"Ryusei YAMADA","run":1,"final":92,"scores":[{"j":1,"score":92,"country":"SLO"},{"j":2,"score":88,"country":"GBR"},{"j":3,"score":92,"country":"SWE"},{"j":4,"score":92,"country":"SUI"},{"j":5,"score":92,"country":"FRA"},{"j":6,"score":92,"country":"JPN"}],"spread":4,"type":"clean","allSame":false},{"label":"YAMADA R3","fullName":"Ryusei YAMADA","run":3,"final":92,"scores":[{"j":1,"score":93,"country":"SLO"},{"j":2,"score":90,"country":"GBR"},{"j":3,"score":93,"country":"SWE"},{"j":4,"score":91,"country":"SUI"},{"j":5,"score":93,"country":"FRA"},{"j":6,"score":91,"country":"JPN"}],"spread":3,"type":"clean","allSame":false},{"label":"TOTSUKA R1","fullName":"Yuto TOTSUKA","run":1,"final":91,"scores":[{"j":1,"score":89,"country":"SLO"},{"j":2,"score":92,"country":"GBR"},{"j":3,"score":91,"country":"SWE"},{"j":4,"score":91,"country":"SUI"},{"j":5,"score":91,"country":"FRA"},{"j":6,"score":91,"country":"JPN"}],"spread":3,"type":"clean","allSame":false},{"label":"HIRANO R3","fullName":"Ruka HIRANO","run":3,"final":91,"scores":[{"j":1,"score":91,"country":"SLO"},{"j":2,"score":91,"country":"GBR"},{"j":3,"score":91,"country":"SWE"},{"j":4,"score":89,"country":"SUI"},{"j":5,"score":91,"country":"FRA"},{"j":6,"score":91,"country":"JPN"}],"spread":2,"type":"clean","allSame":false},{"label":"HIRANO R1","fullName":"Ruka HIRANO","run":1,"final":90,"scores":[{"j":1,"score":90,"country":"SLO"},{"j":2,"score":90,"country":"GBR"},{"j":3,"score":90,"country":"SWE"},{"j":4,"score":90,"country":"SUI"},{"j":5,"score":90,"country":"FRA"},{"j":6,"score":90,"country":"JPN"}],"spread":0,"type":"clean","allSame":true},{"label":"HIRANO R2","fullName":"Ruka HIRANO","run":2,"final":90,"scores":[{"j":1,"score":90,"country":"SLO"},{"j":2,"score":90,"country":"GBR"},{"j":3,"score":90,"country":"SWE"},{"j":4,"score":90,"country":"SUI"},{"j":5,"score":90,"country":"FRA"},{"j":6,"score":90,"country":"JPN"}],"spread":0,"type":"clean","allSame":true},{"label":"GUSELI R3","fullName":"Valentino GUSELI","run":3,"final":88,"scores":[{"j":1,"score":89,"country":"SLO"},{"j":2,"score":89,"country":"GBR"},{"j":3,"score":89,"country":"SWE"},{"j":4,"score":87,"country":"SUI"},{"j":5,"score":87,"country":"FRA"},{"j":6,"score":85,"country":"JPN"}],"spread":4,"type":"clean","allSame":false},{"label":"LEE R3","fullName":"Chaeun LEE","run":3,"final":87.5,"scores":[{"j":1,"score":88,"country":"SLO"},{"j":2,"score":89,"country":"GBR"},{"j":3,"score":88,"country":"SWE"},{"j":4,"score":88,"country":"SUI"},{"j":5,"score":86,"country":"FRA"},{"j":6,"score":86,"country":"JPN"}],"spread":3,"type":"clean","allSame":false},{"label":"HIRANO R2","fullName":"Ayumu HIRANO","run":2,"final":86.5,"scores":[{"j":1,"score":85,"country":"SLO"},{"j":2,"score":86,"country":"GBR"},{"j":3,"score":87,"country":"SWE"},{"j":4,"score":86,"country":"SUI"},{"j":5,"score":87,"country":"FRA"},{"j":6,"score":88,"country":"JPN"}],"spread":3,"type":"clean","allSame":false},{"label":"PATES R1","fullName":"Jake PATES","run":1,"final":77.5,"scores":[{"j":1,"score":78,"country":"SLO"},{"j":2,"score":77,"country":"GBR"},{"j":3,"score":78,"country":"SWE"},{"j":4,"score":77,"country":"SUI"},{"j":5,"score":79,"country":"FRA"},{"j":6,"score":77,"country":"JPN"}],"spread":2,"type":"clean","allSame":false},{"label":"WANG R3","fullName":"Ziyang WANG","run":3,"final":76,"scores":[{"j":1,"score":76,"country":"SLO"},{"j":2,"score":76,"country":"GBR"},{"j":3,"score":76,"country":"SWE"},{"j":4,"score":76,"country":"SUI"},{"j":5,"score":77,"country":"FRA"},{"j":6,"score":76,"country":"JPN"}],"spread":1,"type":"clean","allSame":false},{"label":"BARBIERI R1","fullName":"Alessandro BARBIERI","run":1,"final":75,"scores":[{"j":1,"score":75,"country":"SLO"},{"j":2,"score":74,"country":"GBR"},{"j":3,"score":75,"country":"SWE"},{"j":4,"score":75,"country":"SUI"},{"j":5,"score":76,"country":"FRA"},{"j":6,"score":75,"country":"JPN"}],"spread":2,"type":"clean","allSame":false},{"label":"JOSEY R2","fullName":"Chase JOSEY","run":2,"final":70.25,"scores":[{"j":1,"score":70,"country":"SLO"},{"j":2,"score":70,"country":"GBR"},{"j":3,"score":70,"country":"SWE"},{"j":4,"score":70,"country":"SUI"},{"j":5,"score":71,"country":"FRA"},{"j":6,"score":71,"country":"JPN"}],"spread":1,"type":"clean","allSame":false},{"label":"JAMES R1","fullName":"Scotty JAMES","run":1,"final":48.75,"scores":[{"j":1,"score":50,"country":"SLO"},{"j":2,"score":45,"country":"GBR"},{"j":3,"score":50,"country":"SWE"},{"j":4,"score":46,"country":"SUI"},{"j":5,"score":49,"country":"FRA"},{"j":6,"score":50,"country":"JPN"}],"spread":5,"type":"wipeout","allSame":false},{"label":"IVES R1","fullName":"Campbell MELVILLE IVES","run":1,"final":43,"scores":[{"j":1,"score":43,"country":"SLO"},{"j":2,"score":42,"country":"GBR"},{"j":3,"score":45,"country":"SWE"},{"j":4,"score":40,"country":"SUI"},{"j":5,"score":45,"country":"FRA"},{"j":6,"score":42,"country":"JPN"}],"spread":5,"type":"wipeout","allSame":false},{"label":"GUSELI R1","fullName":"Valentino GUSELI","run":1,"final":35,"scores":[{"j":1,"score":35,"country":"SLO"},{"j":2,"score":35,"country":"GBR"},{"j":3,"score":35,"country":"SWE"},{"j":4,"score":35,"country":"SUI"},{"j":5,"score":35,"country":"FRA"},{"j":6,"score":34,"country":"JPN"}],"spread":1,"type":"wipeout","allSame":false},{"label":"HIRANO R1","fullName":"Ayumu HIRANO","run":1,"final":27.5,"scores":[{"j":1,"score":28,"country":"SLO"},{"j":2,"score":28,"country":"GBR"},{"j":3,"score":27,"country":"SWE"},{"j":4,"score":26,"country":"SUI"},{"j":5,"score":29,"country":"FRA"},{"j":6,"score":27,"country":"JPN"}],"spread":3,"type":"wipeout","allSame":false},{"label":"LEE R1","fullName":"Chaeun LEE","run":1,"final":24.75,"scores":[{"j":1,"score":25,"country":"SLO"},{"j":2,"score":24,"country":"GBR"},{"j":3,"score":25,"country":"SWE"},{"j":4,"score":23,"country":"SUI"},{"j":5,"score":25,"country":"FRA"},{"j":6,"score":25,"country":"JPN"}],"spread":2,"type":"wipeout","allSame":false},{"label":"LEE R2","fullName":"Chaeun LEE","run":2,"final":24.75,"scores":[{"j":1,"score":24,"country":"SLO"},{"j":2,"score":25,"country":"GBR"},{"j":3,"score":20,"country":"SWE"},{"j":4,"score":24,"country":"SUI"},{"j":5,"score":27,"country":"FRA"},{"j":6,"score":26,"country":"JPN"}],"spread":7,"type":"wipeout","allSame":false},{"label":"WANG R1","fullName":"Ziyang WANG","run":1,"final":17.75,"scores":[{"j":1,"score":18,"country":"SLO"},{"j":2,"score":17,"country":"GBR"},{"j":3,"score":17,"country":"SWE"},{"j":4,"score":18,"country":"SUI"},{"j":5,"score":19,"country":"FRA"},{"j":6,"score":18,"country":"JPN"}],"spread":2,"type":"wipeout","allSame":false},{"label":"WANG R2","fullName":"Ziyang WANG","run":2,"final":17.25,"scores":[{"j":1,"score":18,"country":"SLO"},{"j":2,"score":17,"country":"GBR"},{"j":3,"score":17,"country":"SWE"},{"j":4,"score":17,"country":"SUI"},{"j":5,"score":18,"country":"FRA"},{"j":6,"score":17,"country":"JPN"}],"spread":1,"type":"wipeout","allSame":false},{"label":"JOSEY R1","fullName":"Chase JOSEY","run":1,"final":11.75,"scores":[{"j":1,"score":15,"country":"SLO"},{"j":2,"score":10,"country":"GBR"},{"j":3,"score":12,"country":"SWE"},{"j":4,"score":12,"country":"SUI"},{"j":5,"score":10,"country":"FRA"},{"j":6,"score":13,"country":"JPN"}],"spread":5,"type":"wipeout","allSame":false}];
+  const data = ${JSON.stringify(data.dotStrip)};
   const margin = { top: 10, right: 30, bottom: 30, left: 120 };
   const rowH = 22;
   const width = 860;
@@ -268,7 +465,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
   const svg = d3.select('#chart-dotstrip')
     .append('svg')
-    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('viewBox', \`0 0 \${width} \${height}\`)
     .style('width', '100%');
 
   // Scales
@@ -332,7 +529,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   });
 
   // Legend
-  const legend = svg.append('g').attr('transform', `translate(${margin.left}, ${height - 6})`);
+  const legend = svg.append('g').attr('transform', \`translate(\${margin.left}, \${height - 6})\`);
   [{c: C.green, t: 'Clean run'}, {c: C.red, t: 'Wipeout'}, {c: C.purple, t: 'Perfect consensus'}].forEach((l, i) => {
     legend.append('circle').attr('cx', i * 120).attr('cy', 0).attr('r', 4).attr('fill', l.c);
     legend.append('text').attr('x', i * 120 + 8).attr('y', 4).attr('font-size', 10).attr('fill', C.muted).text(l.t);
@@ -343,13 +540,13 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 // CHART: Wipeout Scatter
 // ═══════════════════════════════════════════════════════════
 (function() {
-  const data = [{"name":"JOSEY R1","tricks":2,"score":11.75,"spread":5},{"name":"WANG R2","tricks":4,"score":17.25,"spread":1},{"name":"WANG R1","tricks":3,"score":17.75,"spread":2},{"name":"LEE R1","tricks":3,"score":24.75,"spread":2},{"name":"LEE R2","tricks":3,"score":24.75,"spread":7},{"name":"HIRANO R1","tricks":3,"score":27.5,"spread":3},{"name":"GUSELI R1","tricks":5,"score":35,"spread":1},{"name":"IVES R1","tricks":5,"score":43,"spread":5},{"name":"JAMES R1","tricks":5,"score":48.75,"spread":5}];
+  const data = ${JSON.stringify(data.wipeouts)};
   const margin = { top: 40, right: 40, bottom: 50, left: 60 };
   const width = 800, height = 360;
 
   const svg = d3.select('#chart-wipeouts')
     .append('svg')
-    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('viewBox', \`0 0 \${width} \${height}\`)
     .style('width', '100%');
 
   const x = d3.scaleLinear().domain([1.5, 5.5]).range([margin.left, width - margin.right]);
@@ -366,7 +563,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
   // Axis labels
   svg.append('text').attr('x', width/2).attr('y', height - 8).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).text('Tricks Completed Before Crash');
-  svg.append('text').attr('x', 14).attr('y', height/2).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).attr('transform', `rotate(-90, 14, ${height/2})`).text('Wipeout Score');
+  svg.append('text').attr('x', 14).attr('y', height/2).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).attr('transform', \`rotate(-90, 14, \${height/2})\`).text('Wipeout Score');
   svg.append('text').attr('x', width/2).attr('y', 24).attr('text-anchor', 'middle').attr('font-size', 14).attr('fill', C.text).attr('font-weight', 600).attr('font-family', 'Space Grotesk').text('More Tricks Completed = Higher Wipeout Score');
 
   // Trend line (simple linear regression)
@@ -404,14 +601,14 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 // CHART: Judge Severity (Lollipop + dots)
 // ═══════════════════════════════════════════════════════════
 (function() {
-  const data = [{"judge":"J1","name":"SUMATIC Iztok","country":"SLO","devs":[-1.83,-0.17,1.67,0.5,0.67,1.17,0,0,0.33,0.17,1.33,0.5,-0.33,0.5,0.5,-1.5,0.33,0.17,0.67,-0.17,0,3,-0.33,0.17],"avg":0.30624999999999997},{"judge":"J2","name":"WESSMAN VOGAN Gaz","country":"GBR","devs":[1.17,-0.17,-3.33,-0.5,-3.33,-1.83,0,0,0.33,0.17,1.33,-0.5,0.67,1.5,0.5,-0.5,-0.67,-0.83,-0.33,-0.17,-1,-2,-0.33,-0.83],"avg":-0.44375000000000003},{"judge":"J3","name":"WESTMAN Fredrik","country":"SWE","devs":[0.17,0.83,1.67,0.5,0.67,1.17,0,0,0.33,0.17,1.33,0.5,-4.33,0.5,-0.5,0.5,0.33,-0.83,-0.33,-0.17,0,0,-0.33,2.17],"avg":0.18125},{"judge":"J4","name":"REGLI Andrin","country":"SUI","devs":[0.17,-0.17,-2.33,-0.5,0.67,-0.83,0,0,-1.67,0.17,-0.67,-1.5,-0.33,0.5,-1.5,-0.5,-0.67,0.17,-0.33,-0.17,0,0,-0.33,-2.83],"avg":-0.5270833333333333},{"judge":"J5","name":"HARICOT Julien","country":"FRA","devs":[0.17,-0.17,0.67,0.5,0.67,1.17,0,0,0.33,0.17,-0.67,0.5,2.67,-1.5,1.5,0.5,1.33,1.17,0.67,0.83,1,-2,0.67,2.17],"avg":0.5145833333333333},{"judge":"J6","name":"HASHIMOTO Ryo","country":"JPN","devs":[0.17,-0.17,1.67,-0.5,0.67,-0.83,0,0,0.33,-0.83,-2.67,0.5,1.67,-1.5,-0.5,1.5,-0.67,0.17,-0.33,-0.17,0,1,0.67,-0.83],"avg":-0.02708333333333333}];
+  const data = ${JSON.stringify(data.severity)};
   const margin = { top: 40, right: 30, bottom: 40, left: 140 };
   const rowH = 60;
   const width = 860, height = margin.top + margin.bottom + data.length * rowH;
 
   const svg = d3.select('#chart-severity')
     .append('svg')
-    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('viewBox', \`0 0 \${width} \${height}\`)
     .style('width', '100%');
 
   const x = d3.scaleLinear().domain([-3, 3]).range([margin.left, width - margin.right]);
@@ -432,7 +629,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     const yp = yPos(i);
 
     // Label
-    svg.append('text').attr('x', margin.left - 10).attr('y', yp - 6).attr('text-anchor', 'end').attr('font-size', 12).attr('fill', C.text).attr('font-weight', 600).text(`${judge.judge} · ${judge.country}`);
+    svg.append('text').attr('x', margin.left - 10).attr('y', yp - 6).attr('text-anchor', 'end').attr('font-size', 12).attr('fill', C.text).attr('font-weight', 600).text(\`\${judge.judge} · \${judge.country}\`);
     svg.append('text').attr('x', margin.left - 10).attr('y', yp + 10).attr('text-anchor', 'end').attr('font-size', 10).attr('fill', C.dim).text(judge.name);
 
     // Deviation dots
@@ -463,13 +660,13 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 // CHART: Relief Bias
 // ═══════════════════════════════════════════════════════════
 (function() {
-  const data = [{"name":"PATES R1","competitor":"Jake PATES","pos":1,"score":77.5,"streak":0,"round":1},{"name":"HIRANO R1","competitor":"Ruka HIRANO","pos":8,"score":90,"streak":6,"round":1},{"name":"BARBIERI R1","competitor":"Alessandro BARBIERI","pos":9,"score":75,"streak":0,"round":1},{"name":"YAMADA R1","competitor":"Ryusei YAMADA","pos":10,"score":92,"streak":0,"round":1},{"name":"TOTSUKA R1","competitor":"Yuto TOTSUKA","pos":11,"score":91,"streak":0,"round":1},{"name":"JOSEY R2","competitor":"Chase JOSEY","pos":2,"score":70.25,"streak":1,"round":2},{"name":"HIRANO R2","competitor":"Ayumu HIRANO","pos":6,"score":86.5,"streak":3,"round":2},{"name":"HIRANO R2","competitor":"Ruka HIRANO","pos":8,"score":90,"streak":1,"round":2},{"name":"TOTSUKA R2","competitor":"Yuto TOTSUKA","pos":11,"score":95,"streak":2,"round":2},{"name":"JAMES R2","competitor":"Scotty JAMES","pos":12,"score":93.5,"streak":0,"round":2},{"name":"WANG R3","competitor":"Ziyang WANG","pos":3,"score":76,"streak":0,"round":3},{"name":"LEE R3","competitor":"Chaeun LEE","pos":4,"score":87.5,"streak":0,"round":3},{"name":"GUSELI R3","competitor":"Valentino GUSELI","pos":7,"score":88,"streak":2,"round":3},{"name":"HIRANO R3","competitor":"Ruka HIRANO","pos":8,"score":91,"streak":0,"round":3},{"name":"YAMADA R3","competitor":"Ryusei YAMADA","pos":10,"score":92,"streak":1,"round":3}];
+  const data = ${JSON.stringify(data.relief)};
   const margin = { top: 40, right: 120, bottom: 50, left: 60 };
   const width = 860, height = 400;
 
   const svg = d3.select('#chart-relief')
     .append('svg')
-    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('viewBox', \`0 0 \${width} \${height}\`)
     .style('width', '100%');
 
   const x = d3.scaleLinear().domain([-0.5, 7]).range([margin.left, width - margin.right]);
@@ -483,14 +680,14 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
   // Labels
   svg.append('text').attr('x', width/2).attr('y', height - 6).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).text('Consecutive Crashes Immediately Before This Run');
-  svg.append('text').attr('x', 14).attr('y', height/2).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).attr('transform', `rotate(-90, 14, ${height/2})`).text('Score');
+  svg.append('text').attr('x', 14).attr('y', height/2).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).attr('transform', \`rotate(-90, 14, \${height/2})\`).text('Score');
   svg.append('text').attr('x', width/2).attr('y', 24).attr('text-anchor', 'middle').attr('font-size', 14).attr('fill', C.text).attr('font-weight', 600).attr('font-family', 'Space Grotesk').text('Does a Crash Streak Boost the Next Clean Score?');
 
   // Average line
   const avg = data.reduce((s,d) => s + d.score, 0) / data.length;
   svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y(avg)).attr('y2', y(avg))
     .attr('stroke', C.dim).attr('stroke-dasharray', '4,4').attr('stroke-width', 1);
-  svg.append('text').attr('x', width - margin.right + 4).attr('y', y(avg) + 4).attr('font-size', 10).attr('fill', C.dim).text(`avg: ${avg.toFixed(1)}`);
+  svg.append('text').attr('x', width - margin.right + 4).attr('y', y(avg) + 4).attr('font-size', 10).attr('fill', C.dim).text(\`avg: \${avg.toFixed(1)}\`);
 
   // Points
   data.forEach(d => {
@@ -519,14 +716,14 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 // CHART: Difficulty vs Score
 // ═══════════════════════════════════════════════════════════
 (function() {
-  const data = [{"name":"TOTSUKA R1","score":91,"diff":43.5},{"name":"TOTSUKA R2","score":95,"diff":46.5},{"name":"JAMES R2","score":93.5,"diff":47},{"name":"YAMADA R1","score":92,"diff":33.5},{"name":"YAMADA R3","score":92,"diff":32.5},{"name":"HIRANO R1","score":90,"diff":48.5},{"name":"HIRANO R2","score":90,"diff":51.5},{"name":"HIRANO R3","score":91,"diff":48.5},{"name":"GUSELI R3","score":88,"diff":36.5},{"name":"LEE R3","score":87.5,"diff":50.5},{"name":"HIRANO R2","score":86.5,"diff":50},{"name":"PATES R1","score":77.5,"diff":43},{"name":"WANG R3","score":76,"diff":51.5},{"name":"BARBIERI R1","score":75,"diff":44},{"name":"JOSEY R2","score":70.25,"diff":28.5}];
+  const data = ${JSON.stringify(data.difficulty)};
   if (!data.length) return;
   const margin = { top: 40, right: 40, bottom: 50, left: 60 };
   const width = 800, height = 400;
 
   const svg = d3.select('#chart-difficulty')
     .append('svg')
-    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('viewBox', \`0 0 \${width} \${height}\`)
     .style('width', '100%');
 
   const x = d3.scaleLinear().domain([25, 55]).range([margin.left, width - margin.right]);
@@ -543,7 +740,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   });
 
   svg.append('text').attr('x', width/2).attr('y', height - 6).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).text('Total Trick Difficulty (our computed score)');
-  svg.append('text').attr('x', 14).attr('y', height/2).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).attr('transform', `rotate(-90, 14, ${height/2})`).text('Final Score');
+  svg.append('text').attr('x', 14).attr('y', height/2).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).attr('transform', \`rotate(-90, 14, \${height/2})\`).text('Final Score');
   svg.append('text').attr('x', width/2).attr('y', 24).attr('text-anchor', 'middle').attr('font-size', 14).attr('fill', C.text).attr('font-weight', 600).attr('font-family', 'Space Grotesk').text('Execution Beats Difficulty');
 
   // r annotation
@@ -568,4 +765,26 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 })();
 </script>
 </body>
-</html>
+</html>`;
+  }
+
+  buildGrid(sequences) {
+    const statusCls = { clean: 'cell-clean', wipeout: 'cell-wipeout', crash: 'cell-crash', strategic_skip: 'cell-skip', did_not_improve: 'cell-skip' };
+    const medalEmoji = { GOLD: '🥇', SILVER: '🥈', BRONZE: '🥉' };
+    let html = '<div class="comp-grid">';
+    sequences.forEach((runs, ri) => {
+      html += `<div class="comp-rlabel">R${ri + 1}</div>`;
+      runs.forEach(r => {
+        const cls = statusCls[r.status] || 'cell-skip';
+        const scoreStr = r.score !== null ? r.score : '—';
+        const medalAttr = medalEmoji[r.medal] ? ` class="${cls} comp-cell cell-medal" data-medal="${medalEmoji[r.medal]}"` : ` class="${cls} comp-cell"`;
+        html += `<div${medalAttr} title="${r.fullName} (${r.country}) — ${r.status}"><div class="cname">${r.name}</div><div class="cscore">${scoreStr}</div></div>`;
+      });
+    });
+    html += '</div>';
+    return html;
+  }
+}
+
+const gen = new PremiumReport();
+gen.generate();
