@@ -14,8 +14,8 @@
   --surface2: #1a1a26;
   --border: #2a2a3a;
   --text: #e8e8f0;
-  --muted: #7a7a90;
-  --dim: #4a4a5e;
+  --muted: #9898ac;
+  --dim: #84849c;
   --accent: #6c8cff;
   --green: #4ade80;
   --red: #f87171;
@@ -64,8 +64,8 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 .hero-stats { display: flex; gap: 40px; margin-top: 48px; }
 .hero-stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 42px; font-weight: 700; }
 .hero-stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.scroll-hint { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: var(--dim); font-size: 12px; letter-spacing: 2px; animation: pulse 2s ease-in-out infinite; }
-@keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+.scroll-hint { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: var(--text); font-size: 12px; font-weight: 500; letter-spacing: 2px; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
 /* Key Findings Cards */
 .findings { padding: 60px 40px; max-width: 1100px; margin: 0 auto; }
@@ -219,11 +219,11 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   <div class="hero-content">
     <div class="hero-label">Milano-Cortina 2026 · Men's Snowboard Halfpipe Final</div>
     <h1>What 144 Scores Reveal About <span>Olympic Judging</span></h1>
-    <p class="hero-desc">Six judges scored every run. We have all their individual numbers. Here's what the data shows about consensus, bias, and what actually drives the score.</p>
+    <p class="hero-desc">For every scored performance in the final, we have all six individual judge ratings. Here's what the data shows about consensus, bias, and what actually drives the score.</p>
     <div class="hero-stats">
-      <div><div class="hero-stat-num" style="color:var(--green)">15</div><div class="hero-stat-label">Clean runs scored</div></div>
-      <div><div class="hero-stat-num" style="color:var(--red)">19</div><div class="hero-stat-label">Crashes witnessed</div></div>
-      <div><div class="hero-stat-num" style="color:var(--accent)">6</div><div class="hero-stat-label">Judges, every run</div></div>
+      <div><div class="hero-stat-num" style="color:var(--accent)">12</div><div class="hero-stat-label">Competitors</div></div>
+      <div><div class="hero-stat-num" style="color:var(--green)">24</div><div class="hero-stat-label">Scored performances</div></div>
+      <div><div class="hero-stat-num" style="color:var(--purple)">144</div><div class="hero-stat-label">Individual judge ratings</div></div>
     </div>
   </div>
   <div class="scroll-hint">SCROLL ↓</div>
@@ -236,7 +236,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
     <div class="finding-card">
       <div class="finding-icon">🎯</div>
       <div class="finding-title">Perfect Agreement</div>
-      <div class="finding-detail">All 6 judges gave Ruka Hirano <strong>identical 90s</strong>. In two separate rounds. No other run came close.</div>
+      <div class="finding-detail">All 6 judges independently gave Ruka Hirano <strong>identical 90s</strong> — on two separate runs with <strong>different tricks</strong>.</div>
     </div>
     <div class="finding-card">
       <div class="finding-icon">💥</div>
@@ -284,7 +284,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 <div class="section reveal" style="max-width:1000px; margin:0 auto;">
   <div class="section-tag">The Consensus</div>
   <h2>Six Judges Wrote the Same Number. Twice.</h2>
-  <p class="prose">Ruka Hirano's Round 1 and Round 2 runs each received <em>identical scores from all six judges</em>: 90 across the board. In a subjective sport where every judge watches independently, this is extraordinary.</p>
+  <p class="prose">Ruka Hirano's Round 1 and Round 2 runs each received <em>identical scores from all six judges</em>: 90 across the board. The runs even featured different trick sequences — R2 included a triple cork upgrade over R1 — yet all six judges independently landed on the same number both times. The next-tightest agreement among all other runs was a 1-point spread.</p>
   
   <div class="chart-wrap">
     <div class="chart-title">Judge Score Spread Per Run</div>
@@ -373,7 +373,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 <script>
 // ── Shared config ──
 const C = {
-  bg: '#1a1a26', text: '#e8e8f0', muted: '#7a7a90', dim: '#4a4a5e', border: '#2a2a3a',
+  bg: '#1a1a26', text: '#e8e8f0', muted: '#9898ac', dim: '#84849c', border: '#2a2a3a',
   accent: '#6c8cff', green: '#4ade80', red: '#f87171', gold: '#fbbf24', purple: '#a78bfa', teal: '#2dd4bf',
 };
 
