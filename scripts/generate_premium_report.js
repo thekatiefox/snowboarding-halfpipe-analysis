@@ -185,6 +185,18 @@ class PremiumReport {
 
 
   buildHTML(data) {
+    // Curate dot strip to ~10 most illustrative runs
+    const curated = this.curateDotStrip(data.dotStrip);
+
+    // Compute relief group averages
+    const reliefGroups = {};
+    data.relief.forEach(d => {
+      const key = d.streak === 0 ? 0 : d.streak <= 2 ? 1 : 2;
+      if (!reliefGroups[key]) reliefGroups[key] = { scores: [], label: key === 0 ? 'After 0 crashes' : key === 1 ? 'After 1–2 crashes' : 'After 3+ crashes' };
+      reliefGroups[key].scores.push(d.score);
+    });
+    Object.values(reliefGroups).forEach(g => { g.avg = g.scores.reduce((a,b) => a+b, 0) / g.scores.length; g.n = g.scores.length; });
+
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -254,11 +266,46 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 .scroll-hint { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: var(--dim); font-size: 12px; letter-spacing: 2px; animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
 
+/* Key Findings Cards */
+.findings { padding: 60px 40px; max-width: 1100px; margin: 0 auto; }
+.findings-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--dim); text-align: center; margin-bottom: 32px; }
+.findings-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.finding-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 20px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.finding-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.finding-icon { font-size: 28px; margin-bottom: 12px; }
+.finding-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; line-height: 1.3; margin-bottom: 8px; }
+.finding-detail { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.finding-detail strong { color: var(--text); font-weight: 500; }
+
 /* Sections */
 .section { padding: 100px 40px; max-width: 1000px; margin: 0 auto; }
 .section-alt { background: var(--surface); }
-.section-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: block; }
-.section h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(28px, 4vw, 40px); font-weight: 700; letter-spacing: -1px; margin-bottom: 20px; line-height: 1.15; }
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+.section-tag::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 18px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.section h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(26px, 3.5vw, 36px); font-weight: 700; letter-spacing: -0.5px; margin-bottom: 20px; line-height: 1.2; }
 .prose { color: var(--muted); font-size: 16px; max-width: 600px; line-height: 1.8; margin-bottom: 32px; }
 .prose strong { color: var(--text); font-weight: 500; }
 .prose em { color: var(--accent); font-style: normal; font-weight: 500; }
@@ -266,8 +313,8 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 /* Charts */
 .chart-wrap { background: var(--surface2); border: 1px solid var(--border); border-radius: 16px; padding: 32px; margin: 32px 0; overflow-x: auto; }
 .chart-wrap.full { padding: 24px 16px; }
-.chart-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 16px; color: var(--text); }
-.chart-subtitle { font-size: 12px; color: var(--dim); margin-top: -12px; margin-bottom: 16px; }
+.chart-title { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+.chart-subtitle { font-size: 12px; color: var(--dim); margin-bottom: 16px; }
 
 /* Callouts */
 .callout { border-left: 3px solid var(--accent); background: rgba(108,140,255,0.06); padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 32px 0; }
@@ -275,11 +322,48 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 .callout strong { color: var(--text); }
 .callout.gold { border-left-color: var(--gold); background: rgba(251,191,36,0.06); }
 
+/* Verdict — pull-quote style for key conclusions */
+.verdict {
+  text-align: center;
+  padding: 48px 32px;
+  margin: 40px 0;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  position: relative;
+}
+.verdict::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 60px; height: 3px;
+  border-radius: 2px;
+}
+.verdict.green::before { background: var(--green); }
+.verdict.gold::before { background: var(--gold); }
+.verdict-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+.verdict-sub { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 500px; margin: 0 auto; }
+
 /* Big number row */
-.big-nums { display: flex; flex-wrap: wrap; gap: 24px; margin: 40px 0; }
-.big-num { flex: 1; min-width: 140px; text-align: center; padding: 28px 16px; background: var(--surface2); border: 1px solid var(--border); border-radius: 16px; }
-.big-num .num { font-family: 'Space Grotesk', sans-serif; font-size: 48px; font-weight: 700; line-height: 1; }
+.big-nums { display: flex; flex-wrap: wrap; gap: 16px; margin: 32px 0; }
+.big-num { flex: 1; min-width: 130px; text-align: center; padding: 24px 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 16px; }
+.big-num .num { font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 700; line-height: 1; }
 .big-num .label { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.4; }
+
+/* Section divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  max-width: 200px;
+  margin: 0 auto;
+}
 
 /* Competition grid */
 .comp-grid { display: grid; grid-template-columns: 40px repeat(12, 1fr); gap: 4px; margin: 24px 0; }
@@ -295,20 +379,35 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 .cell-medal { position: relative; }
 .cell-medal::after { content: attr(data-medal); position: absolute; top: -4px; right: -2px; font-size: 10px; }
 
+/* Grid legend */
+.grid-legend { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+.grid-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
+.grid-legend-swatch { width: 12px; height: 12px; border-radius: 4px; }
+
 /* Fade in */
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Conclusion */
+.conclusion { padding: 80px 40px; max-width: 700px; margin: 0 auto; text-align: center; }
+.conclusion h2 { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; margin-bottom: 24px; }
+.conclusion p { font-size: 16px; color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+.conclusion p strong { color: var(--text); font-weight: 500; }
 
 /* Footer */
 .footer { text-align: center; padding: 60px 40px; color: var(--dim); font-size: 12px; border-top: 1px solid var(--border); }
 .footer a { color: var(--accent); text-decoration: none; }
 
+@media (max-width: 900px) {
+  .findings-grid { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 700px) {
   .hero { padding: 40px 20px 60px; }
   .section { padding: 60px 20px; }
   .hero-stats { flex-direction: column; gap: 20px; }
   .big-nums { flex-direction: column; }
   .comp-grid { overflow-x: auto; min-width: 700px; }
+  .findings-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -321,7 +420,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
     <h1>What 144 Scores Reveal About <span>Olympic Judging</span></h1>
     <p class="hero-desc">Six judges scored every run. We have all their individual numbers. Here's what the data shows about consensus, bias, and what actually drives the score.</p>
     <div class="hero-stats">
-      <div><div class="hero-stat-num" style="color:var(--green)">15</div><div class="hero-stat-label">Clean runs</div></div>
+      <div><div class="hero-stat-num" style="color:var(--green)">15</div><div class="hero-stat-label">Clean runs scored</div></div>
       <div><div class="hero-stat-num" style="color:var(--red)">19</div><div class="hero-stat-label">Crashes witnessed</div></div>
       <div><div class="hero-stat-num" style="color:var(--accent)">6</div><div class="hero-stat-label">Judges, every run</div></div>
     </div>
@@ -329,9 +428,38 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   <div class="scroll-hint">SCROLL ↓</div>
 </div>
 
-<!-- ═══ SECTION 1: THE COMPETITION ═══ -->
+<!-- ═══ KEY FINDINGS ═══ -->
+<div class="findings reveal">
+  <div class="findings-label">Key Findings at a Glance</div>
+  <div class="findings-grid">
+    <div class="finding-card">
+      <div class="finding-icon">🎯</div>
+      <div class="finding-title">Perfect Agreement</div>
+      <div class="finding-detail">All 6 judges gave Ruka Hirano <strong>identical 90s</strong>. In two separate rounds. No other run came close.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-icon">💥</div>
+      <div class="finding-title">Crashes Create Confusion</div>
+      <div class="finding-detail">Judges <strong>disagree 70% more</strong> on wipeout scores than clean runs. Crashes introduce genuine uncertainty.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-icon">⚖️</div>
+      <div class="finding-title">The System Works</div>
+      <div class="finding-detail">Dropping the high/low score shifts results by just <strong>0.17 points</strong> on average. Medals wouldn't change.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-icon">🔍</div>
+      <div class="finding-title">Relief Bias? Probably Not</div>
+      <div class="finding-detail">No evidence that watching crashes inflates the next clean score. <strong>Within-rider data</strong> shows no effect.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ═══ SECTION 1: THE EVENT ═══ -->
 <div class="section reveal">
-  <span class="section-num">01 · The Event</span>
+  <div class="section-tag">The Event</div>
   <h2>Three Rounds of Chaos and Precision</h2>
   <p class="prose">The worst qualifier goes first. The best goes last. Same order, every round. Round 1 was carnage — <strong>six consecutive wipeouts</strong> before a single clean landing. By Round 3, four riders had crashed out entirely, and the gold medalist didn't even bother to drop in.</p>
   
@@ -339,81 +467,99 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
     <div class="chart-title">Every Performance, Color-Coded</div>
     <div class="chart-subtitle">Positions 1–12 (left to right = worst to best qualifier) · Hover for details</div>
     ${this.buildGrid(data.sequences)}
+    <div class="grid-legend">
+      <div class="grid-legend-item"><div class="grid-legend-swatch" style="background:rgba(74,222,128,0.3); border:1px solid rgba(74,222,128,0.5)"></div> Clean run</div>
+      <div class="grid-legend-item"><div class="grid-legend-swatch" style="background:rgba(248,113,113,0.3); border:1px solid rgba(248,113,113,0.5)"></div> Wipeout (scored)</div>
+      <div class="grid-legend-item"><div class="grid-legend-swatch" style="background:rgba(248,113,113,0.15); border:1px solid rgba(248,113,113,0.25)"></div> Crash (DNI)</div>
+      <div class="grid-legend-item"><div class="grid-legend-swatch" style="background:rgba(122,122,144,0.15); border:1px solid rgba(122,122,144,0.25)"></div> Skipped / No improvement</div>
+    </div>
   </div>
 </div>
 
-<!-- ═══ SECTION 2: PERFECT CONSENSUS ═══ -->
+<div class="section-divider"></div>
+
+<!-- ═══ SECTION 2: THE CONSENSUS ═══ -->
 <div class="section-alt">
 <div class="section reveal" style="max-width:1000px; margin:0 auto;">
-  <span class="section-num">02 · The Anomaly</span>
+  <div class="section-tag">The Consensus</div>
   <h2>Six Judges Wrote the Same Number. Twice.</h2>
-  <p class="prose">Ruka Hirano's Round 1 and Round 2 runs each received <em>identical scores from all six judges</em>: 90 across the board. In a subjective sport where every judge watches independently, this is extraordinary. No other run came close — the tightest anyone else managed was a 1-point spread.</p>
+  <p class="prose">Ruka Hirano's Round 1 and Round 2 runs each received <em>identical scores from all six judges</em>: 90 across the board. In a subjective sport where every judge watches independently, this is extraordinary.</p>
   
   <div class="chart-wrap">
-    <div class="chart-title">All Six Judge Scores Per Run</div>
-    <div class="chart-subtitle">Each dot = one judge's score · Horizontal spread shows disagreement · Purple = perfect consensus</div>
+    <div class="chart-title">Judge Score Spread Per Run</div>
+    <div class="chart-subtitle">Each dot = one judge's score · Horizontal spread = disagreement · Purple = perfect consensus</div>
     <div id="chart-dotstrip"></div>
   </div>
 
   <div class="callout">
-    <p>Why does this matter? Perfect consensus either means the performance was so unambiguous that all judges independently converged — or it suggests <strong>anchoring</strong>, where early scores influence later ones. We can't distinguish which, but we can say it's statistically remarkable.</p>
+    <p>Perfect consensus either means the performance was so unambiguous that all judges independently converged — or it suggests <strong>anchoring</strong>, where early scores influence later ones. We can't distinguish which from this data, but we can say it's statistically remarkable.</p>
   </div>
 </div>
 </div>
 
-<!-- ═══ SECTION 3: WIPEOUT MECHANICS ═══ -->
+<div class="section-divider"></div>
+
+<!-- ═══ SECTION 3: THE DISAGREEMENT (merged wipeout + severity) ═══ -->
 <div class="section reveal">
-  <span class="section-num">03 · The Formula</span>
-  <h2>How Wipeouts Are Really Scored</h2>
-  <p class="prose">When a rider crashes mid-run, what determines the score? Not the difficulty of what they attempted, not their reputation — it's almost entirely <strong>how many tricks they completed before falling</strong>.</p>
+  <div class="section-tag">The Disagreement</div>
+  <h2>When Do Judges Diverge?</h2>
+  <p class="prose">Judges agree remarkably well on clean runs. But when a rider crashes mid-run, consensus breaks down. The question becomes: <em>how much credit for what they showed?</em></p>
+
+  <div class="big-nums">
+    <div class="big-num"><div class="num" style="color:var(--green)">2.0 pts</div><div class="label">Avg judge spread<br>on clean runs</div></div>
+    <div class="big-num"><div class="num" style="color:var(--red)">3.4 pts</div><div class="label">Avg judge spread<br>on wipeouts</div></div>
+    <div class="big-num"><div class="num" style="color:var(--gold)">70%</div><div class="label">More disagreement<br>on crashes</div></div>
+  </div>
 
   <div class="chart-wrap">
+    <div class="chart-title">Wipeout Scores: Tricks Completed Before Crash</div>
+    <div class="chart-subtitle">More tricks landed = higher score, regardless of what they were attempting</div>
     <div id="chart-wipeouts"></div>
   </div>
 
-  <div class="big-nums">
-    <div class="big-num"><div class="num" style="color:var(--red)">0.836</div><div class="label">Correlation between<br>tricks completed & score</div></div>
-    <div class="big-num"><div class="num" style="color:var(--gold)">3.4</div><div class="label">Avg judge spread on<br>wipeouts (pts)</div></div>
-    <div class="big-num"><div class="num" style="color:var(--green)">2.0</div><div class="label">Avg judge spread on<br>clean runs (pts)</div></div>
-  </div>
+  <p class="prose" style="margin-top: 32px">And some judges are <strong>consistently</strong> more generous or strict than others — across every run, not just wipeouts.</p>
 
-  <div class="callout">
-    <p>Judges <strong>disagree 70% more on wipeouts</strong> than clean runs. A crash introduces genuine uncertainty — was the rider going to land something spectacular? How much credit for what they showed? Clean runs leave much less room for interpretation.</p>
-  </div>
-</div>
-
-<!-- ═══ SECTION 4: JUDGE SEVERITY ═══ -->
-<div class="section-alt">
-<div class="section reveal" style="max-width:1000px; margin:0 auto;">
-  <span class="section-num">04 · The Personalities</span>
-  <h2>Not All Judges Score Alike</h2>
-  <p class="prose">Since all six judges score every run, we can isolate pure judge effects — same tricks, same execution, <strong>different scores</strong>. Some judges are measurably generous, others measurably strict.</p>
-  
   <div class="chart-wrap">
+    <div class="chart-title">How Each Judge Deviates from the Panel Average</div>
+    <div class="chart-subtitle">Each dot = one run's deviation · Lollipop = average tendency · Left = strict, Right = generous</div>
     <div id="chart-severity"></div>
   </div>
 
-  <div class="callout">
-    <p>But here's the good news: the sport's built-in safeguard <strong>works</strong>. The trimmed mean (drop the highest and lowest score) shifts the final result by just <strong>0.17 points on average</strong>. Medal rankings would be identical with or without trimming.</p>
+  <div class="verdict green">
+    <div class="verdict-text">But the safety net works.</div>
+    <div class="verdict-sub">The trimmed mean (drop the highest and lowest score) shifts the final result by just <strong>0.17 points on average</strong>. Medal rankings would be identical with or without it.</div>
   </div>
 </div>
-</div>
 
-<!-- ═══ SECTION 5: RELIEF BIAS ═══ -->
-<div class="section reveal">
-  <span class="section-num">05 · The Question</span>
+<div class="section-divider"></div>
+
+<!-- ═══ SECTION 4: THE HYPOTHESIS ═══ -->
+<div class="section-alt">
+<div class="section reveal" style="max-width:1000px; margin:0 auto;">
+  <div class="section-tag">The Hypothesis</div>
   <h2>Does a Crash Streak Help the Next Clean Run?</h2>
-  <p class="prose">The hypothesis: after watching multiple riders crash in a row, judges feel <em>relief</em> when someone finally lands — and unconsciously score them higher. We mapped every clean run against the number of consecutive crashes that immediately preceded it.</p>
+  <p class="prose">The hypothesis: after watching multiple riders crash in a row, judges feel <em>relief</em> when someone finally lands — and unconsciously score them higher. We tracked the number of consecutive crashes immediately before each clean run.</p>
 
   <div class="chart-wrap">
     <div id="chart-relief"></div>
   </div>
 
-  <div class="callout gold">
-    <p><strong>The verdict: probably not.</strong> The between-groups gap (+1.96 pts) sounds meaningful, but within-rider comparisons tell a different story. Ruka Hirano scored <strong>highest after zero crashes</strong> (91 vs 90). Yamada scored identically (92) regardless of context. The only positive case — Totsuka +4 after two crashes — came with a trick upgrade. The data doesn't support a relief bias narrative from this competition.</p>
+  <div class="verdict gold">
+    <div class="verdict-text">Verdict: probably not.</div>
+    <div class="verdict-sub">The group average is +1.96 pts higher after crash streaks — but within-rider comparisons tell a different story. Ruka scored <strong>highest after zero crashes</strong> (91 vs 90). Yamada scored identically (92) regardless. The one positive case came with a trick upgrade, not a bias effect.</div>
   </div>
 </div>
+</div>
 
+<div class="section-divider"></div>
+
+<!-- ═══ CONCLUSION ═══ -->
+<div class="conclusion reveal">
+  <h2>What We Learned</h2>
+  <p>Olympic halfpipe judging is <strong>more consistent than you'd expect</strong>. Six independent judges land within 2 points of each other on clean runs, and the trimmed mean effectively neutralizes individual tendencies.</p>
+  <p>The biggest source of disagreement isn't bias — it's <strong>ambiguity</strong>. Wipeouts force judges to estimate what could have been, and that's where scores diverge. As for contrast bias from watching crashes? The data from this competition says <strong>no</strong>.</p>
+  <p style="color: var(--dim); margin-top: 32px; font-size: 14px;">Based on individual judge scores from 24 scored performances across 3 rounds.<br>All data from the official Olympics.com results.</p>
+</div>
 
 <div class="footer">
   <div style="margin-bottom: 12px; font-size: 14px; color: var(--muted);">✦</div>
@@ -437,12 +583,12 @@ const obs = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
 // ═══════════════════════════════════════════════════════════
-// CHART: Dot Strip (Judge scores per run)
+// CHART: Dot Strip (curated runs)
 // ═══════════════════════════════════════════════════════════
 (function() {
-  const data = ${JSON.stringify(data.dotStrip)};
-  const margin = { top: 10, right: 30, bottom: 30, left: 120 };
-  const rowH = 22;
+  const data = ${JSON.stringify(curated)};
+  const margin = { top: 10, right: 30, bottom: 40, left: 140 };
+  const rowH = 32;
   const width = 860;
   const height = margin.top + margin.bottom + data.length * rowH;
 
@@ -451,10 +597,9 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     .attr('viewBox', \`0 0 \${width} \${height}\`)
     .style('width', '100%');
 
-  // Scales
   const allScores = data.flatMap(d => d.scores.map(s => s.score));
-  const xMin = Math.min(...allScores) - 2;
-  const xMax = Math.max(...allScores) + 2;
+  const xMin = Math.min(...allScores) - 3;
+  const xMax = Math.max(...allScores) + 3;
   const x = d3.scaleLinear().domain([xMin, xMax]).range([margin.left, width - margin.right]);
   const y = (i) => margin.top + i * rowH + rowH / 2;
 
@@ -467,7 +612,6 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     .attr('y1', margin.top).attr('y2', height - margin.bottom)
     .attr('stroke', C.border).attr('stroke-width', 0.5);
 
-  // Tick labels
   svg.selectAll('.tick-label')
     .data(ticks.filter(t => t % 10 === 0))
     .join('text')
@@ -475,47 +619,52 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     .attr('text-anchor', 'middle').attr('font-size', 10).attr('fill', C.dim)
     .text(d => d);
 
-  // Rows
   data.forEach((run, i) => {
     const yPos = y(i);
-
-    // Row background on hover
-    svg.append('rect')
-      .attr('x', 0).attr('y', yPos - rowH/2)
-      .attr('width', width).attr('height', rowH)
-      .attr('fill', 'transparent')
-      .attr('class', 'row-bg');
+    const dotColor = run.allSame ? C.purple : run.type === 'wipeout' ? C.red : C.green;
+    const labelColor = run.allSame ? C.purple : run.type === 'wipeout' ? C.red : C.muted;
 
     // Row label
-    const labelColor = run.allSame ? C.purple : run.type === 'wipeout' ? C.red : C.muted;
     svg.append('text')
-      .attr('x', margin.left - 8).attr('y', yPos + 4)
-      .attr('text-anchor', 'end').attr('font-size', 10).attr('fill', labelColor)
-      .attr('font-weight', run.allSame ? 600 : 400)
+      .attr('x', margin.left - 10).attr('y', yPos + 4)
+      .attr('text-anchor', 'end').attr('font-size', 11).attr('fill', labelColor)
+      .attr('font-weight', run.allSame ? 700 : 400)
       .text(run.label);
+
+    // Spread annotation
+    svg.append('text')
+      .attr('x', margin.left - 10).attr('y', yPos + 15)
+      .attr('text-anchor', 'end').attr('font-size', 9).attr('fill', C.dim)
+      .text(\`±\${run.spread.toFixed(0)} pt spread\`);
+
+    // Connecting line (range)
+    const scores = run.scores.map(s => s.score);
+    svg.append('line')
+      .attr('x1', x(Math.min(...scores))).attr('x2', x(Math.max(...scores)))
+      .attr('y1', yPos).attr('y2', yPos)
+      .attr('stroke', dotColor).attr('stroke-width', 1.5).attr('opacity', 0.25);
 
     // Score dots
     run.scores.forEach(s => {
-      const dotColor = run.allSame ? C.purple : run.type === 'wipeout' ? C.red : C.green;
       svg.append('circle')
         .attr('cx', x(s.score)).attr('cy', yPos)
-        .attr('r', 3.5)
+        .attr('r', run.allSame ? 6 : 4.5)
         .attr('fill', dotColor)
-        .attr('opacity', 0.8);
+        .attr('opacity', run.allSame ? 0.9 : 0.7);
     });
 
     // Final score marker
     svg.append('line')
       .attr('x1', x(run.final)).attr('x2', x(run.final))
-      .attr('y1', yPos - 6).attr('y2', yPos + 6)
-      .attr('stroke', C.text).attr('stroke-width', 1.5).attr('opacity', 0.4);
+      .attr('y1', yPos - 8).attr('y2', yPos + 8)
+      .attr('stroke', C.text).attr('stroke-width', 1.5).attr('opacity', 0.3);
   });
 
   // Legend
-  const legend = svg.append('g').attr('transform', \`translate(\${margin.left}, \${height - 6})\`);
-  [{c: C.green, t: 'Clean run'}, {c: C.red, t: 'Wipeout'}, {c: C.purple, t: 'Perfect consensus'}].forEach((l, i) => {
-    legend.append('circle').attr('cx', i * 120).attr('cy', 0).attr('r', 4).attr('fill', l.c);
-    legend.append('text').attr('x', i * 120 + 8).attr('y', 4).attr('font-size', 10).attr('fill', C.muted).text(l.t);
+  const ly = height - 10;
+  [{c: C.purple, t: 'Perfect consensus (spread = 0)'}, {c: C.green, t: 'Clean run'}, {c: C.red, t: 'Wipeout'}].forEach((l, i) => {
+    svg.append('circle').attr('cx', margin.left + i * 180).attr('cy', ly).attr('r', 4).attr('fill', l.c).attr('opacity', 0.8);
+    svg.append('text').attr('x', margin.left + i * 180 + 8).attr('y', ly + 4).attr('font-size', 10).attr('fill', C.muted).text(l.t);
   });
 })();
 
@@ -525,7 +674,7 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 (function() {
   const data = ${JSON.stringify(data.wipeouts)};
   const margin = { top: 40, right: 40, bottom: 50, left: 60 };
-  const width = 800, height = 360;
+  const width = 800, height = 340;
 
   const svg = d3.select('#chart-wipeouts')
     .append('svg')
@@ -535,21 +684,18 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   const x = d3.scaleLinear().domain([1.5, 5.5]).range([margin.left, width - margin.right]);
   const y = d3.scaleLinear().domain([5, 55]).range([height - margin.bottom, margin.top]);
 
-  // Grid
   [2, 3, 4, 5].forEach(v => {
     svg.append('line').attr('x1', x(v)).attr('x2', x(v)).attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke', C.border).attr('stroke-width', 0.5);
+    svg.append('text').attr('x', x(v)).attr('y', height - margin.bottom + 18).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', C.dim).text(\`\${v} tricks\`);
   });
   [10, 20, 30, 40, 50].forEach(v => {
     svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y(v)).attr('y2', y(v)).attr('stroke', C.border).attr('stroke-width', 0.5);
     svg.append('text').attr('x', margin.left - 10).attr('y', y(v) + 4).attr('text-anchor', 'end').attr('font-size', 11).attr('fill', C.dim).text(v);
   });
 
-  // Axis labels
-  svg.append('text').attr('x', width/2).attr('y', height - 8).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).text('Tricks Completed Before Crash');
-  svg.append('text').attr('x', 14).attr('y', height/2).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).attr('transform', \`rotate(-90, 14, \${height/2})\`).text('Wipeout Score');
-  svg.append('text').attr('x', width/2).attr('y', 24).attr('text-anchor', 'middle').attr('font-size', 14).attr('fill', C.text).attr('font-weight', 600).attr('font-family', 'Space Grotesk').text('More Tricks Completed = Higher Wipeout Score');
+  svg.append('text').attr('x', 14).attr('y', height/2).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).attr('transform', \`rotate(-90, 14, \${height/2})\`).text('Score');
 
-  // Trend line (simple linear regression)
+  // Trend line
   const xs = data.map(d => d.tricks), ys = data.map(d => d.score);
   const n = xs.length;
   const xm = xs.reduce((a,b) => a+b) / n, ym = ys.reduce((a,b) => a+b) / n;
@@ -560,24 +706,20 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   svg.append('line')
     .attr('x1', x(1.5)).attr('x2', x(5.5))
     .attr('y1', y(slope*1.5+intercept)).attr('y2', y(slope*5.5+intercept))
-    .attr('stroke', C.red).attr('stroke-width', 1.5).attr('stroke-dasharray', '6,4').attr('opacity', 0.6);
+    .attr('stroke', C.red).attr('stroke-width', 1.5).attr('stroke-dasharray', '6,4').attr('opacity', 0.5);
 
-  // Points
   data.forEach(d => {
-    const g = svg.append('g');
-    g.append('circle')
+    svg.append('circle')
       .attr('cx', x(d.tricks)).attr('cy', y(d.score))
       .attr('r', 7)
-      .attr('fill', C.red).attr('opacity', 0.7)
-      .attr('stroke', C.red).attr('stroke-width', 1).attr('stroke-opacity', 0.3);
-    g.append('text')
+      .attr('fill', C.red).attr('opacity', 0.7);
+    svg.append('text')
       .attr('x', x(d.tricks) + 10).attr('y', y(d.score) + 4)
       .attr('font-size', 10).attr('fill', C.muted)
       .text(d.name);
   });
 
-  // r value annotation
-  svg.append('text').attr('x', x(4.5)).attr('y', y(45)).attr('font-size', 20).attr('fill', C.red).attr('font-family', 'Space Grotesk').attr('font-weight', 700).attr('opacity', 0.5).text('r = 0.836');
+  svg.append('text').attr('x', x(4.8)).attr('y', y(48)).attr('font-size', 16).attr('fill', C.red).attr('font-family', 'Space Grotesk').attr('font-weight', 700).attr('opacity', 0.4).text('r = 0.836');
 })();
 
 // ═══════════════════════════════════════════════════════════
@@ -585,8 +727,8 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 // ═══════════════════════════════════════════════════════════
 (function() {
   const data = ${JSON.stringify(data.severity)};
-  const margin = { top: 40, right: 30, bottom: 40, left: 140 };
-  const rowH = 60;
+  const margin = { top: 20, right: 30, bottom: 40, left: 140 };
+  const rowH = 55;
   const width = 860, height = margin.top + margin.bottom + data.length * rowH;
 
   const svg = d3.select('#chart-severity')
@@ -597,62 +739,49 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   const x = d3.scaleLinear().domain([-3, 3]).range([margin.left, width - margin.right]);
   const yPos = (i) => margin.top + i * rowH + rowH / 2;
 
-  // Title
-  svg.append('text').attr('x', width/2).attr('y', 20).attr('text-anchor', 'middle').attr('font-size', 14).attr('fill', C.text).attr('font-weight', 600).attr('font-family', 'Space Grotesk').text('How Each Judge Deviates from the Panel Average');
-
-  // Grid
   [-2, -1, 0, 1, 2].forEach(v => {
     svg.append('line').attr('x1', x(v)).attr('x2', x(v)).attr('y1', margin.top).attr('y2', height - margin.bottom)
       .attr('stroke', v === 0 ? C.accent : C.border).attr('stroke-width', v === 0 ? 1.5 : 0.5)
       .attr('stroke-dasharray', v === 0 ? 'none' : '2,4');
-    svg.append('text').attr('x', x(v)).attr('y', height - margin.bottom + 16).attr('text-anchor', 'middle').attr('font-size', 10).attr('fill', C.dim).text(v === 0 ? '0 (panel avg)' : (v > 0 ? '+' : '') + v);
+    svg.append('text').attr('x', x(v)).attr('y', height - margin.bottom + 16).attr('text-anchor', 'middle').attr('font-size', 10).attr('fill', C.dim).text(v === 0 ? '0 (avg)' : (v > 0 ? '+' : '') + v);
   });
 
   data.forEach((judge, i) => {
     const yp = yPos(i);
 
-    // Label
-    svg.append('text').attr('x', margin.left - 10).attr('y', yp - 6).attr('text-anchor', 'end').attr('font-size', 12).attr('fill', C.text).attr('font-weight', 600).text(\`\${judge.judge} · \${judge.country}\`);
+    svg.append('text').attr('x', margin.left - 10).attr('y', yp - 4).attr('text-anchor', 'end').attr('font-size', 12).attr('fill', C.text).attr('font-weight', 600).text(\`J\${i+1} · \${judge.country}\`);
     svg.append('text').attr('x', margin.left - 10).attr('y', yp + 10).attr('text-anchor', 'end').attr('font-size', 10).attr('fill', C.dim).text(judge.name);
 
-    // Deviation dots
     judge.devs.forEach(d => {
       svg.append('circle')
-        .attr('cx', x(d)).attr('cy', yp + (Math.random() - 0.5) * 16)
+        .attr('cx', x(d)).attr('cy', yp + (Math.random() - 0.5) * 14)
         .attr('r', 3)
         .attr('fill', d > 0 ? C.green : d < 0 ? C.red : C.muted)
-        .attr('opacity', 0.5);
+        .attr('opacity', 0.45);
     });
 
-    // Average lollipop
     svg.append('line').attr('x1', x(0)).attr('x2', x(judge.avg)).attr('y1', yp).attr('y2', yp)
       .attr('stroke', judge.avg > 0.15 ? C.green : judge.avg < -0.15 ? C.red : C.muted).attr('stroke-width', 2.5);
     svg.append('circle').attr('cx', x(judge.avg)).attr('cy', yp).attr('r', 5)
       .attr('fill', judge.avg > 0.15 ? C.green : judge.avg < -0.15 ? C.red : C.muted);
   });
-
-  // Legend
-  svg.append('circle').attr('cx', margin.left).attr('cy', height - 10).attr('r', 3).attr('fill', C.green).attr('opacity', 0.6);
-  svg.append('text').attr('x', margin.left + 8).attr('y', height - 6).attr('font-size', 10).attr('fill', C.dim).text('Scored above panel');
-  svg.append('circle').attr('cx', margin.left + 130).attr('cy', height - 10).attr('r', 3).attr('fill', C.red).attr('opacity', 0.6);
-  svg.append('text').attr('x', margin.left + 138).attr('y', height - 6).attr('font-size', 10).attr('fill', C.dim).text('Scored below panel');
-  svg.append('text').attr('x', margin.left + 270).attr('y', height - 6).attr('font-size', 10).attr('fill', C.dim).text('● = average deviation');
 })();
 
 // ═══════════════════════════════════════════════════════════
-// CHART: Relief Bias
+// CHART: Relief Bias (with group averages)
 // ═══════════════════════════════════════════════════════════
 (function() {
   const data = ${JSON.stringify(data.relief)};
-  const margin = { top: 40, right: 120, bottom: 50, left: 60 };
-  const width = 860, height = 400;
+  const groups = ${JSON.stringify(Object.values(reliefGroups))};
+  const margin = { top: 40, right: 30, bottom: 60, left: 60 };
+  const width = 860, height = 420;
 
   const svg = d3.select('#chart-relief')
     .append('svg')
     .attr('viewBox', \`0 0 \${width} \${height}\`)
     .style('width', '100%');
 
-  const x = d3.scaleLinear().domain([-0.5, 7]).range([margin.left, width - margin.right]);
+  const x = d3.scaleLinear().domain([-0.8, 7.5]).range([margin.left, width - margin.right]);
   const y = d3.scaleLinear().domain([65, 100]).range([height - margin.bottom, margin.top]);
 
   // Grid
@@ -661,16 +790,37 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     svg.append('text').attr('x', margin.left - 10).attr('y', y(v) + 4).attr('text-anchor', 'end').attr('font-size', 11).attr('fill', C.dim).text(v);
   });
 
-  // Labels
-  svg.append('text').attr('x', width/2).attr('y', height - 6).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).text('Consecutive Crashes Immediately Before This Run');
+  svg.append('text').attr('x', width/2).attr('y', height - 10).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).text('Consecutive Crashes Immediately Before This Run');
   svg.append('text').attr('x', 14).attr('y', height/2).attr('text-anchor', 'middle').attr('font-size', 12).attr('fill', C.muted).attr('transform', \`rotate(-90, 14, \${height/2})\`).text('Score');
   svg.append('text').attr('x', width/2).attr('y', 24).attr('text-anchor', 'middle').attr('font-size', 14).attr('fill', C.text).attr('font-weight', 600).attr('font-family', 'Space Grotesk').text('Does a Crash Streak Boost the Next Clean Score?');
 
-  // Average line
-  const avg = data.reduce((s,d) => s + d.score, 0) / data.length;
-  svg.append('line').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y(avg)).attr('y2', y(avg))
-    .attr('stroke', C.dim).attr('stroke-dasharray', '4,4').attr('stroke-width', 1);
-  svg.append('text').attr('x', width - margin.right + 4).attr('y', y(avg) + 4).attr('font-size', 10).attr('fill', C.dim).text(\`avg: \${avg.toFixed(1)}\`);
+  // Group average bands
+  const groupConfigs = [
+    { streaks: [0], color: C.accent, xCenter: 0 },
+    { streaks: [1, 2], color: C.gold, xCenter: 1.5 },
+    { streaks: [3, 4, 5, 6], color: C.red, xCenter: 4.5 },
+  ];
+
+  groupConfigs.forEach((gc, gi) => {
+    const pts = data.filter(d => gc.streaks.includes(d.streak));
+    if (!pts.length) return;
+    const avg = pts.reduce((s, d) => s + d.score, 0) / pts.length;
+    const xL = x(Math.min(...gc.streaks) - 0.4);
+    const xR = x(Math.max(...gc.streaks) + 0.4);
+
+    // Shaded average band
+    svg.append('rect')
+      .attr('x', xL).attr('y', y(avg) - 2)
+      .attr('width', xR - xL).attr('height', 4)
+      .attr('fill', gc.color).attr('opacity', 0.3).attr('rx', 2);
+
+    // Average label
+    svg.append('text')
+      .attr('x', xR + 6).attr('y', y(avg) + 4)
+      .attr('font-size', 11).attr('fill', gc.color).attr('font-weight', 600)
+      .attr('font-family', 'Space Grotesk')
+      .text(\`avg: \${avg.toFixed(1)} (n=\${pts.length})\`);
+  });
 
   // Points
   data.forEach(d => {
@@ -687,16 +837,29 @@ document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
       .attr('font-size', 9).attr('fill', C.muted)
       .text(d.name);
   });
-
-  // Legend
-  [{s: 0, c: C.accent, t: 'After clean run'}, {s: 1, c: C.gold, t: 'After 1-2 crashes'}, {s: 3, c: C.red, t: 'After 3+ crashes'}].forEach((l, i) => {
-    svg.append('circle').attr('cx', width - margin.right + 10).attr('cy', margin.top + 20 + i * 20).attr('r', 5).attr('fill', l.c).attr('opacity', 0.75);
-    svg.append('text').attr('x', width - margin.right + 20).attr('y', margin.top + 24 + i * 20).attr('font-size', 10).attr('fill', C.muted).text(l.t);
-  });
 })();
 </script>
 </body>
 </html>`;
+  }
+
+  curateDotStrip(allRuns) {
+    // Pick ~10 representative runs to tell the consensus story clearly
+    const perfect = allRuns.filter(r => r.allSame);
+    const clean = allRuns.filter(r => !r.allSame && r.type === 'clean').sort((a, b) => a.spread - b.spread);
+    const wipeouts = allRuns.filter(r => r.type === 'wipeout').sort((a, b) => b.spread - a.spread);
+
+    const picks = new Set();
+    // Always include perfect consensus runs
+    perfect.forEach(r => picks.add(r));
+    // Tightest clean spreads (2-3)
+    clean.slice(0, 3).forEach(r => picks.add(r));
+    // Widest clean spreads (1-2)
+    clean.slice(-2).forEach(r => picks.add(r));
+    // Widest wipeout spreads (2-3)
+    wipeouts.slice(0, 3).forEach(r => picks.add(r));
+
+    return [...picks].sort((a, b) => a.spread - b.spread);
   }
 
   buildGrid(sequences) {
