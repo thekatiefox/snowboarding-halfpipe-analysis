@@ -90,20 +90,37 @@ class PremiumReport {
   }
 
   computeSequences() {
+    // Find each medalist's best score to only show medal on that run
+    const bestScores = {};
+    this.rawScores.forEach(row => {
+      const m = row.medal;
+      if (m === 'GOLD' || m === 'SILVER' || m === 'BRONZE') {
+        const score = row.final_score === 'DNI' ? -1 : parseFloat(row.final_score);
+        const key = row.competitor;
+        if (!bestScores[key] || score > bestScores[key].score) {
+          bestScores[key] = { score, run: row.run, medal: m };
+        }
+      }
+    });
+
     const rounds = [];
     for (let r = 1; r <= 3; r++) {
       const runs = this.rawScores
         .filter(row => row.run === r.toString())
         .sort((a, b) => parseInt(a.position) - parseInt(b.position));
-      rounds.push(runs.map(run => ({
-        pos: parseInt(run.position),
-        name: this.lastName(run.competitor),
-        fullName: run.competitor,
-        country: run.country,
-        score: run.final_score === 'DNI' ? null : parseFloat(run.final_score),
-        status: this.getRunStatus(run),
-        medal: run.medal || '',
-      })));
+      rounds.push(runs.map(run => {
+        const best = bestScores[run.competitor];
+        const showMedal = best && best.run === r.toString() ? best.medal : '';
+        return {
+          pos: parseInt(run.position),
+          name: this.lastName(run.competitor),
+          fullName: run.competitor,
+          country: run.country,
+          score: run.final_score === 'DNI' ? null : parseFloat(run.final_score),
+          status: this.getRunStatus(run),
+          medal: showMedal,
+        };
+      }));
     }
     return rounds;
   }
