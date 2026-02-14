@@ -177,12 +177,64 @@ Similar patterns have been found in:
 
 ---
 
+## Scoring Methodology (NEW DATA)
+
+**Key Discovery**: Olympic halfpipe uses **trimmed mean** scoring:
+- 6 judges score each run
+- Exclude highest + lowest scores automatically
+- Final score = average of middle 4 judges
+
+**Implication**: Single judge bias is dampened. Relief bias requires 3+ judges showing consensus bias.
+
+---
+
+## Future Analysis Directions
+
+Now that we have individual judge scores and trick data:
+
+### A) Judge Outlier Analysis
+**Question**: Which judges are most frequently excluded (high/low)?
+- Track which judges are outliers most often
+- Test: Do certain judges have systematic biases?
+- Find: Are any judges consistently harsher/more lenient?
+
+### B) Middle-4 Judge Consensus Bias
+**Question**: Do 3+ judges simultaneously boost scores for same tricks?
+- Filter to runs with identical or near-identical trick sequences
+- Compare middle-4 judge averages across different contexts
+- Test: Do they score the same execution higher after wipeouts?
+- Example: Scotty James R1 vs R2 (identical tricks, 44-pt difference)
+
+### C) Individual Judge Context Sensitivity
+**Question**: Which judges show strongest relief bias patterns?
+- For each judge, correlate their scores with preceding wipeout count
+- Test: Judge 4 vs Judge 5 - do they respond differently?
+- Find: Is relief bias universal or concentrated in certain judges?
+
+### D) Context Effect Magnitude by Round
+**Question**: Does relief bias change between R1, R2, R3?
+- R1: Most wipeouts, judges "fresh"
+- R2: Fewer wipeouts, judges "settling in"
+- R3: No wipeouts, only elite performers remain
+- Test: Does effect size diminish with fewer wipeouts to compare?
+
+### E) Within-Score Variance Analysis
+**Question**: When 4 middle judges disagree, what causes the spread?
+- High variance = judges applying different standards
+- Low variance = judges agreeing
+- Test: Does variance increase after wipeouts (judges uncertain)?
+- Pattern: Does variance predict relief bonus magnitude?
+
+---
+
 ## Next Steps
 
-1. **Immediate**: Analyze wipeout context and recovery scores (Phase 1-2)
-2. **Short-term**: Collect trick difficulty data for all runs
-3. **Medium-term**: Get individual judge score breakdowns
-4. **Long-term**: Compare across multiple competitions
+1. **Immediate**: Analyze wipeout context and recovery scores (Phase 1-2) ✓
+2. **Current**: Add individual judge data and scoring methodology ✓
+3. **Phase 3**: Implement analysis direction A-E above
+4. **Short-term**: Collect trick difficulty classification
+5. **Medium-term**: Cross-competition validation
+6. **Long-term**: Judge panel composition effects
 
 ---
 
@@ -193,3 +245,8 @@ Similar patterns have been found in:
 - Which judges (if known) show the strongest contrast bias patterns?
 - Does the effect increase with more preceding wipeouts, or is it binary?
 - Do top qualifiers also show contrast effects, or only weaker competitors?
+- **NEW**: Which judges are outliers (excluded) most frequently?
+- **NEW**: For identical tricks, do 3+ judges score higher after wipeouts?
+- **NEW**: Does relief bias magnitude differ by judge nationality or experience?
+- **NEW**: Is relief bias stronger in R1 (post-wipeout chaos) vs R2-R3?
+- **NEW**: When judges disagree on a score, is it because of relief bias or other factors?
