@@ -204,6 +204,45 @@ class TrickDifficultyEstimator {
     console.log('   - Official scoring is much more sophisticated');
     console.log('   - But it\'s fun to see the pattern!\n');
 
+    // Save results to JSON
+    const output = {
+      timestamp: new Date().toISOString(),
+      description: 'Exploratory trick difficulty analysis - not scientific',
+      cleanRunsCount: this.cleanRuns.length,
+      analysisType: 'exploratory',
+      rotationDifficulty: Object.keys(trickDifficultyMap)
+        .map(Number)
+        .sort((a, b) => a - b)
+        .map(rotation => ({
+          rotation,
+          rotationDegrees: `${rotation}00°`,
+          count: trickDifficultyMap[rotation].length,
+          averageScore: stats.mean(trickDifficultyMap[rotation]).toFixed(2),
+        })),
+      complexityAnalysis: Object.keys(complexityMap)
+        .map(Number)
+        .sort((a, b) => a - b)
+        .map(complexity => ({
+          complexity,
+          description: `${complexity}-segment tricks`,
+          count: complexityMap[complexity].length,
+          averageScore: stats.mean(complexityMap[complexity]).toFixed(2),
+        })),
+      caveats: [
+        'Pattern detection only - NOT scientific',
+        'Confounded by performer skill and other tricks in run',
+        'Based on small sample (15 clean runs)',
+        'Trick codes may not perfectly represent actual difficulty',
+      ]
+    };
+
+    fs.writeFileSync(
+      path.join(__dirname, '../results/trick_difficulty_exploration.json'),
+      JSON.stringify(output, null, 2)
+    );
+
+    console.log(`✓ Results saved to results/trick_difficulty_exploration.json\n`);
+
   }
 
   run() {

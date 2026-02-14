@@ -1,0 +1,491 @@
+{
+  "timestamp": "2026-02-14T07:33:08.920Z",
+  "hypothesis": "Do judges give higher scores (relief/contrast effect) after witnessing wipeouts?",
+  "rounds": {
+    "r1": {
+      "roundName": "round1",
+      "totalPerformances": 12,
+      "cleanRuns": 5,
+      "wipeouts": 7,
+      "performances": [
+        {
+          "position": 1,
+          "competitor": "Jake PATES",
+          "score": 77.5,
+          "qualRank": 12,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 0,
+          "cleanRunsInRound": 0,
+          "recentWipeouts": {
+            "last1": null,
+            "last3": 0,
+            "last5": 0
+          },
+          "avgScoreBefore": null
+        },
+        {
+          "position": 8,
+          "competitor": "Ruka HIRANO",
+          "score": 90,
+          "qualRank": 5,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 6,
+          "cleanRunsInRound": 1,
+          "recentWipeouts": {
+            "last1": true,
+            "last3": 3,
+            "last5": 5
+          },
+          "avgScoreBefore": 77.5
+        },
+        {
+          "position": 9,
+          "competitor": "Alessandro BARBIERI",
+          "score": 75,
+          "qualRank": 4,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 6,
+          "cleanRunsInRound": 2,
+          "recentWipeouts": {
+            "last1": false,
+            "last3": 2,
+            "last5": 4
+          },
+          "avgScoreBefore": 83.75
+        },
+        {
+          "position": 10,
+          "competitor": "Ryusei YAMADA",
+          "score": 92,
+          "qualRank": 3,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 6,
+          "cleanRunsInRound": 3,
+          "recentWipeouts": {
+            "last1": false,
+            "last3": 1,
+            "last5": 3
+          },
+          "avgScoreBefore": 80.83333333333333
+        },
+        {
+          "position": 11,
+          "competitor": "Yuto TOTSUKA",
+          "score": 91,
+          "qualRank": 2,
+          "isTopQualifier": true,
+          "wipeoutsInRound": 6,
+          "cleanRunsInRound": 4,
+          "recentWipeouts": {
+            "last1": false,
+            "last3": 0,
+            "last5": 2
+          },
+          "avgScoreBefore": 83.625
+        }
+      ]
+    },
+    "r2": {
+      "roundName": "round2",
+      "totalPerformances": 7,
+      "cleanRuns": 5,
+      "wipeouts": 2,
+      "performances": [
+        {
+          "position": 2,
+          "competitor": "Chase JOSEY",
+          "score": 70.25,
+          "qualRank": 11,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 0,
+          "cleanRunsInRound": 0,
+          "recentWipeouts": {
+            "last1": null,
+            "last3": 0,
+            "last5": 0
+          },
+          "avgScoreBefore": null
+        },
+        {
+          "position": 6,
+          "competitor": "Ayumu HIRANO",
+          "score": 86.5,
+          "qualRank": 7,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 2,
+          "cleanRunsInRound": 1,
+          "recentWipeouts": {
+            "last1": true,
+            "last3": 2,
+            "last5": 2
+          },
+          "avgScoreBefore": 70.25
+        },
+        {
+          "position": 8,
+          "competitor": "Ruka HIRANO",
+          "score": 90,
+          "qualRank": 5,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 2,
+          "cleanRunsInRound": 2,
+          "recentWipeouts": {
+            "last1": false,
+            "last3": 2,
+            "last5": 2
+          },
+          "avgScoreBefore": 78.375
+        },
+        {
+          "position": 11,
+          "competitor": "Yuto TOTSUKA",
+          "score": 95,
+          "qualRank": 2,
+          "isTopQualifier": true,
+          "wipeoutsInRound": 2,
+          "cleanRunsInRound": 3,
+          "recentWipeouts": {
+            "last1": false,
+            "last3": 1,
+            "last5": 2
+          },
+          "avgScoreBefore": 82.25
+        },
+        {
+          "position": 12,
+          "competitor": "Scotty JAMES",
+          "score": 93.5,
+          "qualRank": 1,
+          "isTopQualifier": true,
+          "wipeoutsInRound": 2,
+          "cleanRunsInRound": 4,
+          "recentWipeouts": {
+            "last1": false,
+            "last3": 0,
+            "last5": 2
+          },
+          "avgScoreBefore": 85.4375
+        }
+      ]
+    },
+    "r3": {
+      "roundName": "round3",
+      "totalPerformances": 5,
+      "cleanRuns": 5,
+      "wipeouts": 0,
+      "performances": [
+        {
+          "position": 3,
+          "competitor": "Ziyang WANG",
+          "score": 76,
+          "qualRank": 10,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 0,
+          "cleanRunsInRound": 0,
+          "recentWipeouts": {
+            "last1": null,
+            "last3": 0,
+            "last5": 0
+          },
+          "avgScoreBefore": null
+        },
+        {
+          "position": 4,
+          "competitor": "Chaeun LEE",
+          "score": 87.5,
+          "qualRank": 9,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 0,
+          "cleanRunsInRound": 1,
+          "recentWipeouts": {
+            "last1": false,
+            "last3": 0,
+            "last5": 0
+          },
+          "avgScoreBefore": 76
+        },
+        {
+          "position": 7,
+          "competitor": "Valentino GUSELI",
+          "score": 88,
+          "qualRank": 6,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 0,
+          "cleanRunsInRound": 2,
+          "recentWipeouts": {
+            "last1": false,
+            "last3": 0,
+            "last5": 0
+          },
+          "avgScoreBefore": 81.75
+        },
+        {
+          "position": 8,
+          "competitor": "Ruka HIRANO",
+          "score": 91,
+          "qualRank": 5,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 0,
+          "cleanRunsInRound": 3,
+          "recentWipeouts": {
+            "last1": false,
+            "last3": 0,
+            "last5": 0
+          },
+          "avgScoreBefore": 83.83333333333333
+        },
+        {
+          "position": 10,
+          "competitor": "Ryusei YAMADA",
+          "score": 92,
+          "qualRank": 3,
+          "isTopQualifier": false,
+          "wipeoutsInRound": 0,
+          "cleanRunsInRound": 4,
+          "recentWipeouts": {
+            "last1": false,
+            "last3": 0,
+            "last5": 0
+          },
+          "avgScoreBefore": 85.625
+        }
+      ]
+    }
+  },
+  "recoveryAnalysis": {
+    "baseline": {
+      "mean": 86.35,
+      "stdDev": 7.470943715488692,
+      "count": 15
+    },
+    "recovery": {
+      "mean": 89.125,
+      "stdDev": 5.845671475544961,
+      "count": 8,
+      "runs": [
+        {
+          "score": 90,
+          "competitor": "Ruka HIRANO",
+          "wipeoutsBefore": 6,
+          "after": "6 wipeout(s)"
+        },
+        {
+          "score": 75,
+          "competitor": "Alessandro BARBIERI",
+          "wipeoutsBefore": 6,
+          "after": "6 wipeout(s)"
+        },
+        {
+          "score": 92,
+          "competitor": "Ryusei YAMADA",
+          "wipeoutsBefore": 6,
+          "after": "6 wipeout(s)"
+        },
+        {
+          "score": 91,
+          "competitor": "Yuto TOTSUKA",
+          "wipeoutsBefore": 6,
+          "after": "6 wipeout(s)"
+        },
+        {
+          "score": 86.5,
+          "competitor": "Ayumu HIRANO",
+          "wipeoutsBefore": 2,
+          "after": "2 wipeout(s)"
+        },
+        {
+          "score": 90,
+          "competitor": "Ruka HIRANO",
+          "wipeoutsBefore": 2,
+          "after": "2 wipeout(s)"
+        },
+        {
+          "score": 95,
+          "competitor": "Yuto TOTSUKA",
+          "wipeoutsBefore": 2,
+          "after": "2 wipeout(s)"
+        },
+        {
+          "score": 93.5,
+          "competitor": "Scotty JAMES",
+          "wipeoutsBefore": 2,
+          "after": "2 wipeout(s)"
+        }
+      ]
+    },
+    "cumulativeEffects": {
+      "2": [
+        90,
+        75,
+        86.5,
+        90
+      ],
+      "3": [
+        90,
+        75,
+        92
+      ],
+      "5": [
+        90
+      ]
+    }
+  },
+  "trajectories": {
+    "Chase JOSEY": {
+      "pattern": "W-L",
+      "scores": "11.8 → 70.3",
+      "runs": [
+        {
+          "round": 1,
+          "score": 11.75
+        },
+        {
+          "round": 2,
+          "score": 70.25
+        }
+      ],
+      "isRecoveryPattern": false,
+      "isTopQualifier": false
+    },
+    "Ziyang WANG": {
+      "pattern": "W-W-L",
+      "scores": "17.8 → 17.3 → 76.0",
+      "runs": [
+        {
+          "round": 1,
+          "score": 17.75
+        },
+        {
+          "round": 2,
+          "score": 17.25
+        },
+        {
+          "round": 3,
+          "score": 76
+        }
+      ],
+      "isRecoveryPattern": false,
+      "isTopQualifier": false
+    },
+    "Chaeun LEE": {
+      "pattern": "W-W-H",
+      "scores": "24.8 → 24.8 → 87.5",
+      "runs": [
+        {
+          "round": 1,
+          "score": 24.75
+        },
+        {
+          "round": 2,
+          "score": 24.75
+        },
+        {
+          "round": 3,
+          "score": 87.5
+        }
+      ],
+      "isRecoveryPattern": true,
+      "isTopQualifier": false
+    },
+    "Ayumu HIRANO": {
+      "pattern": "W-H",
+      "scores": "27.5 → 86.5",
+      "runs": [
+        {
+          "round": 1,
+          "score": 27.5
+        },
+        {
+          "round": 2,
+          "score": 86.5
+        }
+      ],
+      "isRecoveryPattern": true,
+      "isTopQualifier": false
+    },
+    "Valentino GUSELI": {
+      "pattern": "W-H",
+      "scores": "35.0 → 88.0",
+      "runs": [
+        {
+          "round": 1,
+          "score": 35
+        },
+        {
+          "round": 3,
+          "score": 88
+        }
+      ],
+      "isRecoveryPattern": true,
+      "isTopQualifier": false
+    },
+    "Ruka HIRANO": {
+      "pattern": "H-H-H",
+      "scores": "90.0 → 90.0 → 91.0",
+      "runs": [
+        {
+          "round": 1,
+          "score": 90
+        },
+        {
+          "round": 2,
+          "score": 90
+        },
+        {
+          "round": 3,
+          "score": 91
+        }
+      ],
+      "isRecoveryPattern": false,
+      "isTopQualifier": false
+    },
+    "Ryusei YAMADA": {
+      "pattern": "H-H",
+      "scores": "92.0 → 92.0",
+      "runs": [
+        {
+          "round": 1,
+          "score": 92
+        },
+        {
+          "round": 3,
+          "score": 92
+        }
+      ],
+      "isRecoveryPattern": false,
+      "isTopQualifier": false
+    },
+    "Yuto TOTSUKA": {
+      "pattern": "H-H",
+      "scores": "91.0 → 95.0",
+      "runs": [
+        {
+          "round": 1,
+          "score": 91
+        },
+        {
+          "round": 2,
+          "score": 95
+        }
+      ],
+      "isRecoveryPattern": false,
+      "isTopQualifier": true
+    },
+    "Scotty JAMES": {
+      "pattern": "W-H",
+      "scores": "48.8 → 93.5",
+      "runs": [
+        {
+          "round": 1,
+          "score": 48.75
+        },
+        {
+          "round": 2,
+          "score": 93.5
+        }
+      ],
+      "isRecoveryPattern": true,
+      "isTopQualifier": true
+    }
+  }
+}

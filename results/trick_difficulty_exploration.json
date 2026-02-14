@@ -1,0 +1,70 @@
+{
+  "timestamp": "2026-02-14T07:59:20.084Z",
+  "description": "Exploratory trick difficulty analysis - not scientific",
+  "cleanRunsCount": 15,
+  "analysisType": "exploratory",
+  "rotationDifficulty": [
+    {
+      "rotation": 10,
+      "rotationDegrees": "1000°",
+      "count": 11,
+      "averageScore": "85.80"
+    },
+    {
+      "rotation": 12,
+      "rotationDegrees": "1200°",
+      "count": 25,
+      "averageScore": "85.04"
+    },
+    {
+      "rotation": 14,
+      "rotationDegrees": "1400°",
+      "count": 27,
+      "averageScore": "87.93"
+    },
+    {
+      "rotation": 16,
+      "rotationDegrees": "1600°",
+      "count": 3,
+      "averageScore": "83.33"
+    }
+  ],
+  "complexityAnalysis": [
+    {
+      "complexity": 3,
+      "description": "3-segment tricks",
+      "count": 3,
+      "averageScore": "84.75"
+    },
+    {
+      "complexity": 4,
+      "description": "4-segment tricks",
+      "count": 52,
+      "averageScore": "85.93"
+    },
+    {
+      "complexity": 5,
+      "description": "5-segment tricks",
+      "count": 13,
+      "averageScore": "88.00"
+    },
+    {
+      "complexity": 6,
+      "description": "6-segment tricks",
+      "count": 2,
+      "averageScore": "73.88"
+    },
+    {
+      "complexity": 7,
+      "description": "7-segment tricks",
+      "count": 5,
+      "averageScore": "92.40"
+    }
+  ],
+  "caveats": [
+    "Pattern detection only - NOT scientific",
+    "Confounded by performer skill and other tricks in run",
+    "Based on small sample (15 clean runs)",
+    "Trick codes may not perfectly represent actual difficulty"
+  ]
+}
