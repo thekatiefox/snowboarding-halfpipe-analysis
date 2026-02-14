@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inside the Judges' Scores — Milano-Cortina 2026 Halfpipe</title>
+<script src="https://cdn.plot.ly/plotly-2.35.0.min.js"></script>
+<style>
+  :root { --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --green: #3fb950; --red: #f85149; --yellow: #d29922; --purple: #bc8cff; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-size: 36px; font-weight: 700; letter-spacing: -1px; margin-bottom: 4px; }
+  .hero-sub { color: var(--muted); font-size: 16px; margin-bottom: 48px; }
+  .section { margin-bottom: 64px; }
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 8px; }
+  h2 { font-size: 24px; font-weight: 600; margin-bottom: 16px; }
+  .narrative { color: var(--muted); font-size: 15px; max-width: 680px; margin-bottom: 24px; }
+  .narrative strong { color: var(--text); }
+  .chart-container { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin: 16px 0; }
+  .stat-row { display: flex; flex-wrap: wrap; gap: 16px; margin: 24px 0; }
+  .stat-card { flex: 1; min-width: 160px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; }
+  .stat-num { font-size: 32px; font-weight: 700; }
+  .stat-num.green { color: var(--green); }
+  .stat-num.red { color: var(--red); }
+  .stat-num.yellow { color: var(--yellow); }
+  .stat-num.accent { color: var(--accent); }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .callout { border-left: 3px solid var(--accent); background: rgba(88,166,255,0.08); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 20px 0; font-size: 14px; }
+  .callout.warning { border-left-color: var(--yellow); background: rgba(210,153,34,0.08); }
+  .seq-row { display: flex; gap: 4px; margin: 6px 0; align-items: center; }
+  .seq-label { width: 32px; font-size: 12px; color: var(--muted); font-weight: 600; flex-shrink: 0; }
+  .seq-cell { flex: 1; text-align: center; padding: 6px 2px; border-radius: 6px; font-size: 10px; line-height: 1.3; }
+  .seq-clean { background: rgba(63,185,80,0.2); border: 1px solid rgba(63,185,80,0.3); }
+  .seq-wipeout { background: rgba(248,81,73,0.2); border: 1px solid rgba(248,81,73,0.3); }
+  .seq-crash { background: rgba(248,81,73,0.15); border: 1px solid rgba(248,81,73,0.2); }
+  .seq-skip { background: rgba(139,148,158,0.15); border: 1px solid rgba(139,148,158,0.2); }
+  .seq-name { font-weight: 600; font-size: 9px; }
+  .seq-score { font-size: 11px; font-weight: 700; }
+  .footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .plotly-chart { width: 100%; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } .stat-row { flex-direction: column; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🏂 Inside the Judges' Scores</h1>
+<p class="hero-sub">What 144 individual judge scores reveal about halfpipe judging at the 2026 Olympics</p>
+
+<!-- ═══ SECTION: THE COMPETITION ═══ -->
+<div class="section">
+<div class="section-label">The Competition</div>
+<h2>A Chaotic Round 1, a Strategic Round 3</h2>
+<p class="narrative">Twelve riders, three rounds, same order every time. The worst qualifier goes first, the best goes last. Round 1 was carnage — six consecutive wipeouts before a single clean landing. By Round 3, half the field had given up trying to improve.</p>
+
+<div class="chart-container">
+<div class="seq-row"><span class="seq-label">R1</span><div class="seq-cell seq-clean"><span class="seq-name">PATES</span><br><span class="seq-score">77.5</span></div><div class="seq-cell seq-wipeout"><span class="seq-name">JOSEY</span><br><span class="seq-score">11.75</span></div><div class="seq-cell seq-wipeout"><span class="seq-name">WANG</span><br><span class="seq-score">17.75</span></div><div class="seq-cell seq-wipeout"><span class="seq-name">LEE</span><br><span class="seq-score">24.75</span></div><div class="seq-cell seq-wipeout"><span class="seq-name">IVES</span><br><span class="seq-score">43</span></div><div class="seq-cell seq-wipeout"><span class="seq-name">HIRANO</span><br><span class="seq-score">27.5</span></div><div class="seq-cell seq-wipeout"><span class="seq-name">GUSELI</span><br><span class="seq-score">35</span></div><div class="seq-cell seq-clean"><span class="seq-name">HIRANO</span><br><span class="seq-score">90</span></div><div class="seq-cell seq-clean"><span class="seq-name">BARBIERI</span><br><span class="seq-score">75</span></div><div class="seq-cell seq-clean"><span class="seq-name">YAMADA</span><br><span class="seq-score">92</span></div><div class="seq-cell seq-clean"><span class="seq-name">TOTSUKA</span><br><span class="seq-score">91</span></div><div class="seq-cell seq-wipeout"><span class="seq-name">JAMES</span><br><span class="seq-score">48.75</span></div></div><div class="seq-row"><span class="seq-label">R2</span><div class="seq-cell seq-crash"><span class="seq-name">PATES</span><br><span class="seq-score">—</span></div><div class="seq-cell seq-clean"><span class="seq-name">JOSEY</span><br><span class="seq-score">70.25</span></div><div class="seq-cell seq-wipeout"><span class="seq-name">WANG</span><br><span class="seq-score">17.25</span></div><div class="seq-cell seq-wipeout"><span class="seq-name">LEE</span><br><span class="seq-score">24.75</span></div><div class="seq-cell seq-crash"><span class="seq-name">IVES</span><br><span class="seq-score">—</span></div><div class="seq-cell seq-clean"><span class="seq-name">HIRANO</span><br><span class="seq-score">86.5</span></div><div class="seq-cell seq-crash"><span class="seq-name">GUSELI</span><br><span class="seq-score">—</span></div><div class="seq-cell seq-clean"><span class="seq-name">HIRANO</span><br><span class="seq-score">90</span></div><div class="seq-cell seq-crash"><span class="seq-name">BARBIERI</span><br><span class="seq-score">—</span></div><div class="seq-cell seq-crash"><span class="seq-name">YAMADA</span><br><span class="seq-score">—</span></div><div class="seq-cell seq-clean"><span class="seq-name">TOTSUKA</span><br><span class="seq-score">95</span></div><div class="seq-cell seq-clean"><span class="seq-name">JAMES</span><br><span class="seq-score">93.5</span></div></div><div class="seq-row"><span class="seq-label">R3</span><div class="seq-cell seq-crash"><span class="seq-name">PATES</span><br><span class="seq-score">—</span></div><div class="seq-cell seq-skip"><span class="seq-name">JOSEY</span><br><span class="seq-score">—</span></div><div class="seq-cell seq-clean"><span class="seq-name">WANG</span><br><span class="seq-score">76</span></div><div class="seq-cell seq-clean"><span class="seq-name">LEE</span><br><span class="seq-score">87.5</span></div><div class="seq-cell seq-crash"><span class="seq-name">IVES</span><br><span class="seq-score">—</span></div><div class="seq-cell seq-crash"><span class="seq-name">HIRANO</span><br><span class="seq-score">—</span></div><div class="seq-cell seq-clean"><span class="seq-name">GUSELI</span><br><span class="seq-score">88</span></div><div class="seq-cell seq-clean"><span class="seq-name">HIRANO</span><br><span class="seq-score">91</span></div><div class="seq-cell seq-crash"><span class="seq-name">BARBIERI</span><br><span class="seq-score">—</span></div><div class="seq-cell seq-clean"><span class="seq-name">YAMADA</span><br><span class="seq-score">92</span></div><div class="seq-cell seq-skip"><span class="seq-name">TOTSUKA</span><br><span class="seq-score">—</span></div><div class="seq-cell seq-crash"><span class="seq-name">JAMES</span><br><span class="seq-score">—</span></div></div>
+</div>
+
+<div class="stat-row">
+<div class="stat-card"><div class="stat-num red">19</div><div class="stat-label">Witnessed crashes<br>(wipeout + DNI crash)</div></div>
+<div class="stat-card"><div class="stat-num green">15</div><div class="stat-label">Clean runs scored</div></div>
+<div class="stat-card"><div class="stat-num accent">144</div><div class="stat-label">Individual judge scores<br>to analyze</div></div>
+</div>
+</div>
+
+<!-- ═══ SECTION: RUKA'S PERFECT SCORES ═══ -->
+<div class="section">
+<div class="section-label">Finding #1</div>
+<h2>Six Judges, One Number — Twice</h2>
+<p class="narrative">Ruka Hirano received <strong>identical scores from all six judges</strong> in both Round 1 and Round 2. Every judge independently wrote down "90." This happened zero times for any other competitor. How unusual is this?</p>
+
+<div class="chart-container">
+<div id="chart-spreads" class="plotly-chart"></div>
+</div>
+
+<div class="callout">
+Of 24 scored performances, Ruka's two runs are the only ones where all six judges gave the exact same score. The next-tightest agreement was a spread of 1 point (Totsuka R2, Scotty R2). Wipeouts, by contrast, show spreads up to 7 points.
+</div>
+</div>
+
+<!-- ═══ SECTION: WIPEOUT MECHANICS ═══ -->
+<div class="section">
+<div class="section-label">Finding #2</div>
+<h2>Crash Early, Score Low</h2>
+<p class="narrative">When a rider wipes out, their score is almost entirely determined by one thing: <strong>how many tricks they completed before falling</strong>. The correlation is r=0.836. A rider who completes 5 tricks before crashing scores 4× higher than one who crashes after 2.</p>
+
+<div class="two-col">
+<div class="chart-container"><div id="chart-wipeouts" class="plotly-chart"></div></div>
+<div class="chart-container"><div id="chart-agreement" class="plotly-chart"></div></div>
+</div>
+
+<div class="callout">Judges also <strong>disagree more when scoring wipeouts</strong> — average spread of 3.4 points vs 2.0 for clean runs. Crashes introduce subjectivity that clean landings don't.</div>
+</div>
+
+<!-- ═══ SECTION: JUDGE PERSONALITIES ═══ -->
+<div class="section">
+<div class="section-label">Finding #3</div>
+<h2>The Generous Judge and the Strict Judge</h2>
+<p class="narrative">All six judges scored every run, so we can compare them directly — same tricks, same execution, different judge. Some judges are measurably and consistently different from the panel.</p>
+
+<div class="chart-container"><div id="chart-severity" class="plotly-chart"></div></div>
+
+<div class="stat-row">
+<div class="stat-card"><div class="stat-num green">25%</div><div class="stat-label">Judge 5 (FRA) excluded<br>as HIGHEST scorer</div></div>
+<div class="stat-card"><div class="stat-num red">17%</div><div class="stat-label">Judge 4 (SUI) excluded<br>as LOWEST scorer</div></div>
+<div class="stat-card"><div class="stat-num accent">~17%</div><div class="stat-label">Expected by chance<br>(1 in 6)</div></div>
+</div>
+
+<div class="callout">Despite these tendencies, the scoring system's trimmed mean (drop highest and lowest) works: it shifts scores by only <strong>0.17 pts on average</strong>, and medal rankings are identical whether you use raw or trimmed scores.</div>
+</div>
+
+<!-- ═══ SECTION: RELIEF BIAS ═══ -->
+<div class="section">
+<div class="section-label">Finding #4</div>
+<h2>The Relief Bias Question</h2>
+<p class="narrative">The original question: <strong>do judges score you higher if the riders right before you all crashed?</strong> After a string of wipeouts, does a clean run look extra impressive by contrast?</p>
+
+<div class="chart-container"><div id="chart-relief" class="plotly-chart"></div></div>
+
+<div class="callout warning">
+The between-groups difference is <strong>+1.96 pts</strong> (87.4 after crashes vs 85.4 after clean), with nearly balanced average positions. But the within-rider evidence tells a different story: <strong>Ruka Hirano scored highest (91) after zero crashes</strong>, Yamada scored identically (92) regardless, and Totsuka's +4 gain came with a trick upgrade. The data doesn't support a relief bias narrative.
+</div>
+</div>
+
+<!-- ═══ SECTION: DIFFICULTY ═══ -->
+<div class="section">
+<div class="section-label">Finding #5</div>
+<h2>Harder Tricks Don't Mean Higher Scores</h2>
+<p class="narrative">Unlike diving or gymnastics, halfpipe has no difficulty multiplier. And the data shows it: <strong>trick difficulty barely predicts final score</strong> (r=0.195). Wang attempted the competition's hardest trick sequence (difficulty 51.5) and scored 76. Yamada did a simpler set (32.5) and scored 92.</p>
+
+<div class="chart-container"><div id="chart-difficulty" class="plotly-chart"></div></div>
+</div>
+
+<div class="footer">
+Data: <a href="https://www.olympics.com/en/milano-cortina-2026/results/sbd/je/m/hp----------------/fnl-/--------/result" style="color: var(--accent);">Olympics.com</a> — Milano-Cortina 2026 Men's Snowboard Halfpipe Final, February 13, 2026<br>
+12 competitors · 3 rounds · 6 judges · Best score counts
+</div>
+
+</div>
+
+<script>
+const darkLayout = {
+  paper_bgcolor: 'rgba(0,0,0,0)',
+  plot_bgcolor: 'rgba(0,0,0,0)',
+  font: { color: '#8b949e', family: 'Inter, system-ui, sans-serif', size: 12 },
+  margin: { l: 50, r: 20, t: 40, b: 50 },
+  xaxis: { gridcolor: '#21262d', zerolinecolor: '#30363d' },
+  yaxis: { gridcolor: '#21262d', zerolinecolor: '#30363d' },
+  hoverlabel: { bgcolor: '#161b22', bordercolor: '#30363d', font: { color: '#e6edf3' } },
+};
+
+const config = { responsive: true, displayModeBar: false };
+
+// ── Chart: Score Spreads (Finding #1) ──
+(function() {
+  const spreads = [{"label":"JOSEY R1","spread":5,"type":"wipeout","score":11.75,"isRuka":false,"allSame":false},{"label":"WANG R2","spread":1,"type":"wipeout","score":17.25,"isRuka":false,"allSame":false},{"label":"WANG R1","spread":2,"type":"wipeout","score":17.75,"isRuka":false,"allSame":false},{"label":"LEE R1","spread":2,"type":"wipeout","score":24.75,"isRuka":false,"allSame":false},{"label":"LEE R2","spread":7,"type":"wipeout","score":24.75,"isRuka":false,"allSame":false},{"label":"HIRANO R1","spread":3,"type":"wipeout","score":27.5,"isRuka":false,"allSame":false},{"label":"GUSELI R1","spread":1,"type":"wipeout","score":35,"isRuka":false,"allSame":false},{"label":"IVES R1","spread":5,"type":"wipeout","score":43,"isRuka":false,"allSame":false},{"label":"JAMES R1","spread":5,"type":"wipeout","score":48.75,"isRuka":false,"allSame":false},{"label":"JOSEY R2","spread":1,"type":"clean","score":70.25,"isRuka":false,"allSame":false},{"label":"BARBIERI R1","spread":2,"type":"clean","score":75,"isRuka":false,"allSame":false},{"label":"WANG R3","spread":1,"type":"clean","score":76,"isRuka":false,"allSame":false},{"label":"PATES R1","spread":2,"type":"clean","score":77.5,"isRuka":false,"allSame":false},{"label":"HIRANO R2","spread":3,"type":"clean","score":86.5,"isRuka":false,"allSame":false},{"label":"LEE R3","spread":3,"type":"clean","score":87.5,"isRuka":false,"allSame":false},{"label":"GUSELI R3","spread":4,"type":"clean","score":88,"isRuka":false,"allSame":false},{"label":"HIRANO R1","spread":0,"type":"clean","score":90,"isRuka":true,"allSame":true},{"label":"HIRANO R2","spread":0,"type":"clean","score":90,"isRuka":true,"allSame":true},{"label":"TOTSUKA R1","spread":3,"type":"clean","score":91,"isRuka":false,"allSame":false},{"label":"HIRANO R3","spread":2,"type":"clean","score":91,"isRuka":true,"allSame":false},{"label":"YAMADA R1","spread":4,"type":"clean","score":92,"isRuka":false,"allSame":false},{"label":"YAMADA R3","spread":3,"type":"clean","score":92,"isRuka":false,"allSame":false},{"label":"JAMES R2","spread":1,"type":"clean","score":93.5,"isRuka":false,"allSame":false},{"label":"TOTSUKA R2","spread":1,"type":"clean","score":95,"isRuka":false,"allSame":false}];
+  
+  Plotly.newPlot('chart-spreads', [{
+    type: 'bar',
+    x: spreads.map(s => s.label),
+    y: spreads.map(s => s.spread),
+    marker: {
+      color: spreads.map(s => s.allSame ? '#bc8cff' : s.type === 'wipeout' ? '#f85149' : '#3fb950'),
+    },
+    hovertemplate: '<b>%{x}</b><br>Score: %{customdata[0]}<br>Spread: %{y} pts<extra></extra>',
+    customdata: spreads.map(s => [s.score]),
+  }], {
+    ...darkLayout,
+    title: { text: 'Judge Score Spread per Run (max − min)', font: { size: 14, color: '#e6edf3' } },
+    yaxis: { ...darkLayout.yaxis, title: 'Spread (pts)', dtick: 1 },
+    xaxis: { ...darkLayout.xaxis, tickangle: -45, tickfont: { size: 9 } },
+    annotations: spreads.filter(s => s.allSame).map(s => ({
+      x: s.label, y: 0.3, text: '← Perfect<br>consensus', showarrow: false,
+      font: { color: '#bc8cff', size: 10 }, yanchor: 'bottom',
+    })),
+  }, config);
+})();
+
+// ── Chart: Wipeout Mechanics (Finding #2) ──
+(function() {
+  const wipeouts = [{"name":"JOSEY R1","tricks":2,"score":11.75},{"name":"WANG R1","tricks":3,"score":17.75},{"name":"LEE R1","tricks":3,"score":24.75},{"name":"LEE R2","tricks":3,"score":24.75},{"name":"HIRANO R1","tricks":3,"score":27.5},{"name":"WANG R2","tricks":4,"score":17.25},{"name":"GUSELI R1","tricks":5,"score":35},{"name":"IVES R1","tricks":5,"score":43},{"name":"JAMES R1","tricks":5,"score":48.75}];
+  
+  Plotly.newPlot('chart-wipeouts', [{
+    type: 'scatter',
+    mode: 'markers+text',
+    x: wipeouts.map(w => w.tricks),
+    y: wipeouts.map(w => w.score),
+    text: wipeouts.map(w => w.name),
+    textposition: 'top center',
+    textfont: { size: 9, color: '#8b949e' },
+    marker: { size: 12, color: '#f85149', opacity: 0.8, line: { color: '#f8514966', width: 2 } },
+    hovertemplate: '<b>%{text}</b><br>Tricks: %{x}<br>Score: %{y}<extra></extra>',
+  }], {
+    ...darkLayout,
+    title: { text: 'Tricks Before Crash → Wipeout Score', font: { size: 14, color: '#e6edf3' } },
+    xaxis: { ...darkLayout.xaxis, title: 'Tricks Completed', dtick: 1, range: [1.5, 5.5] },
+    yaxis: { ...darkLayout.yaxis, title: 'Score' },
+    annotations: [{ x: 4, y: 45, text: 'r = 0.836', showarrow: false, font: { color: '#f85149', size: 14 } }],
+  }, config);
+})();
+
+// ── Chart: Agreement comparison (Finding #2b) ──
+(function() {
+  const spreads = [{"label":"JOSEY R1","spread":5,"type":"wipeout","score":11.75,"isRuka":false,"allSame":false},{"label":"WANG R2","spread":1,"type":"wipeout","score":17.25,"isRuka":false,"allSame":false},{"label":"WANG R1","spread":2,"type":"wipeout","score":17.75,"isRuka":false,"allSame":false},{"label":"LEE R1","spread":2,"type":"wipeout","score":24.75,"isRuka":false,"allSame":false},{"label":"LEE R2","spread":7,"type":"wipeout","score":24.75,"isRuka":false,"allSame":false},{"label":"HIRANO R1","spread":3,"type":"wipeout","score":27.5,"isRuka":false,"allSame":false},{"label":"GUSELI R1","spread":1,"type":"wipeout","score":35,"isRuka":false,"allSame":false},{"label":"IVES R1","spread":5,"type":"wipeout","score":43,"isRuka":false,"allSame":false},{"label":"JAMES R1","spread":5,"type":"wipeout","score":48.75,"isRuka":false,"allSame":false},{"label":"JOSEY R2","spread":1,"type":"clean","score":70.25,"isRuka":false,"allSame":false},{"label":"BARBIERI R1","spread":2,"type":"clean","score":75,"isRuka":false,"allSame":false},{"label":"WANG R3","spread":1,"type":"clean","score":76,"isRuka":false,"allSame":false},{"label":"PATES R1","spread":2,"type":"clean","score":77.5,"isRuka":false,"allSame":false},{"label":"HIRANO R2","spread":3,"type":"clean","score":86.5,"isRuka":false,"allSame":false},{"label":"LEE R3","spread":3,"type":"clean","score":87.5,"isRuka":false,"allSame":false},{"label":"GUSELI R3","spread":4,"type":"clean","score":88,"isRuka":false,"allSame":false},{"label":"HIRANO R1","spread":0,"type":"clean","score":90,"isRuka":true,"allSame":true},{"label":"HIRANO R2","spread":0,"type":"clean","score":90,"isRuka":true,"allSame":true},{"label":"TOTSUKA R1","spread":3,"type":"clean","score":91,"isRuka":false,"allSame":false},{"label":"HIRANO R3","spread":2,"type":"clean","score":91,"isRuka":true,"allSame":false},{"label":"YAMADA R1","spread":4,"type":"clean","score":92,"isRuka":false,"allSame":false},{"label":"YAMADA R3","spread":3,"type":"clean","score":92,"isRuka":false,"allSame":false},{"label":"JAMES R2","spread":1,"type":"clean","score":93.5,"isRuka":false,"allSame":false},{"label":"TOTSUKA R2","spread":1,"type":"clean","score":95,"isRuka":false,"allSame":false}];
+  const cleanSpreads = spreads.filter(s => s.type === 'clean').map(s => s.spread);
+  const wipeSpreads = spreads.filter(s => s.type === 'wipeout').map(s => s.spread);
+  
+  Plotly.newPlot('chart-agreement', [{
+    type: 'box',
+    y: cleanSpreads,
+    name: 'Clean Runs',
+    marker: { color: '#3fb950' },
+    boxpoints: 'all',
+    jitter: 0.4,
+    pointpos: -1.5,
+  }, {
+    type: 'box',
+    y: wipeSpreads,
+    name: 'Wipeouts',
+    marker: { color: '#f85149' },
+    boxpoints: 'all',
+    jitter: 0.4,
+    pointpos: -1.5,
+  }], {
+    ...darkLayout,
+    title: { text: 'Judge Disagreement: Clean vs Wipeout', font: { size: 14, color: '#e6edf3' } },
+    yaxis: { ...darkLayout.yaxis, title: 'Score Spread (pts)' },
+    showlegend: false,
+  }, config);
+})();
+
+// ── Chart: Judge Severity (Finding #3) ──
+(function() {
+  const sev = [{"judge":"J1","name":"SUMATIC","country":"SLO","avgDev":0.3055555555555552,"devs":[-1.8333333333333286,-0.1666666666666714,1.6666666666666643,0.5,0.6666666666666714,1.1666666666666714,0,0,0.3333333333333286,0.1666666666666643,1.3333333333333286,0.5,-0.33333333333333215,0.5,0.5,-1.5,0.3333333333333286,0.16666666666666785,0.6666666666666679,-0.1666666666666714,0,3,-0.3333333333333286,0.1666666666666643],"exHigh":1,"exLow":2},{"judge":"J2","name":"WESSMAN","country":"GBR","avgDev":-0.4444444444444448,"devs":[1.1666666666666714,-0.1666666666666714,-3.3333333333333357,-0.5,-3.3333333333333286,-1.8333333333333286,0,0,0.3333333333333286,0.1666666666666643,1.3333333333333286,-0.5,0.6666666666666679,1.5,0.5,-0.5,-0.6666666666666714,-0.8333333333333321,-0.33333333333333215,-0.1666666666666714,-1,-2,-0.3333333333333286,-0.8333333333333357],"exHigh":2,"exLow":4},{"judge":"J3","name":"WESTMAN","country":"SWE","avgDev":0.18055555555555522,"devs":[0.1666666666666714,0.8333333333333286,1.6666666666666643,0.5,0.6666666666666714,1.1666666666666714,0,0,0.3333333333333286,0.1666666666666643,1.3333333333333286,0.5,-4.333333333333332,0.5,-0.5,0.5,0.3333333333333286,-0.8333333333333321,-0.33333333333333215,-0.1666666666666714,0,0,-0.3333333333333286,2.1666666666666643],"exHigh":1,"exLow":1},{"judge":"J4","name":"REGLI","country":"SUI","avgDev":-0.5277777777777781,"devs":[0.1666666666666714,-0.1666666666666714,-2.3333333333333357,-0.5,0.6666666666666714,-0.8333333333333286,0,0,-1.6666666666666714,0.1666666666666643,-0.6666666666666714,-1.5,-0.33333333333333215,0.5,-1.5,-0.5,-0.6666666666666714,0.16666666666666785,-0.33333333333333215,-0.1666666666666714,0,0,-0.3333333333333286,-2.8333333333333357],"exHigh":0,"exLow":4},{"judge":"J5","name":"HARICOT","country":"FRA","avgDev":0.5138888888888885,"devs":[0.1666666666666714,-0.1666666666666714,0.6666666666666643,0.5,0.6666666666666714,1.1666666666666714,0,0,0.3333333333333286,0.1666666666666643,-0.6666666666666714,0.5,2.666666666666668,-1.5,1.5,0.5,1.3333333333333286,1.1666666666666679,0.6666666666666679,0.8333333333333286,1,-2,0.6666666666666714,2.1666666666666643],"exHigh":6,"exLow":0},{"judge":"J6","name":"HASHIMOTO","country":"JPN","avgDev":-0.027777777777778123,"devs":[0.1666666666666714,-0.1666666666666714,1.6666666666666643,-0.5,0.6666666666666714,-0.8333333333333286,0,0,0.3333333333333286,-0.8333333333333357,-2.6666666666666714,0.5,1.6666666666666679,-1.5,-0.5,1.5,-0.6666666666666714,0.16666666666666785,-0.33333333333333215,-0.1666666666666714,0,1,0.6666666666666714,-0.8333333333333357],"exHigh":1,"exLow":2}];
+  
+  Plotly.newPlot('chart-severity', [{
+    type: 'box',
+    x: sev.flatMap(s => s.devs.map(() => s.judge + ' (' + s.country + ')')),
+    y: sev.flatMap(s => s.devs),
+    marker: { color: sev.flatMap(s => s.devs.map(d => d > 0 ? '#3fb950' : '#f85149')), opacity: 0.5, size: 4 },
+    boxpoints: 'all',
+    jitter: 0.3,
+    pointpos: 0,
+    line: { color: '#58a6ff' },
+    fillcolor: 'rgba(88,166,255,0.1)',
+    hoverinfo: 'y',
+  }], {
+    ...darkLayout,
+    title: { text: 'Per-Judge Deviation from Panel Mean (all 24 scored runs)', font: { size: 14, color: '#e6edf3' } },
+    yaxis: { ...darkLayout.yaxis, title: 'Deviation (pts)', zeroline: true, zerolinecolor: '#58a6ff', zerolinewidth: 2 },
+    xaxis: { ...darkLayout.xaxis },
+    showlegend: false,
+  }, config);
+})();
+
+// ── Chart: Relief Bias (Finding #4) ──
+(function() {
+  const relief = [{"name":"PATES R1","competitor":"Jake PATES","position":1,"score":77.5,"streak":0,"round":1},{"name":"HIRANO R1","competitor":"Ruka HIRANO","position":8,"score":90,"streak":6,"round":1},{"name":"BARBIERI R1","competitor":"Alessandro BARBIERI","position":9,"score":75,"streak":0,"round":1},{"name":"YAMADA R1","competitor":"Ryusei YAMADA","position":10,"score":92,"streak":0,"round":1},{"name":"TOTSUKA R1","competitor":"Yuto TOTSUKA","position":11,"score":91,"streak":0,"round":1},{"name":"JOSEY R2","competitor":"Chase JOSEY","position":2,"score":70.25,"streak":1,"round":2},{"name":"HIRANO R2","competitor":"Ayumu HIRANO","position":6,"score":86.5,"streak":3,"round":2},{"name":"HIRANO R2","competitor":"Ruka HIRANO","position":8,"score":90,"streak":1,"round":2},{"name":"TOTSUKA R2","competitor":"Yuto TOTSUKA","position":11,"score":95,"streak":2,"round":2},{"name":"JAMES R2","competitor":"Scotty JAMES","position":12,"score":93.5,"streak":0,"round":2},{"name":"WANG R3","competitor":"Ziyang WANG","position":3,"score":76,"streak":0,"round":3},{"name":"LEE R3","competitor":"Chaeun LEE","position":4,"score":87.5,"streak":0,"round":3},{"name":"GUSELI R3","competitor":"Valentino GUSELI","position":7,"score":88,"streak":2,"round":3},{"name":"HIRANO R3","competitor":"Ruka HIRANO","position":8,"score":91,"streak":0,"round":3},{"name":"YAMADA R3","competitor":"Ryusei YAMADA","position":10,"score":92,"streak":1,"round":3}];
+  
+  const colors = relief.map(r => {
+    if (r.streak === 0) return '#58a6ff';
+    if (r.streak <= 2) return '#d29922';
+    return '#f85149';
+  });
+
+  Plotly.newPlot('chart-relief', [{
+    type: 'scatter',
+    mode: 'markers+text',
+    x: relief.map(r => r.streak),
+    y: relief.map(r => r.score),
+    text: relief.map(r => r.name),
+    textposition: relief.map(r => r.score > 90 ? 'top center' : 'bottom center'),
+    textfont: { size: 9, color: '#8b949e' },
+    marker: { size: 11, color: colors, opacity: 0.85, line: { width: 1, color: '#30363d' } },
+    hovertemplate: '<b>%{text}</b><br>Crash streak: %{x}<br>Score: %{y}<br>Position: %{customdata}<extra></extra>',
+    customdata: relief.map(r => r.position),
+  }], {
+    ...darkLayout,
+    title: { text: 'Clean Run Score vs Consecutive Crashes Before', font: { size: 14, color: '#e6edf3' } },
+    xaxis: { ...darkLayout.xaxis, title: 'Consecutive Crashes Immediately Before', dtick: 1 },
+    yaxis: { ...darkLayout.yaxis, title: 'Score' },
+    shapes: [{
+      type: 'line', x0: -0.3, x1: 6.3,
+      y0: 86.35,
+      y1: 86.35,
+      line: { color: '#30363d', dash: 'dash', width: 1 },
+    }],
+  }, config);
+})();
+
+// ── Chart: Difficulty vs Score (Finding #5) ──
+(function() {
+  const diff = [{"name":"TOTSUKA R1","score":91,"difficulty":43.5},{"name":"TOTSUKA R2","score":95,"difficulty":46.5},{"name":"JAMES R2","score":93.5,"difficulty":47},{"name":"YAMADA R1","score":92,"difficulty":33.5},{"name":"YAMADA R3","score":92,"difficulty":32.5},{"name":"HIRANO R1","score":90,"difficulty":48.5},{"name":"HIRANO R2","score":90,"difficulty":51.5},{"name":"HIRANO R3","score":91,"difficulty":48.5},{"name":"GUSELI R3","score":88,"difficulty":36.5},{"name":"LEE R3","score":87.5,"difficulty":50.5},{"name":"HIRANO R2","score":86.5,"difficulty":50},{"name":"PATES R1","score":77.5,"difficulty":43},{"name":"WANG R3","score":76,"difficulty":51.5},{"name":"BARBIERI R1","score":75,"difficulty":44},{"name":"JOSEY R2","score":70.25,"difficulty":28.5}];
+  if (!diff.length) return;
+  
+  Plotly.newPlot('chart-difficulty', [{
+    type: 'scatter',
+    mode: 'markers+text',
+    x: diff.map(d => d.difficulty),
+    y: diff.map(d => d.score),
+    text: diff.map(d => d.name),
+    textposition: 'right',
+    textfont: { size: 9, color: '#8b949e' },
+    marker: { size: 10, color: '#bc8cff', opacity: 0.8, line: { width: 1, color: '#30363d' } },
+    hovertemplate: '<b>%{text}</b><br>Difficulty: %{x}<br>Score: %{y}<extra></extra>',
+  }], {
+    ...darkLayout,
+    title: { text: 'Trick Difficulty vs Score (Clean Runs Only, r=0.195)', font: { size: 14, color: '#e6edf3' } },
+    xaxis: { ...darkLayout.xaxis, title: 'Total Trick Difficulty' },
+    yaxis: { ...darkLayout.yaxis, title: 'Score' },
+    annotations: [{
+      x: 51, y: 76, text: 'Wang: hardest tricks,<br>scored 76', showarrow: true,
+      arrowhead: 0, arrowcolor: '#bc8cff', font: { color: '#bc8cff', size: 10 },
+      ax: 30, ay: -30,
+    }, {
+      x: 32.5, y: 92, text: 'Yamada: simpler tricks,<br>scored 92', showarrow: true,
+      arrowhead: 0, arrowcolor: '#bc8cff', font: { color: '#bc8cff', size: 10 },
+      ax: -40, ay: 30,
+    }],
+  }, config);
+})();
+</script>
+</body>
+</html>
