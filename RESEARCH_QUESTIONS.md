@@ -1,5 +1,37 @@
 # Research Questions: Judge Bias & Ordering Effects in Olympic Halfpipe
 
+---
+
+## ⚠️ CRITICAL ASSUMPTIONS & LIMITATIONS
+
+### What We're Testing (and NOT testing)
+✅ **CAN analyze**: Correlation patterns in clean runs, score variance, competitor trajectories  
+❌ **CANNOT prove**: Causation, individual judge bias, actual judge psychology, cross-competition validity
+
+### Data Quality Assurances
+- ✅ Official Olympics.com data
+- ✅ All 6 individual judge scores captured
+- ✅ Scoring system verified (high/low excluded, middle 4 averaged)
+- ⚠️ Trick codes parsed but NOT verified - may not perfectly represent difficulty
+
+### Major Confounds We Know About (and CAN'T fully control)
+1. **Skill level**: Better qualifiers naturally score higher
+2. **Selection bias**: Only top performers advance to later rounds
+3. **Trick difficulty**: No repeated sequences to control for execution vs judging
+4. **Sample size**: Only 12 competitors, 15 clean runs (very small)
+5. **Round effects**: Fewer competitors as round progresses (DNI filtering)
+6. **Judge composition**: Unknown if same judges scored all rounds
+7. **Environmental factors**: No weather, timing, or fatigue data
+
+### Data Filtering (Applied Uniformly)
+All analyses filter consistently:
+- **Include**: Scores ≥50 (clean runs, completed execution)
+- **Exclude**: Scores <50 (crashes, wipeouts, incomplete)
+- **Exclude**: DNI (Did Not Improve - competitor didn't continue)
+- **Result**: 15 clean runs from 36 total performances
+
+---
+
 ## Central Question
 
 **Do judges unconsciously award higher scores for impressive performances when those performances immediately follow multiple wipeouts or poor performances?**
@@ -74,13 +106,18 @@ This analysis could reveal:
 
 ---
 
-## Current Dataset
+## Data Source
 
-- **Event**: Milano-Cortina 2026 Men's Snowboard Halfpipe Final
-- **Format**: Round-robin (same competitor order each round: worst qualifiers first, best last)
-- **Competitors**: 12
-- **Rounds**: 3 (not all competitors completed all rounds)
-- **Data Available**: Final scores by run, competitor order, qualifying rank
+**Official source**: https://www.olympics.com/en/milano-cortina-2026/results/sbd/je/m/hp----------------/fnl-/--------/result
+
+- Event: Milano-Cortina 2026 Men's Snowboard Halfpipe Final
+- Date: February 13, 2026
+- Competitors: 12
+- Rounds: 3 (round-robin, same order each round)
+- Judges: 6 per run, high/low excluded, middle 4 averaged
+- Data includes: Individual judge scores, trick sequences, final rankings
+
+---
 
 ### Wipeout Rate by Round
 | Round | Total | Clean (≥50) | Wipeouts (<50) | Rate |
