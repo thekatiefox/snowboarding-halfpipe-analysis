@@ -1,6 +1,8 @@
-# Snowboarding Halfpipe Judging Analysis
+# 🏂 Snowboarding Halfpipe Judging Analysis
 
-Statistical analysis of judge scoring patterns in the Milano-Cortina 2026 Men's Snowboard Halfpipe Final — testing for bias, consistency, and structural effects in subjective Olympic judging.
+> **[👉 View the Interactive Report](https://thekatiefox.github.io/snowboarding-halfpipe-analysis/)**
+
+A data journalism piece exploring judge scoring patterns in the Milano-Cortina 2026 Men's Snowboard Halfpipe Final — testing for bias, consistency, and structural effects in subjective Olympic judging.
 
 **Data source**: [Olympics.com Official Results](https://www.olympics.com/en/milano-cortina-2026/results/sbd/je/m/hp----------------/fnl-/--------/result)
 
