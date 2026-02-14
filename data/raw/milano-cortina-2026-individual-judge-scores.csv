@@ -1,0 +1,37 @@
+competitor,country,position,run,final_score,judge1_country,judge1_score,judge2_country,judge2_score,judge3_country,judge3_score,judge4_country,judge4_score,judge5_country,judge5_score,judge6_country,judge6_score,trick1,trick2,trick3,trick4,trick5,medal,notes
+Yuto TOTSUKA,JPN,11,1,91.00,SLO,89,GBR,92,SWE,91,SUI,91,FRA,91,JPN,91,Cab-DC-14-Mu,f-TC-14-Tdr,x-b-D-AO-Rd-9-St,x-b-DC-10-Ng,b-DC-12-Mu,GOLD,Judge 1 excluded
+Yuto TOTSUKA,JPN,11,2,95.00,SLO,95,GBR,95,SWE,96,SUI,95,FRA,95,JPN,95,Cab-TC-14-Ddr,f-TC-14-Tdr,x-b-D-AO-Rd-9-St,x-b-DC-10-Ng,b-DC-12-Mu,GOLD,Judge 3 excluded
+Yuto TOTSUKA,JPN,11,3,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,Cab-TC-14-Ddr,f-TC-14-Tdr,x-b-D-AO-Rd-9-St,x-b-DC-14-Jp,b-DC-12-Mu,GOLD,Did not improve
+Scotty JAMES,AUS,12,1,48.75,SLO,50,GBR,45,SWE,50,SUI,46,FRA,49,JPN,50,Cab-TC-14-Mu,f-DC-12-St,b-DC-10-St,x-b-DC-14-Jp,b-DC-14-Jp,SILVER,Judge 2 excluded
+Scotty JAMES,AUS,12,2,93.50,SLO,94,GBR,93,SWE,94,SUI,93,FRA,94,JPN,93,Cab-TC-14-Mu,f-DC-12-St,b-DC-10-St,x-b-DC-14-Jp,b-DC-14-Jp,SILVER,Judge 5 excluded
+Scotty JAMES,AUS,12,3,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,Cab-TC-14-Mu,f-DC-12-St,b-DC-10-St,x-b-DC-14-Jp,b-DC-16-Jp,SILVER,Did not improve
+Ryusei YAMADA,JPN,10,1,92.00,SLO,92,GBR,88,SWE,92,SUI,92,FRA,92,JPN,92,Cab-DC-14-Ng,f-DC-12-Mu,b-DC-10-Jp,x-Mc-Jp,x-b-D-AO-Rd-9-St,BRONZE,Judge 2 excluded
+Ryusei YAMADA,JPN,10,2,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,Cab-DC-12-I,x-AO-D-Rd-10-I,,,BRONZE,Did not improve
+Ryusei YAMADA,JPN,10,3,92.00,SLO,93,GBR,90,SWE,93,SUI,91,FRA,93,JPN,91,Cab-DC-12-I,x-f-AO-D-Rd-10-I,b-DC-10-Jp,x-Mc-Jp,x-b-DC-AO-Rd-9-St,BRONZE,Judge 2 excluded
+Ruka HIRANO,JPN,8,1,90.00,SLO,90,GBR,90,SWE,90,SUI,90,FRA,90,JPN,90,x-b-DC-14-Ng,b-DC-12-Mu,f-DC-14-I,Cab-TC-14-Ddr,f-DC-12-I,4TH,Judge 1 excluded
+Ruka HIRANO,JPN,8,2,90.00,SLO,90,GBR,90,SWE,90,SUI,90,FRA,90,JPN,90,x-b-DC-14-Ng,b-DC-12-Mu,f-TC-14-I,Cab-TC-14-Ddr,f-DC-12-I,4TH,Judge 1 and 6 excluded
+Ruka HIRANO,JPN,8,3,91.00,SLO,91,GBR,91,SWE,91,SUI,89,FRA,91,JPN,91,x-b-DC-14-Ng,b-DC-12-Mu,f-DC-14-I-Tdr,Cab-TC-14-Ddr,f-DC-12-I,4TH,Judge 4 excluded
+Valentino GUSELI,AUS,7,1,35.00,SLO,35,GBR,35,SWE,35,SUI,35,FRA,35,JPN,34,b-AO-3-Ng,Cab-DC-10-Mu,f-12-Tg-to-Me,b-DC-10-I,x-b-12-Mu,5TH,Judge 5 and 6 excluded
+Valentino GUSELI,AUS,7,2,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,b-AO-3-Ng,Cab-TC-14-Mu,f-12-Tg-to-Me,b-DC-10-I,x-b-12-Mu,5TH,Did not improve
+Valentino GUSELI,AUS,7,3,88.00,SLO,89,GBR,89,SWE,89,SUI,87,FRA,87,JPN,85,b-AO-3-Ng,Cab-TC-14-Mu,f-12-Tg-to-Me,b-DC-10-I,x-b-DC-12-Mu,5TH,Judge 3 and 6 excluded
+Chaeun LEE,KOR,4,1,24.75,SLO,25,GBR,24,SWE,25,SUI,23,FRA,25,JPN,25,x-b-DC-12-Mu,Cab-DC-14-Mu,f-TC-16-Tdr,,,6TH,Judge 4 and 6 excluded
+Chaeun LEE,KOR,4,2,24.75,SLO,24,GBR,25,SWE,20,SUI,24,FRA,27,JPN,26,x-b-DC-10-Mu,b-DC-12-Mu,f-DC-14-Tg,,,6TH,Judge 3 and 5 excluded
+Chaeun LEE,KOR,4,3,87.50,SLO,88,GBR,89,SWE,88,SUI,88,FRA,86,JPN,86,x-b-DC-12-Mu,Cab-DC-14-Mu,f-TC-16-Tdr,b-DC-12-Me,f-DC-14-Tg,6TH,Judge 5 and 6 excluded
+Ayumu HIRANO,JPN,6,1,27.50,SLO,28,GBR,28,SWE,27,SUI,26,FRA,29,JPN,27,x-b-DC-12-Ng,Cab-DC-14-Mu,f-DC-16-Tg,,,,7TH,Judge 4 and 5 excluded
+Ayumu HIRANO,JPN,6,2,86.50,SLO,85,GBR,86,SWE,87,SUI,86,FRA,87,JPN,88,x-b-DC-12-Ng,Cab-DC-14-Mu,f-DC-16-Tg,b-DC-12-Mu,f-TC-14-Tdr,7TH,Judge 1 excluded
+Ayumu HIRANO,JPN,6,3,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,x-b-DC-12-Ng,Cab-DC-14-Mu,f-DC-16-Tg-D-Tg,b-DC-12-Jp,,7TH,Did not improve
+Jake PATES,USA,1,1,77.50,SLO,78,GBR,77,SWE,78,SUI,77,FRA,79,JPN,77,x-b-DC-10-Mu,b-DC-12-Mu-to-Tg,f-DC-10-Tdr,Cab-TC-14-Ddr,f-DC-12-I,8TH,Judge 2 and 5 excluded
+Jake PATES,USA,1,2,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,x-b-DC-10-Mu,b-DC-12-Mu-to-Tg,f-TC-14-Tdr,,,8TH,Did not improve
+Jake PATES,USA,1,3,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,x-b-DC-10-Mu,b-DC-12-Mu-to-Tg,f-TC-14-Tdr,,,8TH,Did not improve
+Ziyang WANG,CHN,3,1,17.75,SLO,18,GBR,17,SWE,17,SUI,18,FRA,19,JPN,18,Cab-TC-14-Ddr,f-DC-16-Tg,,,9TH,Judge 2 and 5 excluded
+Ziyang WANG,CHN,3,2,17.25,SLO,18,GBR,17,SWE,17,SUI,17,FRA,18,JPN,17,Cab-TC-14-Ddr,f-DC-16-Tg,f-7-I,,9TH,Judge 2 and 5 excluded
+Ziyang WANG,CHN,3,3,76.00,SLO,76,GBR,76,SWE,76,SUI,76,FRA,77,JPN,76,Cab-TC-14-Ddr,f-DC-16-Tg,b-DC-12-Mu,f-DC-14-I,Cab-DC-14-Mu,9TH,Judge 5 excluded
+Alessandro BARBIERI,USA,9,1,75.00,SLO,75,GBR,74,SWE,75,SUI,75,FRA,76,JPN,75,x-b-DC-12-Mu,Cab-TC-14-Ddr,f-DC-12-I,b-DC-12-Ng,f-DC-10-Tdr,10TH,Judge 2 and 5 excluded
+Alessandro BARBIERI,USA,9,2,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,x-b-DC-12-Mu,Cab-TC-14-Ddr,f-DC-12-I,,f-DC-12-I,10TH,Did not improve
+Alessandro BARBIERI,USA,9,3,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,x-b-DC-12-Mu,Cab-TC-14-Ddr,f-DC-12-I,b-DC-16-Ng,,10TH,Did not improve
+Chase JOSEY,USA,2,1,11.75,SLO,15,GBR,10,SWE,12,SUI,12,FRA,10,JPN,13,Cab-DC-12-I-to-Me,x-D-CF-Me,,,,11TH,Judge 1 and 2 excluded
+Chase JOSEY,USA,2,2,70.25,SLO,70,GBR,70,SWE,70,SUI,70,FRA,71,JPN,71,Cab-DC-12-I-to-Me,x-D-CF-Me,Cab-DC-10-Mu,f-DC-12-Ste,D-CF-Ng,11TH,Judge 1 excluded
+Chase JOSEY,USA,2,3,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,Cab-DC-12-Mu-to-St,x-D-CF-Me,Cab-DC-10-Mu,f-DC-12-Ste,bs-A,11TH,Did not improve
+Campbell MELVILLE IVES,NZL,5,1,43.00,SLO,43,GBR,42,SWE,45,SUI,40,FRA,45,JPN,42,Cab-TC-14-Ddr,b-D-AO-Rd-9-Me,b-DC-12-Mu,f-TC-14-Tdr,x-b-D-AO-Rd-9-Me,12TH,Judge 4 and 5 excluded
+Campbell MELVILLE IVES,NZL,5,2,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,Cab-TC-14-Ddr,b-D-AO-Rd-9-Me,b-DC-12-Mu,f-TC-14-Tdr,x-b-D-AO-Rd-9-Me,12TH,Did not improve
+Campbell MELVILLE IVES,NZL,5,3,DNI,SLO,,GBR,,SWE,,SUI,,FRA,,JPN,,Cab-TC-14-Ddr,b-D-AO-Rd-9-Me,b-DC-12-Mu,f-TC-14-Tdr,,,12TH,Did not improve
