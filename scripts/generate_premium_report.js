@@ -256,7 +256,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   50% { transform: translate(-3%, 2%); }
 }
 .hero-content { position: relative; z-index: 1; max-width: 800px; }
-.hero-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+.hero-label { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--text); margin-bottom: 20px; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
 .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(40px, 7vw, 72px); font-weight: 700; line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px; }
 .hero h1 span { background: linear-gradient(135deg, var(--accent), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .hero-desc { font-size: 18px; color: var(--muted); max-width: 520px; line-height: 1.7; }
