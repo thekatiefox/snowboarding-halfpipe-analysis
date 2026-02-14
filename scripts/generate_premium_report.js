@@ -252,7 +252,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   padding: 60px 40px 80px;
   position: relative;
   overflow: hidden;
-  background: url('https://images.unsplash.com/photo-1611644667054-3533bccc66c3?w=1920&auto=format&fit=crop&q=80') center/cover no-repeat;
+  background: url('images/hero-halfpipe.jpg') center/cover no-repeat;
 }
 .hero::before {
   content: '';
