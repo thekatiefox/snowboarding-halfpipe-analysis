@@ -1,11 +1,16 @@
 /**
  * Judge Psychology Analysis for Round-Robin Halfpipe Competition
  * 
- * Examines whether judges' scoring is influenced by the performances
- * they just witnessed from previous competitors in the same round.
+ * CORRECTED: Filter out wipe outs (below 50) and only analyze clean runs
  * 
- * Competition format: Reverse qualifying order, same for each round
- * Question: Do judges score higher/lower based on recent comparisons?
+ * Score ranges:
+ * - Below 40 = definitely wiped out
+ * - Below 50 = likely wiped out
+ * - 50-59 = fall or major bobble but finished
+ * - 60-69 = noticeable mistake, hand drag
+ * - 70-79 = clean but lower difficulty
+ * - 80-89 = strong, clean run
+ * - 90+ = medal-level, clean run
  */
 
 const fs = require('fs');
@@ -32,12 +37,16 @@ class JudgePsychologyAnalyzer {
       this.competitors.push(row);
     }
 
-    // Sort by performance_order to ensure we have them in correct sequence
+    // Sort by performance_order
     this.competitors.sort((a, b) => 
       parseInt(a.performance_order) - parseInt(b.performance_order)
     );
 
-    console.log(`Loaded ${this.competitors.length} competitors in performance order\n`);
+    console.log(`Loaded ${this.competitors.length} competitors\n`);
+  }
+
+  isWipeout(score) {
+    return score < 50;
   }
 
   organizeByRound() {
@@ -47,7 +56,7 @@ class JudgePsychologyAnalyzer {
       const run3 = parseFloat(comp.run3);
 
       const order = parseInt(comp.performance_order);
-      const qualRank = 13 - order; // Position in qualifying (1=worst, 12=best)
+      const qualRank = 13 - order;
       const isTopQualifier = comp.final_rank === '1' || comp.final_rank === '2';
 
       if (!isNaN(run1)) {
@@ -57,6 +66,7 @@ class JudgePsychologyAnalyzer {
           competitor: comp.competitor,
           score: run1,
           isTopQualifier,
+          isWipeout: this.isWipeout(run1),
         });
       }
       if (!isNaN(run2)) {
@@ -66,6 +76,7 @@ class JudgePsychologyAnalyzer {
           competitor: comp.competitor,
           score: run2,
           isTopQualifier,
+          isWipeout: this.isWipeout(run2),
         });
       }
       if (!isNaN(run3)) {
@@ -75,43 +86,64 @@ class JudgePsychologyAnalyzer {
           competitor: comp.competitor,
           score: run3,
           isTopQualifier,
+          isWipeout: this.isWipeout(run3),
         });
       }
     });
   }
 
   /**
-   * For each round, analyze if scores are influenced by previous performances
+   * Analyze judge bias on CLEAN RUNS ONLY
    */
   analyzeJudgeBias(roundData, roundName) {
-    console.log(`\n${'='.repeat(60)}`);
+    console.log(`\n${'='.repeat(70)}`);
     console.log(`${roundName.toUpperCase()} ANALYSIS`);
-    console.log(`${'='.repeat(60)}\n`);
+    console.log(`${'='.repeat(70)}\n`);
 
     if (roundData.length < 2) {
       console.log('Insufficient data for this round');
       return null;
     }
 
+    // Separate clean runs from wipeouts
+    const allRuns = roundData;
+    const cleanRuns = roundData.filter(r => !r.isWipeout);
+    const wipeouts = roundData.filter(r => r.isWipeout);
+
+    console.log(`Total performances: ${allRuns.length}`);
+    console.log(`Clean runs (≥50): ${cleanRuns.length}`);
+    console.log(`Wipeouts (<50): ${wipeouts.length}`);
+    console.log(`Wipeout rate: ${(wipeouts.length / allRuns.length * 100).toFixed(1)}%\n`);
+
+    if (cleanRuns.length < 2) {
+      console.log('Insufficient clean runs for bias analysis\n');
+      return null;
+    }
+
     const analysis = {
       roundName,
-      competitors: roundData.length,
-      scores: roundData.map(r => r.score),
-      mean: stats.mean(roundData.map(r => r.score)),
-      stdDev: stats.standardDeviation(roundData.map(r => r.score)),
+      totalPerformances: allRuns.length,
+      cleanRuns: cleanRuns.length,
+      wipeouts: wipeouts.length,
+      wipeoutRate: wipeouts.length / allRuns.length,
+      cleanRunStats: {
+        scores: cleanRuns.map(r => r.score),
+        mean: stats.mean(cleanRuns.map(r => r.score)),
+        stdDev: stats.standardDeviation(cleanRuns.map(r => r.score)),
+      },
       performances: [],
       contrastEffect: null,
-      recencyBias: null,
       qualifierEffect: null,
+      wipeoutContext: null,
     };
 
-    // Analyze each performance and context
-    for (let i = 0; i < roundData.length; i++) {
-      const current = roundData[i];
-      const previous = i > 0 ? roundData[i - 1] : null;
+    // Analyze each CLEAN run and its context
+    for (let i = 0; i < cleanRuns.length; i++) {
+      const current = cleanRuns[i];
+      const previous = i > 0 ? cleanRuns[i - 1] : null;
 
       let context = {
-        position: i + 1,
+        position: current.order,
         competitor: current.competitor,
         score: current.score,
         qualifier: current.qualifier,
@@ -121,27 +153,19 @@ class JudgePsychologyAnalyzer {
       };
 
       if (previous) {
-        // Determine if previous performance was good or bad
-        const prevWasHigh = previous.score > analysis.mean;
+        const prevWasHigh = previous.score > analysis.cleanRunStats.mean;
         context.precedingPerformance = prevWasHigh ? 'HIGH' : 'LOW';
-        
-        // Hypothesis: judges might rate next performer lower after high performer (contrast effect)
-        if (prevWasHigh && current.score < analysis.mean) {
-          context.contrastedDown = true;
-        } else if (!prevWasHigh && current.score > analysis.mean) {
-          context.boostedUp = true;
-        }
       }
 
       analysis.performances.push(context);
     }
 
-    // Calculate contrast effect (do judges score lower after high performers?)
-    const afterHigh = roundData.slice(1).filter((r, i) => 
-      roundData[i].score > analysis.mean
+    // Contrast effect on clean runs only
+    const afterHigh = cleanRuns.slice(1).filter((r, i) => 
+      cleanRuns[i].score > analysis.cleanRunStats.mean
     );
-    const afterLow = roundData.slice(1).filter((r, i) => 
-      roundData[i].score <= analysis.mean
+    const afterLow = cleanRuns.slice(1).filter((r, i) => 
+      cleanRuns[i].score <= analysis.cleanRunStats.mean
     );
 
     if (afterHigh.length > 0 && afterLow.length > 0) {
@@ -151,60 +175,42 @@ class JudgePsychologyAnalyzer {
         meanAfterHigh,
         meanAfterLow,
         difference: meanAfterLow - meanAfterHigh,
+        count: { afterHigh: afterHigh.length, afterLow: afterLow.length },
         interpretation: meanAfterHigh > meanAfterLow 
           ? 'Scores lower after high performers (contrast effect)'
           : 'Scores higher after high performers (halo effect)',
       };
     }
 
-    // Top qualifiers (best) always go last - do they get advantaged or disadvantaged?
-    const topQualScores = roundData.filter(r => r.isTopQualifier).map(r => r.score);
-    const otherScores = roundData.filter(r => !r.isTopQualifier).map(r => r.score);
+    // Top qualifiers effect
+    const topQualScores = cleanRuns.filter(r => r.isTopQualifier).map(r => r.score);
+    const otherScores = cleanRuns.filter(r => !r.isTopQualifier).map(r => r.score);
 
     if (topQualScores.length > 0 && otherScores.length > 0) {
       analysis.qualifierEffect = {
         topQualifierMean: stats.mean(topQualScores),
-        otherseMean: stats.mean(otherScores),
+        othersMean: stats.mean(otherScores),
         difference: stats.mean(topQualScores) - stats.mean(otherScores),
+        count: { topQual: topQualScores.length, others: otherScores.length },
+      };
+    }
+
+    // Analyze wipeout context - did wipeouts cluster after certain types of performances?
+    if (wipeouts.length > 0) {
+      const wipeoutPositions = wipeouts.map(w => w.order);
+      analysis.wipeoutContext = {
+        wipeoutPositions,
+        notes: 'Positions (1-12) where wipeouts occurred this round',
       };
     }
 
     return analysis;
   }
 
-  /**
-   * Compare same competitor across rounds to identify judge consistency
-   */
-  analyzeConsistency() {
-    console.log(`\n${'='.repeat(60)}`);
-    console.log('JUDGE CONSISTENCY ACROSS ROUNDS');
-    console.log(`${'='.repeat(60)}\n`);
-
-    const consistency = {};
-
-    this.competitors.forEach(comp => {
-      const run1 = parseFloat(comp.run1);
-      const run2 = parseFloat(comp.run2);
-      const run3 = parseFloat(comp.run3);
-
-      const runData = [run1, run2, run3].filter(r => !isNaN(r));
-      if (runData.length > 1) {
-        consistency[comp.competitor] = {
-          scores: runData,
-          mean: stats.mean(runData),
-          variance: stats.variance(runData),
-          stdDev: stats.standardDeviation(runData),
-          range: Math.max(...runData) - Math.min(...runData),
-        };
-      }
-    });
-
-    return consistency;
-  }
-
   run() {
     console.log('╔════════════════════════════════════════════════╗');
-    console.log('║   Judge Psychology Analysis                   ║');
+    console.log('║   Judge Psychology Analysis (CORRECTED)       ║');
+    console.log('║   Filtering out wipeouts (<50)                ║');
     console.log('║   Milano-Cortina 2026 Halfpipe               ║');
     console.log('╚════════════════════════════════════════════════╝\n');
 
@@ -215,14 +221,10 @@ class JudgePsychologyAnalyzer {
 
       const analysis = {
         event: 'Milano-Cortina 2026 - Men\'s Snowboard Halfpipe Final',
-        format: 'Round-Robin with Reverse Qualifying Order',
+        format: 'Round-Robin (same reverse qualifying order each round)',
+        methodology: 'Only analyzing clean runs (score ≥50); excluding wipeouts (<50)',
         timestamp: new Date().toISOString(),
-        competitionStructure: {
-          description: 'Each round, competitors perform in same order (reverse qualifying - best go last)',
-          roundsAnalyzed: Object.keys(this.rounds).filter(r => this.rounds[r].length > 0),
-        },
         rounds: {},
-        consistency: this.analyzeConsistency(),
       };
 
       // Analyze each round
@@ -254,29 +256,34 @@ class JudgePsychologyAnalyzer {
   }
 
   printSummary(analysis) {
-    console.log('\n' + '='.repeat(60));
-    console.log('SUMMARY: JUDGE BIAS INDICATORS');
-    console.log('='.repeat(60));
+    console.log('\n' + '='.repeat(70));
+    console.log('SUMMARY: JUDGE BIAS ON CLEAN RUNS ONLY');
+    console.log('='.repeat(70));
 
     Object.entries(analysis.rounds).forEach(([roundName, roundData]) => {
       if (roundData) {
         console.log(`\n${roundName.toUpperCase()}:`);
-        console.log(`  Competitors: ${roundData.competitors}`);
-        console.log(`  Mean score: ${roundData.mean.toFixed(2)}`);
-        console.log(`  Std Dev: ${roundData.stdDev.toFixed(2)}`);
+        console.log(`  Total performances: ${roundData.totalPerformances}`);
+        console.log(`  Clean runs: ${roundData.cleanRuns} | Wipeouts: ${roundData.wipeouts} (${(roundData.wipeoutRate * 100).toFixed(1)}%)`);
+        console.log(`  Mean score (clean runs only): ${roundData.cleanRunStats.mean.toFixed(2)}`);
         
         if (roundData.contrastEffect) {
-          console.log(`  Contrast Effect: ${roundData.contrastEffect.interpretation}`);
-          console.log(`    After HIGH: ${roundData.contrastEffect.meanAfterHigh.toFixed(2)}`);
-          console.log(`    After LOW: ${roundData.contrastEffect.meanAfterLow.toFixed(2)}`);
-          console.log(`    Difference: ${roundData.contrastEffect.difference.toFixed(2)}`);
+          console.log(`\n  CONTRAST EFFECT (on clean runs):`);
+          console.log(`    ${roundData.contrastEffect.interpretation}`);
+          console.log(`    After HIGH: ${roundData.contrastEffect.meanAfterHigh.toFixed(2)} (n=${roundData.contrastEffect.count.afterHigh})`);
+          console.log(`    After LOW: ${roundData.contrastEffect.meanAfterLow.toFixed(2)} (n=${roundData.contrastEffect.count.afterLow})`);
+          console.log(`    Difference: ${roundData.contrastEffect.difference.toFixed(2)} points`);
         }
 
         if (roundData.qualifierEffect) {
-          console.log(`  Qualifier Effect (best go last):`);
-          console.log(`    Top Qualifiers: ${roundData.qualifierEffect.topQualifierMean.toFixed(2)}`);
-          console.log(`    Others: ${roundData.qualifierEffect.otherseMean.toFixed(2)}`);
-          console.log(`    Difference: ${roundData.qualifierEffect.difference.toFixed(2)}`);
+          console.log(`\n  QUALIFIER EFFECT (best go last):`);
+          console.log(`    Top Qualifiers: ${roundData.qualifierEffect.topQualifierMean.toFixed(2)} (n=${roundData.qualifierEffect.count.topQual})`);
+          console.log(`    Others: ${roundData.qualifierEffect.othersMean.toFixed(2)} (n=${roundData.qualifierEffect.count.others})`);
+          console.log(`    Difference: ${roundData.qualifierEffect.difference.toFixed(2)} points`);
+        }
+
+        if (roundData.wipeoutContext) {
+          console.log(`\n  WIPEOUTS OCCURRED AT POSITIONS: ${roundData.wipeoutContext.wipeoutPositions.join(', ')}`);
         }
       }
     });
