@@ -293,6 +293,10 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
   border-radius: 16px;
   padding: 24px 20px;
   transition: border-color 0.3s, transform 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 .finding-card:hover { border-color: var(--accent); transform: translateY(-2px); }
 .finding-icon { font-size: 28px; margin-bottom: 12px; }
@@ -449,26 +453,26 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 <div class="findings reveal">
   <div class="findings-label">Key Findings at a Glance</div>
   <div class="findings-grid">
-    <div class="finding-card">
+    <a href="#consensus" class="finding-card">
       <div class="finding-icon">🎯</div>
       <div class="finding-title">Perfect Agreement</div>
       <div class="finding-detail">All 6 judges gave Ruka Hirano <strong>exactly 90</strong> — twice, on two different routines. Every other scored run had judges disagreeing by at least a point.</div>
-    </div>
-    <div class="finding-card">
+    </a>
+    <a href="#disagreement" class="finding-card">
       <div class="finding-icon">💥</div>
       <div class="finding-title">Crashes Create Confusion</div>
       <div class="finding-detail">When a rider falls, judges have to guess how much credit to give. The result: they <strong>disagree 70% more</strong> on crash scores than on clean landings.</div>
-    </div>
-    <div class="finding-card">
+    </a>
+    <a href="#disagreement" class="finding-card">
       <div class="finding-icon">⚖️</div>
       <div class="finding-title">The System Works</div>
       <div class="finding-detail">The scoring rules drop the highest and lowest judge to limit bias. It works — that adjustment only shifts scores by <strong>0.17 points</strong> on average.</div>
-    </div>
-    <div class="finding-card">
+    </a>
+    <a href="#hypothesis" class="finding-card">
       <div class="finding-icon">🔍</div>
       <div class="finding-title">Relief Bias? Probably Not</div>
       <div class="finding-detail">Do judges score higher after watching a string of crashes? When we compare the <strong>same rider</strong> in different crash contexts, there's no effect.</div>
-    </div>
+    </a>
   </div>
 </div>
 
@@ -496,7 +500,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 <div class="section-divider"></div>
 
 <!-- ═══ SECTION 2: THE CONSENSUS ═══ -->
-<div class="section-alt">
+<div class="section-alt" id="consensus">
 <div class="section reveal" style="max-width:1000px; margin:0 auto;">
   <div class="section-tag">The Consensus</div>
   <h2>Two Runs. Six Judges. One Number.</h2>
@@ -517,7 +521,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 <div class="section-divider"></div>
 
 <!-- ═══ SECTION 3: THE DISAGREEMENT (merged wipeout + severity) ═══ -->
-<div class="section reveal">
+<div class="section reveal" id="disagreement">
   <div class="section-tag">The Disagreement</div>
   <h2>When Do Judges Diverge?</h2>
   <p class="prose">Judges agree remarkably well on clean runs. But when a rider crashes mid-run, consensus breaks down. The question becomes: <em>how much credit for what they showed?</em></p>
@@ -551,7 +555,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 <div class="section-divider"></div>
 
 <!-- ═══ SECTION 4: THE HYPOTHESIS ═══ -->
-<div class="section-alt">
+<div class="section-alt" id="hypothesis">
 <div class="section reveal" style="max-width:1000px; margin:0 auto;">
   <div class="section-tag">The Hypothesis</div>
   <h2>Does a Crash Streak Help the Next Clean Run?</h2>
